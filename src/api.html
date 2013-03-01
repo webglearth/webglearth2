@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, all" />
+  <title>WebGL Earth API - Hello World</title>
+
+  <script src="../Cesium/Build/Cesium/Cesium.js"></script>
+  <script src="http://192.168.1.13:9810/compile?id=api-debug"></script>
+
+  <script>
+    var app;
+    function startWE() {
+      app = new WebGLEarth('webglearthdiv');
+    }
+  </script>
+  
+ </head>
+ <body onload="javascript:startWE()">
+   <div id="webglearthdiv" style="width:600px;height:400px;"></div>
+   <div id="infodiv" style="width:600px;height:20px;"></div>
+   <input type="button" value="Zoom to level 9.1" onclick="javascript:app.setZoom(9.1);" disabled/>
+   <input type="button" value="What's current zoom level?" onclick="javascript:alert(app.getZoom());" disabled/>
+   <input type="button" value="Set altitude to 5000km" onclick="javascript:app.setAltitude(5000000);" disabled/>
+   <input type="button" value="What's current altitude?" onclick="javascript:alert(app.getAltitude());" disabled/>
+   <br />
+   <input type="button" value="Set position to Mount Everest" onclick="javascript:app.setPosition(27.988056, 86.925278);" disabled/>
+   <input type="button" value="What's current position?" onclick="javascript:alert(app.getPosition());" disabled/>
+   <br />
+   <input type="button" value="Make the app bigger!" onclick="javascript:document.getElementById('webglearthdiv').style.width='800px';app.handleResize();this.disabled=true;"/>
+   <input type="button" value="Download as PNG" onclick="javascript:app.saveScreenshot('screenshot.png')" disabled/>
+   <br />
+   <input type="button" value="Switch to MapQuest" onclick="javascript:app.setBaseMap(mapM)" disabled/>
+   <input type="button" value="Switch to Bing - Aerial" onclick="javascript:app.setBaseMap(mapBA)" disabled/>
+   <!-- <input type="button" value="Disable overlay" onclick="javascript:app.setOverlayMap(null)"/> -->
+   <br />
+   <input type="button" value="Fly to Japan" onclick="javascript:app.flyToFitBounds(22,48,122,154)" disabled/>
+   <input type="button" value="Fly to Iceland @ 1000km" onclick="javascript:app.flyTo(65,-19,1000000)" disabled/>
+   <input type="button" value="Fly to the Statue of Liberty @ 500m with tilt and heading" onclick="javascript:app.flyTo(40.6894, -74.0446, 500, 20, 45, true)" disabled/>
+   <input type="button" value="Jump to the Statue of Liberty @ 500m with tilt and heading" onclick="javascript:app.setPosition(40.6894, -74.0446, null, 500, 20, 45, true)" disabled/>
+   <br />
+   Pick color for position <input type="text" id="colorlat" value="32.65" size="8" />,<input type="text" id="colorlng" value="-16.9166" size="8" /> <input type="button" value="Query color" onclick="javascript:queryColor()" disabled/><div id="colorbox" style="display:inline-block;width:150px;text-align:center;text-shadow:0 0 3px #fff;"></span>
+ </body>
+</html>
