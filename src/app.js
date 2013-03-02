@@ -10,6 +10,7 @@ goog.provide('weapi.App');
 goog.require('goog.dom');
 
 goog.require('weapi.Camera');
+goog.require('weapi.maps');
 
 
 
@@ -19,6 +20,8 @@ goog.require('weapi.Camera');
  * @constructor
  */
 weapi.App = function(divid) {
+  weapi.maps.initStatics();
+
   this.canvas = goog.dom.createElement('canvas');
   this.canvas.style.width = '100%';
   this.canvas.style.height = '100%';
@@ -97,4 +100,30 @@ weapi.App.prototype.handleResize = function() {
   this.canvas.width = width;
   this.canvas.height = height;
   this.scene.getCamera().frustum.aspectRatio = width / height;
+};
+
+
+/**
+ * @param {!weapi.Map} map Map.
+ */
+weapi.App.prototype.setBaseMap = function(map) {
+  var layers = this.centralBody.getImageryLayers();
+  //this.centralBody.getImageryLayers().get(0) = map.layer;
+  layers.remove(layers.get(0), false);
+  layers.add(map.layer, 0);
+};
+
+
+/**
+ * @param {weapi.Map} map Map.
+ */
+weapi.App.prototype.setOverlayMap = function(map) {
+  var length = this.centralBody.getImageryLayers().getLength();
+  var layers = this.centralBody.getImageryLayers();
+  if (length > 1) {
+    layers.remove(layers.get(1), false);
+  }
+  if (goog.isDefAndNotNull(map)) {
+    layers.add(map.layer);
+  }
 };

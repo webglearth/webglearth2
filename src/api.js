@@ -11,6 +11,7 @@ goog.require('goog.math');
 
 goog.require('we.canvas2image');
 goog.require('weapi.App');
+goog.require('weapi.Map');
 
 
 //Constructor
@@ -78,3 +79,20 @@ goog.exportSymbol('WebGLEarth.prototype.getScreenshot', function(callback) {
   }, this);
 });
 
+
+////////////////////////////////////////////////////////////////////////////////
+
+goog.exportSymbol('WebGLEarth.Maps', weapi.maps.MapType);
+goog.exportSymbol('WebGLEarth.prototype.initMap', weapi.maps.initMap);
+goog.exportSymbol('WebGLEarth.prototype.setBaseMap',
+                  weapi.App.prototype.setBaseMap);
+goog.exportSymbol('WebGLEarth.prototype.setOverlayMap',
+                  weapi.App.prototype.setOverlayMap);
+
+goog.exportSymbol('WebGLEarth.Map', weapi.Map);
+goog.exportSymbol('WebGLEarth.Map.prototype.setBoundingBox',
+                  weapi.Map.prototype.setBoundingBox);
+goog.exportSymbol('WebGLEarth.Map.prototype.setOpacity',
+                  weapi.Map.prototype.setOpacity);
+goog.exportSymbol('WebGLEarth.Map.prototype.getOpacity',
+                  weapi.Map.prototype.getOpacity);

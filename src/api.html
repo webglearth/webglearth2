@@ -11,8 +11,17 @@
 
   <script>
     var app;
+    var mapB, mapM;
     function startWE() {
       app = new WebGLEarth('webglearthdiv');
+      
+      mapB = app.initMap(WebGLEarth.Maps.BING, [{url : 'http://dev.virtualearth.net'}]);
+      mapBo = app.initMap(WebGLEarth.Maps.BING, [{url : 'http://dev.virtualearth.net'}]);
+      mapM = app.initMap(WebGLEarth.Maps.MAPQUEST);
+      mapMo = app.initMap(WebGLEarth.Maps.MAPQUEST);
+      
+      mapBo.setOpacity(0.5);
+      mapMo.setOpacity(0.5);
       
       setInterval(function() {
         document.getElementById('infodiv').innerHTML = app.getHeading() + ', ' + app.getTilt();
@@ -40,9 +49,11 @@
    <input type="button" value="Download as PNG" onclick="javascript:app.saveScreenshot('screenshot.png')"/>
    <input type="button" value="Display screenshot below" onclick="javascript:app.getScreenshot(function(url) {document.getElementById('screenshot').src = url;});"/>
    <br />
-   <input type="button" value="Switch to MapQuest" onclick="javascript:app.setBaseMap(mapM)" disabled/>
-   <input type="button" value="Switch to Bing - Aerial" onclick="javascript:app.setBaseMap(mapBA)" disabled/>
-   <!-- <input type="button" value="Disable overlay" onclick="javascript:app.setOverlayMap(null)"/> -->
+   <input type="button" value="Switch to MapQuest" onclick="javascript:app.setBaseMap(mapM)"/>
+   <input type="button" value="Switch to Bing" onclick="javascript:app.setBaseMap(mapB)"/>
+   <input type="button" value="Switch Overlay to MapQuest" onclick="javascript:app.setOverlayMap(mapMo)"/>
+   <input type="button" value="Switch Overlay to Bing" onclick="javascript:app.setOverlayMap(mapBo)"/>
+   <input type="button" value="Disable overlay" onclick="javascript:app.setOverlayMap(null)"/>
    <br />
    <input type="button" value="Fly to Japan" onclick="javascript:app.flyToFitBounds(22,48,122,154)" disabled/>
    <input type="button" value="Fly to Iceland @ 1000km" onclick="javascript:app.flyTo(65,-19,1000000)" disabled/>

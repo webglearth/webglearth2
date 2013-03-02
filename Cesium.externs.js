@@ -363,9 +363,23 @@ Cesium.ImageryLayerCollection.prototype.addImageryProvider = function(provider) 
 
 
 /**
- * @param {Cesium.ImageryLayer} layer
+ * @return {number} length
  */
-Cesium.ImageryLayerCollection.prototype.add = function(layer) {};
+Cesium.ImageryLayerCollection.prototype.getLength = function() {};
+
+
+/**
+ * @param {number} index 
+ * @return {Cesium.ImageryLayer} layer
+ */
+Cesium.ImageryLayerCollection.prototype.get = function(index) {};
+
+
+/**
+ * @param {Cesium.ImageryLayer} layer
+ * @param {number=} opt_index 
+ */
+Cesium.ImageryLayerCollection.prototype.add = function(layer, opt_index) {};
 
 
 /**
@@ -503,6 +517,17 @@ Cesium.Ellipsoid.prototype.cartesianToCartographic = function(cartesian, result)
  */
 Cesium.Extent = function(west, south, east, north) {};
 
+/** @type {number} */
+Cesium.Extent.prototype.west;
+
+/** @type {number} */
+Cesium.Extent.prototype.south;
+
+/** @type {number} */
+Cesium.Extent.prototype.east;
+
+/** @type {number} */
+Cesium.Extent.prototype.north;
 
 
 /**
