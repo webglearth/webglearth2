@@ -22,6 +22,9 @@ weapi.App = function(divid) {
   this.canvas.style.height = '100%';
   goog.dom.getElement(divid).appendChild(this.canvas);
 
+  /** @type {?Function} */
+  this.afterFrameOnce = null;
+
   this.scene = new Cesium.Scene(this.canvas);
 
   this.scene.skyAtmosphere = new Cesium.SkyAtmosphere();
@@ -63,6 +66,10 @@ weapi.App = function(divid) {
     this.scene.initializeFrame();
     animate();
     this.scene.render();
+    if (goog.isDefAndNotNull(this.afterFrameOnce)) {
+      this.afterFrameOnce();
+      this.afterFrameOnce = null;
+    }
     Cesium.requestAnimationFrame(tick);
   }, this);
   tick();

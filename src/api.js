@@ -9,6 +9,7 @@ goog.provide('weapi');
 
 goog.require('goog.math');
 
+goog.require('we.canvas2image');
 goog.require('weapi.App');
 
 
@@ -36,5 +37,23 @@ goog.exportSymbol('WebGLEarth.prototype.setPosition', function(lat, lng) {
 goog.exportSymbol('WebGLEarth.prototype.getPosition', function() {
   var pos = this.getCameraPos();
   return [goog.math.toDegrees(pos[0]), goog.math.toDegrees(pos[1])];
+});
+
+goog.exportSymbol('WebGLEarth.prototype.saveScreenshot', function(name) {
+  this.afterFrameOnce = goog.bind(function() {
+    //var canvas_ = we.canvas2image.prepareCanvas(this.context.canvas,
+    //                                            this.markerManager,
+    //                                            this.context.scene.miniGlobe);
+    we.canvas2image.saveCanvasAsPNG(this.scene.getCanvas(), name);
+  }, this);
+});
+
+goog.exportSymbol('WebGLEarth.prototype.getScreenshot', function(callback) {
+  this.afterFrameOnce = goog.bind(function() {
+    //var canvas_ = we.canvas2image.prepareCanvas(this.context.canvas,
+    //                                            this.markerManager,
+    //                                            this.context.scene.miniGlobe);
+    callback(we.canvas2image.getCanvasAsDataURL(this.scene.getCanvas()));
+  }, this);
 });
 

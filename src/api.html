@@ -29,7 +29,8 @@
    <input type="button" value="What's current position?" onclick="javascript:alert(app.getPosition());"/>
    <br />
    <input type="button" value="Make the app bigger!" onclick="javascript:document.getElementById('webglearthdiv').style.width='800px';app.handleResize();this.disabled=true;"/>
-   <input type="button" value="Download as PNG" onclick="javascript:app.saveScreenshot('screenshot.png')" disabled/>
+   <input type="button" value="Download as PNG" onclick="javascript:app.saveScreenshot('screenshot.png')"/>
+   <input type="button" value="Display screenshot below" onclick="javascript:app.getScreenshot(function(url) {document.getElementById('screenshot').src = url;});"/>
    <br />
    <input type="button" value="Switch to MapQuest" onclick="javascript:app.setBaseMap(mapM)" disabled/>
    <input type="button" value="Switch to Bing - Aerial" onclick="javascript:app.setBaseMap(mapBA)" disabled/>
@@ -40,6 +41,8 @@
    <input type="button" value="Fly to the Statue of Liberty @ 500m with tilt and heading" onclick="javascript:app.flyTo(40.6894, -74.0446, 500, 20, 45, true)" disabled/>
    <input type="button" value="Jump to the Statue of Liberty @ 500m with tilt and heading" onclick="javascript:app.setPosition(40.6894, -74.0446, null, 500, 20, 45, true)" disabled/>
    <br />
-   Pick color for position <input type="text" id="colorlat" value="32.65" size="8" />,<input type="text" id="colorlng" value="-16.9166" size="8" /> <input type="button" value="Query color" onclick="javascript:queryColor()" disabled/><div id="colorbox" style="display:inline-block;width:150px;text-align:center;text-shadow:0 0 3px #fff;"></span>
+   Pick color for position <input type="text" id="colorlat" value="32.65" size="8" />,<input type="text" id="colorlng" value="-16.9166" size="8" /> <input type="button" value="Query color" onclick="javascript:queryColor()" disabled/><div id="colorbox" style="display:inline-block;width:150px;text-align:center;text-shadow:0 0 3px #fff;"></div>
+   <br />
+   <img id="screenshot" />
  </body>
 </html>
