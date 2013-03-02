@@ -32,6 +32,10 @@
    <input type="button" value="Set position to Mount Everest" onclick="javascript:app.setPosition(27.988056, 86.925278);"/>
    <input type="button" value="What's current position?" onclick="javascript:alert(app.getPosition());"/>
    <br />
+   <input type="button" value="Heading 45 degrees" onclick="javascript:app.setHeading(45);"/>
+   <input type="button" value="Tilt 20 degrees" onclick="javascript:app.setTilt(20);"/>
+   <input type="button" value="Heading 45 degrees + tilt 20 degrees" onclick="javascript:app.setView(45, 20);"/>
+   <br />
    <input type="button" value="Make the app bigger!" onclick="javascript:document.getElementById('webglearthdiv').style.width='800px';app.handleResize();this.disabled=true;"/>
    <input type="button" value="Download as PNG" onclick="javascript:app.saveScreenshot('screenshot.png')"/>
    <input type="button" value="Display screenshot below" onclick="javascript:app.getScreenshot(function(url) {document.getElementById('screenshot').src = url;});"/>

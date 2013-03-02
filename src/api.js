@@ -50,6 +50,16 @@ goog.exportSymbol('WebGLEarth.prototype.getTilt', function() {
 });
 
 
+goog.exportSymbol('WebGLEarth.prototype.setHeading', function(heading) {
+  this.camera.setHeading(goog.math.toRadians(heading));
+});
+
+
+goog.exportSymbol('WebGLEarth.prototype.setTilt', function(tilt) {
+  this.camera.setTilt(goog.math.toRadians(tilt));
+});
+
+
 goog.exportSymbol('WebGLEarth.prototype.saveScreenshot', function(name) {
   this.afterFrameOnce = goog.bind(function() {
     //var canvas_ = we.canvas2image.prepareCanvas(this.context.canvas,

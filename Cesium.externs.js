@@ -58,10 +58,50 @@ Cesium.Camera.prototype.up;
  */
 Cesium.CameraController = function() {};
 
+
 /**
-* @param {Cesium.Cartographic} carto
+ * @param {Cesium.Cartographic} carto
  */
 Cesium.CameraController.prototype.setPositionCartographic = function(carto) {};
+
+
+/**
+ * @param {Cesium.Cartesian3} eye .
+ * @param {Cesium.Cartesian3} target .
+ * @param {Cesium.Cartesian3} up .
+ */
+Cesium.CameraController.prototype.lookAt = function(eye, target, up) {};
+
+
+/**
+ * @param {number} amount .
+ */
+Cesium.CameraController.prototype.twistLeft = function(amount) {};
+
+/**
+ * @param {number} amount .
+ */
+Cesium.CameraController.prototype.twistRight = function(amount) {};
+
+/**
+ * @param {number} amount .
+ */
+Cesium.CameraController.prototype.lookLeft = function(amount) {};
+
+/**
+ * @param {number} amount .
+ */
+Cesium.CameraController.prototype.lookRight = function(amount) {};
+
+/**
+ * @param {number} amount .
+ */
+Cesium.CameraController.prototype.lookUp = function(amount) {};
+
+/**
+ * @param {number} amount .
+ */
+Cesium.CameraController.prototype.lookDown = function(amount) {};
 
 
 /**
@@ -148,10 +188,10 @@ Cesium.Cartesian3.prototype.negate = function(opt_result) {};
 /**
  * @param {Cesium.Cartesian3} left
  * @param {Cesium.Cartesian3} right
- * @param {Cesium.Cartesian3} result
+ * @param {Cesium.Cartesian3=} opt_result
  * @return {Cesium.Cartesian3}
  */
-Cesium.Cartesian3.cross = function(left, right, result) {};
+Cesium.Cartesian3.cross = function(left, right, opt_result) {};
 
 
 /**
