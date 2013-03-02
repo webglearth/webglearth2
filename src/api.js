@@ -21,23 +21,34 @@ goog.exportSymbol('WebGLEarth.prototype.handleResize',
 
 
 goog.exportSymbol('WebGLEarth.prototype.setAltitude', function(alt) {
-  this.setCameraPos(undefined, undefined, alt);
+  this.camera.setPos(undefined, undefined, alt);
 });
 
 goog.exportSymbol('WebGLEarth.prototype.getAltitude', function() {
-  return this.getCameraPos()[2];
+  return this.camera.getPos()[2];
 });
 
 goog.exportSymbol('WebGLEarth.prototype.setPosition', function(lat, lng) {
-  this.setCameraPos(goog.math.toRadians(lat),
-      goog.math.toRadians(lng),
-      undefined);
+  this.camera.setPos(goog.math.toRadians(lat),
+                     goog.math.toRadians(lng),
+                     undefined);
 });
 
 goog.exportSymbol('WebGLEarth.prototype.getPosition', function() {
-  var pos = this.getCameraPos();
+  var pos = this.camera.getPos();
   return [goog.math.toDegrees(pos[0]), goog.math.toDegrees(pos[1])];
 });
+
+
+goog.exportSymbol('WebGLEarth.prototype.getHeading', function() {
+  return goog.math.toDegrees(this.camera.getHeading());
+});
+
+
+goog.exportSymbol('WebGLEarth.prototype.getTilt', function() {
+  return goog.math.toDegrees(this.camera.getTilt());
+});
+
 
 goog.exportSymbol('WebGLEarth.prototype.saveScreenshot', function(name) {
   this.afterFrameOnce = goog.bind(function() {

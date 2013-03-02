@@ -13,6 +13,10 @@
     var app;
     function startWE() {
       app = new WebGLEarth('webglearthdiv');
+      
+      setInterval(function() {
+        document.getElementById('infodiv').innerHTML = app.getHeading() + ', ' + app.getTilt();
+      }, 100);
     }
   </script>
   

@@ -98,6 +98,24 @@ Cesium.Cartesian3.ZERO;
 
 
 /**
+ * @type {number}
+ */
+Cesium.Cartesian3.prototype.x;
+
+
+/**
+ * @type {number}
+ */
+Cesium.Cartesian3.prototype.y;
+
+
+/**
+ * @type {number}
+ */
+Cesium.Cartesian3.prototype.z;
+
+
+/**
  * @param {Cesium.Cartesian3} cartesian
  * @param {Cesium.Cartesian3} result
  * @return {Cesium.Cartesian3}
@@ -106,11 +124,25 @@ Cesium.Cartesian3.normalize = function(cartesian, result) {};
 
 
 /**
+ * @param {Cesium.Cartesian3=} opt_result
+ * @return {Cesium.Cartesian3}
+ */
+Cesium.Cartesian3.prototype.normalize = function(opt_result) {};
+
+
+/**
  * @param {Cesium.Cartesian3} cartesian
  * @param {Cesium.Cartesian3} result
  * @return {Cesium.Cartesian3}
  */
 Cesium.Cartesian3.negate = function(cartesian, result) {};
+
+
+/**
+ * @param {Cesium.Cartesian3=} opt_result
+ * @return {Cesium.Cartesian3}
+ */
+Cesium.Cartesian3.prototype.negate = function(opt_result) {};
 
 
 /**
@@ -123,11 +155,43 @@ Cesium.Cartesian3.cross = function(left, right, result) {};
 
 
 /**
+ * @param {Cesium.Cartesian3} right
+ * @param {Cesium.Cartesian3=} opt_result
+ * @return {Cesium.Cartesian3}
+ */
+Cesium.Cartesian3.prototype.cross = function(right, opt_result) {};
+
+
+/**
  * @param {Cesium.Cartesian3} left
  * @param {Cesium.Cartesian3} right
  * @return {number}
  */
 Cesium.Cartesian3.dot = function(left, right) {};
+
+
+/**
+ * @param {Cesium.Cartesian3} right
+ * @param {Cesium.Cartesian3=} opt_result
+ * @return {number}
+ */
+Cesium.Cartesian3.prototype.dot = function(right, opt_result) {};
+
+
+/**
+ * @param {Cesium.Cartesian3} left
+ * @param {Cesium.Cartesian3} right
+ * @return {number}
+ */
+Cesium.Cartesian3.angleBetween = function(left, right) {};
+
+
+/**
+ * @param {Cesium.Cartesian3} right
+ * @param {Cesium.Cartesian3=} opt_result
+ * @return {number}
+ */
+Cesium.Cartesian3.prototype.angleBetween = function(right, opt_result) {};
 
 
 
@@ -557,6 +621,12 @@ Cesium.Scene.prototype.getPrimitives = function() {};
 
 
 /**
+ * @return {Cesium.ScreenSpaceCameraController}
+ */
+Cesium.Scene.prototype.getScreenSpaceCameraController = function() {};
+
+
+/**
  */
 Cesium.Scene.prototype.initializeFrame = function() {};
 
@@ -619,6 +689,27 @@ Cesium.SceneMode.SCENE2D;
  */
 Cesium.SceneMode.SCENE3D;
 
+
+/**
+ * @constructor
+ */
+Cesium.ScreenSpaceCameraController = function() {};
+
+
+/**
+ * @type {boolean}
+ */
+Cesium.ScreenSpaceCameraController.prototype.enableRotate;
+
+/**
+ * @type {boolean}
+ */
+Cesium.ScreenSpaceCameraController.prototype.enableLook;
+
+/**
+ * @type {boolean}
+ */
+Cesium.ScreenSpaceCameraController.prototype.enableTilt;
 
 
 /**
