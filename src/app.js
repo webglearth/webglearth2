@@ -49,10 +49,10 @@ weapi.App = function(divid) {
   });
 
   var ellipsoid = Cesium.Ellipsoid.WGS84;
-  var centralBody = new Cesium.CentralBody(ellipsoid);
-  centralBody.getImageryLayers().addImageryProvider(bing);
+  this.centralBody = new Cesium.CentralBody(ellipsoid);
+  this.centralBody.getImageryLayers().addImageryProvider(bing);
 
-  primitives.setCentralBody(centralBody);
+  primitives.setCentralBody(this.centralBody);
 
   function animate() {
     // INSERT CODE HERE to update primitives based on
@@ -87,3 +87,38 @@ weapi.App.prototype.handleResize = function() {
   this.canvas.height = height;
   this.scene.getCamera().frustum.aspectRatio = width / height;
 };
+
+
+/**
+ * @return {Array.<number>} [latitude, longitude, altitude].
+ */
+weapi.App.prototype.getCameraPos = function() {
+  var camera = this.scene.getCamera();
+  var carto = new Cesium.Cartographic(0, 0, 0);
+  this.centralBody.getEllipsoid().cartesianToCartographic(camera.position,
+                                                          carto);
+
+  return [carto.latitude, carto.longitude, carto.height];
+};
+
+
+/**
+ * @param {number|undefined} latitude .
+ * @param {number|undefined} longitude .
+ * @param {number|undefined} altitude .
+ */
+weapi.App.prototype.setCameraPos = function(latitude, longitude, altitude) {
+  var camera = this.scene.getCamera();
+  if (!goog.isDef(latitude) ||
+      !goog.isDef(longitude) ||
+      !goog.isDef(altitude)) {
+    var oldPos = this.getCameraPos();
+    latitude = latitude || oldPos[0];
+    longitude = longitude || oldPos[1];
+    altitude = altitude || oldPos[2];
+  }
+  var carto = new Cesium.Cartographic(longitude, latitude, altitude);
+
+  camera.controller.setPositionCartographic(carto);
+};
+

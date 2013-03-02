@@ -22,11 +22,11 @@
    <div id="infodiv" style="width:600px;height:20px;"></div>
    <input type="button" value="Zoom to level 9.1" onclick="javascript:app.setZoom(9.1);" disabled/>
    <input type="button" value="What's current zoom level?" onclick="javascript:alert(app.getZoom());" disabled/>
-   <input type="button" value="Set altitude to 5000km" onclick="javascript:app.setAltitude(5000000);" disabled/>
-   <input type="button" value="What's current altitude?" onclick="javascript:alert(app.getAltitude());" disabled/>
+   <input type="button" value="Set altitude to 5000km" onclick="javascript:app.setAltitude(5000000);"/>
+   <input type="button" value="What's current altitude?" onclick="javascript:alert(app.getAltitude());"/>
    <br />
-   <input type="button" value="Set position to Mount Everest" onclick="javascript:app.setPosition(27.988056, 86.925278);" disabled/>
-   <input type="button" value="What's current position?" onclick="javascript:alert(app.getPosition());" disabled/>
+   <input type="button" value="Set position to Mount Everest" onclick="javascript:app.setPosition(27.988056, 86.925278);"/>
+   <input type="button" value="What's current position?" onclick="javascript:alert(app.getPosition());"/>
    <br />
    <input type="button" value="Make the app bigger!" onclick="javascript:document.getElementById('webglearthdiv').style.width='800px';app.handleResize();this.disabled=true;"/>
    <input type="button" value="Download as PNG" onclick="javascript:app.saveScreenshot('screenshot.png')" disabled/>

@@ -23,6 +23,11 @@ Cesium.Camera.prototype.direction;
  */
 Cesium.Camera.prototype.frustum;
 
+/**
+ * @type {Cesium.CameraController}
+ */
+Cesium.Camera.prototype.controller;
+
 
 /**
  * @type {Cesium.Cartesian3}
@@ -47,6 +52,16 @@ Cesium.Camera.prototype.transform;
  */
 Cesium.Camera.prototype.up;
 
+
+/**
+ * @constructor
+ */
+Cesium.CameraController = function() {};
+
+/**
+* @param {Cesium.Cartographic} carto
+ */
+Cesium.CameraController.prototype.setPositionCartographic = function(carto) {};
 
 
 /**
@@ -155,6 +170,12 @@ Cesium.CentralBody = function(ellipsoid) {};
  * @return {Cesium.ImageryLayerCollection}
  */
 Cesium.CentralBody.prototype.getImageryLayers = function() {};
+
+
+/**
+ * @return {Cesium.Ellipsoid}
+ */
+Cesium.CentralBody.prototype.getEllipsoid = function() {};
 
 
 
