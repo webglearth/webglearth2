@@ -9,6 +9,8 @@ goog.provide('weapi.Camera');
 
 goog.require('goog.dom');
 
+goog.require('weapi.CameraAnimator');
+
 
 
 /**
@@ -20,6 +22,7 @@ goog.require('goog.dom');
 weapi.Camera = function(camera, ellipsoid) {
   this.camera = camera;
   this.ellipsoid = ellipsoid;
+  this.animator = new weapi.CameraAnimator(this);
 };
 
 

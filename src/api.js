@@ -61,6 +61,20 @@ goog.exportSymbol('WebGLEarth.prototype.setTilt', function(tilt) {
 });
 
 
+goog.exportSymbol('WebGLEarth.prototype.flyTo', function(latitude, longitude,
+                                                         opt_altitude,
+                                                         opt_heading,
+                                                         opt_tilt,
+                                                         opt_targetPosition) {
+      this.camera.animator.flyTo(goog.math.toRadians(latitude),
+          goog.math.toRadians(longitude),
+          opt_altitude,
+          goog.math.toRadians(opt_heading),
+          goog.math.toRadians(opt_tilt),
+          opt_targetPosition);
+    });
+
+
 goog.exportSymbol('WebGLEarth.prototype.saveScreenshot', function(name) {
   this.afterFrameOnce = goog.bind(function() {
     //var canvas_ = we.canvas2image.prepareCanvas(this.context.canvas,
