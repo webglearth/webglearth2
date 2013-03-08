@@ -144,6 +144,20 @@ weapi.Camera.prototype.setTilt = function(tilt) {
 
 
 /**
+ * @param {number} heading .
+ * @param {number} tilt .
+ */
+weapi.Camera.prototype.setHeadingAndTilt = function(heading, tilt) {
+  var heading_, tilt_ = this.getTilt();
+
+  heading_ = heading - this.getHeading();
+  this.camera.controller.lookDown(tilt_);
+  this.camera.controller.twistLeft(heading_);
+  this.camera.controller.lookUp(tilt);
+};
+
+
+/**
  * Calculates at what distance should given bounds be view to fit on screen.
  * @param {number} minlat .
  * @param {number} maxlat .

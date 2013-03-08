@@ -182,8 +182,7 @@ weapi.CameraAnimator.prototype.flyTo = function(latitude, longitude,
  */
 weapi.CameraAnimator.prototype.onEverythingAnimate_ = function(e) {
   this.camera_.setPos(e.coords[0], e.coords[1], e.coords[2]);
-  this.camera_.setHeading(e.coords[3]);
-  this.camera_.setTilt(e.coords[4]);
+  this.camera_.setHeadingAndTilt(e.coords[3], e.coords[4]);
 };
 
 
