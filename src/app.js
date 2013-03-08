@@ -17,9 +17,12 @@ goog.require('weapi.maps');
 /**
  *
  * @param {string} divid .
+ * @param {Object=} opt_options Application options.
  * @constructor
  */
-weapi.App = function(divid) {
+weapi.App = function(divid, opt_options) {
+  var options = opt_options || {};
+  //TODO: map, zoom, proxyHost
   weapi.maps.initStatics();
 
   this.canvas = goog.dom.createElement('canvas');
@@ -33,17 +36,21 @@ weapi.App = function(divid) {
 
   this.scene = new Cesium.Scene(this.canvas);
 
-  this.scene.skyAtmosphere = new Cesium.SkyAtmosphere();
+  if (options['atmosphere'] !== false) {
+    this.scene.skyAtmosphere = new Cesium.SkyAtmosphere();
 
-  var skyBoxBaseUrl = '../Cesium/Source/Assets/Textures/SkyBox/tycho2t3_80';
-  this.scene.skyBox = new Cesium.SkyBox({
-    'positiveX' : skyBoxBaseUrl + '_px.jpg',
-    'negativeX' : skyBoxBaseUrl + '_mx.jpg',
-    'positiveY' : skyBoxBaseUrl + '_py.jpg',
-    'negativeY' : skyBoxBaseUrl + '_my.jpg',
-    'positiveZ' : skyBoxBaseUrl + '_pz.jpg',
-    'negativeZ' : skyBoxBaseUrl + '_mz.jpg'
-  });
+    var skyBoxBaseUrl = '../Cesium/Source/Assets/Textures/SkyBox/tycho2t3_80';
+    this.scene.skyBox = new Cesium.SkyBox({
+      'positiveX' : skyBoxBaseUrl + '_px.jpg',
+      'negativeX' : skyBoxBaseUrl + '_mx.jpg',
+      'positiveY' : skyBoxBaseUrl + '_py.jpg',
+      'negativeY' : skyBoxBaseUrl + '_my.jpg',
+      'positiveZ' : skyBoxBaseUrl + '_pz.jpg',
+      'negativeZ' : skyBoxBaseUrl + '_mz.jpg'
+    });
+  } else {
+    //TODO: transparent color ?
+  }
 
   var primitives = this.scene.getPrimitives();
 
@@ -94,6 +101,32 @@ weapi.App = function(divid) {
 
   window.addEventListener('resize', this.handleResize, false);
   this.handleResize();
+
+
+  var pos = options['position'];
+  var center = options['center'];
+  if (goog.isDefAndNotNull(pos) && pos.length > 1) {
+    this.camera.setPos(goog.math.toRadians(pos[0]),
+                       goog.math.toRadians(pos[1]),
+                       undefined);
+  } else if (goog.isDefAndNotNull(center) && center.length > 1) {
+    this.camera.setPos(goog.math.toRadians(center[0]),
+                       goog.math.toRadians(center[1]),
+                       undefined);
+  }
+
+  // TODO: zoom support
+  var z = options['zoom'];
+  if (goog.isDefAndNotNull(z)) window['console']['log']('zoom not supported');
+
+  var alt = options['altitude'];
+  if (goog.isDefAndNotNull(alt)) this.camera.setPos(undefined, undefined, alt);
+
+  var sscc = this.scene.getScreenSpaceCameraController();
+
+  if (options['panning'] === false) sscc.enableRotate = false;
+  if (options['tilting'] === false) sscc.enableTilt = false; //TODO: fix axis
+  if (options['zooming'] === false) sscc.enableZoom = false;
 };
 
 

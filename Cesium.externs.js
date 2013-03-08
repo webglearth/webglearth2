@@ -602,6 +602,17 @@ Cesium.Matrix4 = function() {};
 
 /**
  * @constructor
+ * @param {number=} opt_r .
+ * @param {number=} opt_g .
+ * @param {number=} opt_b .
+ * @param {number=} opt_a .
+ */
+Cesium.Color = function(opt_r, opt_g, opt_b, opt_a) {};
+
+
+
+/**
+ * @constructor
  * @param {Object} options
  * @extends {Cesium.ImageryProvider}
  */

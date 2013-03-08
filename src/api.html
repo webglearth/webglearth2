@@ -13,7 +13,14 @@
     var app;
     var mapB, mapM;
     function startWE() {
-      app = new WebGLEarth('webglearthdiv');
+      app = new WebGLEarth('webglearthdiv', {
+        atmosphere: true,
+        position: [47.2, 8.5],
+        altitude: 7000000,
+        panning: true,
+        tilting: true,
+        zooming: true
+      });
       
       mapB = app.initMap(WebGLEarth.Maps.BING, [{url : 'http://dev.virtualearth.net'}]);
       mapBo = app.initMap(WebGLEarth.Maps.BING, [{url : 'http://dev.virtualearth.net'}]);
