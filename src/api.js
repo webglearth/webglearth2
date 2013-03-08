@@ -75,6 +75,34 @@ goog.exportSymbol('WebGLEarth.prototype.flyTo', function(latitude, longitude,
     });
 
 
+goog.exportSymbol('WebGLEarth.prototype.flyToFitBounds', function(minlat,
+                                                                  maxlat,
+                                                                  minlon,
+                                                                  maxlon) {
+      minlat = goog.math.toRadians(minlat);
+      maxlat = goog.math.toRadians(maxlat);
+      minlon = goog.math.toRadians(minlon);
+      maxlon = goog.math.toRadians(maxlon);
+
+      var altitude = this.camera.calcDistanceToViewBounds(minlat, maxlat,
+                                                          minlon, maxlon);
+
+      minlon = goog.math.modulo(minlon, 2 * Math.PI);
+      maxlon = goog.math.modulo(maxlon, 2 * Math.PI);
+
+      var lonDiff = minlon - maxlon;
+      if (lonDiff < -Math.PI) {
+        minlon += 2 * Math.PI;
+      } else if (lonDiff > Math.PI) {
+        maxlon += 2 * Math.PI;
+      }
+
+      var center = [(minlat + maxlat) / 2, (minlon + maxlon) / 2];
+
+      this.camera.animator.flyTo(center[0], center[1], altitude);
+    });
+
+
 goog.exportSymbol('WebGLEarth.prototype.saveScreenshot', function(name) {
   this.afterFrameOnce = goog.bind(function() {
     //var canvas_ = we.canvas2image.prepareCanvas(this.context.canvas,

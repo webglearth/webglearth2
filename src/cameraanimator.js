@@ -13,6 +13,8 @@ goog.require('goog.fx.Animation.EventType');
 goog.require('goog.fx.AnimationSerialQueue');
 goog.require('goog.math');
 
+goog.require('weapi.utils');
+
 
 
 /**
@@ -119,17 +121,8 @@ weapi.CameraAnimator.prototype.flyTo = function(latitude, longitude,
   this.animation_ = new goog.fx.AnimationSerialQueue();
 
   if (opt_altitude) {
-    //TODO: fix for other ellipsoids ?
-    var calculateDistance = function(lat1, lon1, lat2, lon2) {
-      var sindlathalf = Math.sin((lat2 - lat1) / 2);
-      var sindlonhalf = Math.sin((lon2 - lon1) / 2);
-      var a = sindlathalf * sindlathalf +
-              Math.cos(lat1) * Math.cos(lat2) * sindlonhalf * sindlonhalf;
-      var angle = 2 * Math.asin(Math.sqrt(a));
-      return 6378137 * angle;
-    };
-    var distance = calculateDistance(srcPos[0], srcPos[1],
-                                     latitude, longitude);
+    var distance = weapi.utils.calculateDistance(srcPos[0], srcPos[1],
+                                                 latitude, longitude);
 
     var topPoint = Math.min(curAlt, dstAlt) +
                    distance * weapi.CameraAnimator.CAMERA_ANIMATION_MAX_ASCENT;

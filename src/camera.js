@@ -10,6 +10,7 @@ goog.provide('weapi.Camera');
 goog.require('goog.dom');
 
 goog.require('weapi.CameraAnimator');
+goog.require('weapi.utils');
 
 
 
@@ -139,4 +140,42 @@ weapi.Camera.prototype.setTilt = function(tilt) {
   var heading_ = this.getHeading();
   this.camera.controller.lookUp(tilt_);
   this.setHeading(heading_); //re-set the heading
+};
+
+
+/**
+ * Calculates at what distance should given bounds be view to fit on screen.
+ * @param {number} minlat .
+ * @param {number} maxlat .
+ * @param {number} minlon .
+ * @param {number} maxlon .
+ * @return {number} Proposed distance.
+ */
+weapi.Camera.prototype.calcDistanceToViewBounds = function(minlat, maxlat,
+                                                           minlon, maxlon) {
+  var centerLat = (minlat + maxlat) / 2;
+
+  var distEW = weapi.utils.calculateDistance(centerLat, minlon,
+      centerLat, maxlon);
+
+  var distNS = weapi.utils.calculateDistance(minlat, 0,
+      maxlat, 0);
+
+  var aspectR =
+      Math.min(Math.max(this.camera.frustum.aspectRatio, distEW / distNS), 1.0);
+
+  // Create a LookAt using the experimentally derived distance formula.
+  var alpha =
+      goog.math.toRadians(goog.math.toDegrees(this.camera.frustum.fovy) /
+      (aspectR + 0.4) - 2.0);
+  var expandToDistance = Math.max(distNS, distEW);
+
+  var beta =
+      Math.min(Math.PI / 2,
+               alpha + expandToDistance / (2 * weapi.utils.EARTH_RADIUS));
+
+  var lookAtRange = 1.5 * weapi.utils.EARTH_RADIUS *
+      (Math.sin(beta) * Math.sqrt(1 + 1 / Math.pow(Math.tan(alpha), 2)) - 1);
+
+  return lookAtRange;
 };
