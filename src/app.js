@@ -25,6 +25,7 @@ weapi.App = function(divid) {
   this.canvas = goog.dom.createElement('canvas');
   this.canvas.style.width = '100%';
   this.canvas.style.height = '100%';
+  this.canvas.oncontextmenu = function() {return false;};
   goog.dom.getElement(divid).appendChild(this.canvas);
 
   /** @type {?Function} */
@@ -80,6 +81,16 @@ weapi.App = function(divid) {
     Cesium.requestAnimationFrame(tick);
   }, this);
   tick();
+
+  var handler = new Cesium.ScreenSpaceEventHandler(this.canvas);
+
+  var stopAnim = goog.bind(function() {this.camera.animator.cancel();}, this);
+
+  handler.setInputAction(stopAnim, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+  handler.setInputAction(stopAnim, Cesium.ScreenSpaceEventType.RIGHT_DOWN);
+  handler.setInputAction(stopAnim, Cesium.ScreenSpaceEventType.MIDDLE_DOWN);
+  handler.setInputAction(stopAnim, Cesium.ScreenSpaceEventType.WHEEL);
+  handler.setInputAction(stopAnim, Cesium.ScreenSpaceEventType.PINCH_START);
 
   window.addEventListener('resize', this.handleResize, false);
   this.handleResize();

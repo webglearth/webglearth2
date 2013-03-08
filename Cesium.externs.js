@@ -777,6 +777,41 @@ Cesium.ScreenSpaceCameraController.prototype.enableLook;
 Cesium.ScreenSpaceCameraController.prototype.enableTilt;
 
 
+
+/**
+ * @constructor
+ * @param {!Element} canvas .
+ */
+Cesium.ScreenSpaceEventHandler = function(canvas) {};
+
+
+/**
+ * @param {Function} callback .
+ * @param {Cesium.ScreenSpaceEventType} type .
+ */
+Cesium.ScreenSpaceEventHandler.prototype.setInputAction = function(callback, type) {};
+
+
+/** @constructor */
+Cesium.ScreenSpaceEventType = function() {};
+
+/** @type {Cesium.ScreenSpaceEventType} */
+Cesium.ScreenSpaceEventType.LEFT_DOWN;
+
+/** @type {Cesium.ScreenSpaceEventType} */
+Cesium.ScreenSpaceEventType.RIGHT_DOWN;
+
+/** @type {Cesium.ScreenSpaceEventType} */
+Cesium.ScreenSpaceEventType.MIDDLE_DOWN;
+
+/** @type {Cesium.ScreenSpaceEventType} */
+Cesium.ScreenSpaceEventType.WHEEL;
+
+/** @type {Cesium.ScreenSpaceEventType} */
+Cesium.ScreenSpaceEventType.PINCH_START;
+
+
+
 /**
  * @constructor
  * @extends {Cesium.ImageryProvider}
