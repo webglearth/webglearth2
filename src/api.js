@@ -22,6 +22,7 @@ goog.exportSymbol('WebGLEarth.prototype.handleResize',
 
 
 goog.exportSymbol('WebGLEarth.prototype.setAltitude', function(alt) {
+  this.camera.animator.cancel();
   this.camera.setPos(undefined, undefined, alt);
 });
 
@@ -30,6 +31,7 @@ goog.exportSymbol('WebGLEarth.prototype.getAltitude', function() {
 });
 
 goog.exportSymbol('WebGLEarth.prototype.setPosition', function(lat, lng) {
+  this.camera.animator.cancel();
   this.camera.setPos(goog.math.toRadians(lat),
                      goog.math.toRadians(lng),
                      undefined);
@@ -52,11 +54,13 @@ goog.exportSymbol('WebGLEarth.prototype.getTilt', function() {
 
 
 goog.exportSymbol('WebGLEarth.prototype.setHeading', function(heading) {
+  this.camera.animator.cancel();
   this.camera.setHeading(goog.math.toRadians(heading));
 });
 
 
 goog.exportSymbol('WebGLEarth.prototype.setTilt', function(tilt) {
+  this.camera.animator.cancel();
   this.camera.setTilt(goog.math.toRadians(tilt));
 });
 
