@@ -54,6 +54,12 @@ Cesium.Camera.prototype.up;
 
 
 /**
+ * @return {Cesium.Cartesian3} .
+ */
+Cesium.Camera.prototype.getPositionWC = function() {};
+
+
+/**
  * @constructor
  */
 Cesium.CameraController = function() {};

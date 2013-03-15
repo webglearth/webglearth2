@@ -63,12 +63,13 @@ weapi.Camera.prototype.setPos = function(latitude, longitude, altitude) {
  */
 weapi.Camera.prototype.getHeading = function() {
   var camera = this.camera;
+  var pos = camera.getPositionWC(); //this forces the update
 
-  var normal = new Cesium.Cartesian3(-camera.position.y, camera.position.x, 0);
-  // = Cesium.Cartesian3.UNIT_Z.cross(camera.position).normalize();
+  var normal = new Cesium.Cartesian3(-pos.y, pos.x, 0);
+  // = Cesium.Cartesian3.UNIT_Z.cross(pos).normalize();
   var angle = (camera.right.angleBetween(normal.normalize()));
 
-  var orientation = Cesium.Cartesian3.cross(camera.position, camera.up).z;
+  var orientation = Cesium.Cartesian3.cross(pos, camera.up).z;
 
   return (orientation < 0 ? angle : -angle);
 };
@@ -79,8 +80,9 @@ weapi.Camera.prototype.getHeading = function() {
  */
 weapi.Camera.prototype.getTilt = function() {
   var camera = this.camera;
+  var pos = camera.getPositionWC(); //this forces the update
 
-  var angle = Math.acos(camera.up.dot(camera.position.normalize()));
+  var angle = Math.acos(camera.up.dot(pos.normalize()));
 
   return -angle + Math.PI / 2;
 };
@@ -92,42 +94,10 @@ weapi.Camera.prototype.getTilt = function() {
 weapi.Camera.prototype.setHeading = function(heading) {
   var heading_, tilt_ = this.getTilt();
 
-  // repeat correct the heading modification caused by tilting
-  //for (var i = 0; i < 1; ++i) {
   heading_ = heading - this.getHeading();
   this.camera.controller.lookDown(tilt_);
-  //heading_ = heading - this.getHeading();
   this.camera.controller.twistLeft(heading_);
   this.camera.controller.lookUp(tilt_);
-  //}
-
-  /*
-  //this.camera.controller.lookAt(this.camera.position,
-  //                              Cesium.Cartesian3.ZERO,
-  //                              Cesium.Cartesian3.UNIT_Z);
-
-  var rotation;
-  var direction = this.camera.direction;
-  var up = this.camera.up;
-  var right = this.camera.right;
-
-  rotation = Cesium.Matrix3.fromQuaternion(
-      Cesium.Quaternion.fromAxisAngle(direction, heading_));
-  //Cesium.Matrix3.multiplyByVector(rotation, direction, direction);
-  Cesium.Matrix3.multiplyByVector(rotation, up, up);
-  Cesium.Matrix3.multiplyByVector(rotation, right, right);
-
-  //this.camera.controller.twistLeft(heading);
-  window['console']['log'](this.camera.up);
-  //this.camera.controller.lookUp(tilt);
-
-  rotation = Cesium.Matrix3.fromQuaternion(
-      Cesium.Quaternion.fromAxisAngle(right, -tilt_));
-  Cesium.Matrix3.multiplyByVector(rotation, direction, direction);
-  Cesium.Matrix3.multiplyByVector(rotation, up, up);
-  //Cesium.Matrix3.multiplyByVector(rotation, right, right);
-
-  window['console']['log'](this.camera.up);*/
 };
 
 
@@ -153,6 +123,24 @@ weapi.Camera.prototype.setHeadingAndTilt = function(heading, tilt) {
   heading_ = heading - this.getHeading();
   this.camera.controller.lookDown(tilt_);
   this.camera.controller.twistLeft(heading_);
+  this.camera.controller.lookUp(tilt);
+};
+
+
+/**
+ * The most effective way to set complete camera position.
+ * @param {number} lat .
+ * @param {number} lng .
+ * @param {number} alt .
+ * @param {number} heading .
+ * @param {number} tilt .
+ */
+weapi.Camera.prototype.setPosHeadingAndTilt = function(lat, lng, alt,
+                                                       heading, tilt) {
+  var carto = new Cesium.Cartographic(lng, lat, alt);
+
+  this.camera.controller.setPositionCartographic(carto);
+  this.camera.controller.twistLeft(heading);
   this.camera.controller.lookUp(tilt);
 };
 

@@ -37,26 +37,25 @@ goog.exportSymbol('WebGLEarth.prototype.setPosition', function(lat, lon,
         window['console']['log']('Zoom is no longer supported.');
       }
 
-      this.camera.animator.cancel();
+      var cam = this.camera;
+      cam.animator.cancel();
 
       lat = goog.math.toRadians(lat);
       lon = goog.math.toRadians(lon);
-      var heading = goog.math.toRadians(opt_heading);
-      var tilt = goog.math.toRadians(opt_tilt);
-      var cam = this.camera;
+      var alt = opt_altitude || cam.getPos()[2];
+      var heading = goog.math.toRadians(opt_heading) || cam.getHeading();
+      var tilt = goog.math.toRadians(opt_tilt) || cam.getTilt();
 
       if (opt_targetPosition) {
         var newPos = weapi.Camera.calculatePositionForGivenTarget(
-            lat, lon, opt_altitude || cam.getPos()[2],
+            lat, lon, alt,
             heading, tilt);
 
         lat = newPos[0];
         lon = newPos[1];
       }
 
-      cam.setPos(lat, lon, opt_altitude || undefined);
-      if (goog.isDefAndNotNull(opt_heading)) cam.setHeading(heading);
-      if (goog.isDefAndNotNull(opt_tilt)) cam.setTilt(tilt);
+      cam.setPosHeadingAndTilt(lat, lon, alt, heading, tilt);
     });
 
 
