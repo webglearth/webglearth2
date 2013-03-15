@@ -120,6 +120,20 @@ goog.exportSymbol('WebGLEarth.prototype.flyToFitBounds', function(minlat,
       this.camera.animator.flyTo(center[0], center[1], altitude);
     });
 
+goog.exportSymbol('WebGLEarth.prototype.getTarget', function() {
+  var center = new Cesium.Cartesian2(this.canvas.width / 2,
+                                     this.canvas.height / 2);
+  var position = this.camera.camera.controller.pickEllipsoid(center);
+
+  if (goog.isDefAndNotNull(position)) {
+    var carto = this.camera.ellipsoid.cartesianToCartographic(position);
+    return [goog.math.toDegrees(carto.latitude),
+            goog.math.toDegrees(carto.longitude)];
+  } else {
+    return undefined;
+  }
+});
+
 
 ////////////////////////////////////////////////////////////////////////////////
 /* Various */
@@ -173,7 +187,7 @@ goog.exportSymbol('WebGLEarth.prototype.setCenter', function(coords) {
 
   cam.setPosHeadingAndTilt(goog.math.toRadians(coords[0]),
                            goog.math.toRadians(coords[1]),
-                           cam.getAltitude(), cam.getHeading(), 0);
+                           cam.getPos()[2], cam.getHeading(), 0);
 });
 
 goog.exportSymbol('WebGLEarth.prototype.getCenter', function() {

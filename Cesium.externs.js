@@ -109,6 +109,33 @@ Cesium.CameraController.prototype.lookUp = function(amount) {};
  */
 Cesium.CameraController.prototype.lookDown = function(amount) {};
 
+/**
+ * @param {!Cesium.Cartesian2} windowPos .
+ * @return {!Cesium.Cartesian3} .
+ */
+Cesium.CameraController.prototype.pickEllipsoid = function(windowPos) {};
+
+
+/**
+ * @constructor
+ * @param {number} x
+ * @param {number} y
+ */
+Cesium.Cartesian2 = function(x, y) {};
+
+
+/**
+ * @type {number}
+ */
+Cesium.Cartesian2.prototype.x;
+
+
+/**
+ * @type {number}
+ */
+Cesium.Cartesian2.prototype.y;
+
+
 
 /**
  * @constructor
