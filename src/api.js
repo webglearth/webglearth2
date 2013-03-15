@@ -17,9 +17,9 @@ goog.require('weapi.Map');
 //Constructor
 goog.exportSymbol('WebGLEarth', weapi.App);
 
-goog.exportSymbol('WebGLEarth.prototype.handleResize',
-                  weapi.App.prototype.handleResize);
 
+////////////////////////////////////////////////////////////////////////////////
+/* Camera manipulation */
 
 goog.exportSymbol('WebGLEarth.prototype.setAltitude', function(alt) {
   this.camera.animator.cancel();
@@ -29,7 +29,6 @@ goog.exportSymbol('WebGLEarth.prototype.setAltitude', function(alt) {
 goog.exportSymbol('WebGLEarth.prototype.getAltitude', function() {
   return this.camera.getPos()[2];
 });
-
 
 goog.exportSymbol('WebGLEarth.prototype.setPosition', function(lat, lon,
     opt_zoom, opt_altitude, opt_heading, opt_tilt, opt_targetPosition) {
@@ -58,34 +57,28 @@ goog.exportSymbol('WebGLEarth.prototype.setPosition', function(lat, lon,
       cam.setPosHeadingAndTilt(lat, lon, alt, heading, tilt);
     });
 
-
 goog.exportSymbol('WebGLEarth.prototype.getPosition', function() {
   var pos = this.camera.getPos();
   return [goog.math.toDegrees(pos[0]), goog.math.toDegrees(pos[1])];
 });
 
-
 goog.exportSymbol('WebGLEarth.prototype.getHeading', function() {
   return goog.math.toDegrees(this.camera.getHeading());
 });
 
-
 goog.exportSymbol('WebGLEarth.prototype.getTilt', function() {
   return goog.math.toDegrees(this.camera.getTilt());
 });
-
 
 goog.exportSymbol('WebGLEarth.prototype.setHeading', function(heading) {
   this.camera.animator.cancel();
   this.camera.setHeading(goog.math.toRadians(heading));
 });
 
-
 goog.exportSymbol('WebGLEarth.prototype.setTilt', function(tilt) {
   this.camera.animator.cancel();
   this.camera.setTilt(goog.math.toRadians(tilt));
 });
-
 
 goog.exportSymbol('WebGLEarth.prototype.flyTo', function(latitude, longitude,
                                                          opt_altitude,
@@ -99,7 +92,6 @@ goog.exportSymbol('WebGLEarth.prototype.flyTo', function(latitude, longitude,
           goog.math.toRadians(opt_tilt),
           opt_targetPosition);
     });
-
 
 goog.exportSymbol('WebGLEarth.prototype.flyToFitBounds', function(minlat,
                                                                   maxlat,
@@ -129,6 +121,12 @@ goog.exportSymbol('WebGLEarth.prototype.flyToFitBounds', function(minlat,
     });
 
 
+////////////////////////////////////////////////////////////////////////////////
+/* Various */
+
+goog.exportSymbol('WebGLEarth.prototype.handleResize',
+                  weapi.App.prototype.handleResize);
+
 goog.exportSymbol('WebGLEarth.prototype.saveScreenshot', function(name) {
   this.afterFrameOnce = goog.bind(function() {
     //var canvas_ = we.canvas2image.prepareCanvas(this.context.canvas,
@@ -149,6 +147,7 @@ goog.exportSymbol('WebGLEarth.prototype.getScreenshot', function(callback) {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+/* Maps */
 
 goog.exportSymbol('WebGLEarth.Maps', weapi.maps.MapType);
 goog.exportSymbol('WebGLEarth.prototype.initMap', weapi.maps.initMap);
@@ -164,3 +163,20 @@ goog.exportSymbol('WebGLEarth.Map.prototype.setOpacity',
                   weapi.Map.prototype.setOpacity);
 goog.exportSymbol('WebGLEarth.Map.prototype.getOpacity',
                   weapi.Map.prototype.getOpacity);
+
+
+////////////////////////////////////////////////////////////////////////////////
+/* DEPRECATED */
+goog.exportSymbol('WebGLEarth.prototype.setCenter', function(coords) {
+  var cam = this.camera;
+  cam.animator.cancel();
+
+  cam.setPosHeadingAndTilt(goog.math.toRadians(coords[0]),
+                           goog.math.toRadians(coords[1]),
+                           cam.getAltitude(), cam.getHeading(), 0);
+});
+
+goog.exportSymbol('WebGLEarth.prototype.getCenter', function() {
+  var pos = this.camera.getPos();
+  return [goog.math.toDegrees(pos[0]), goog.math.toDegrees(pos[1])];
+});
