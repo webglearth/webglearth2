@@ -30,12 +30,35 @@ goog.exportSymbol('WebGLEarth.prototype.getAltitude', function() {
   return this.camera.getPos()[2];
 });
 
-goog.exportSymbol('WebGLEarth.prototype.setPosition', function(lat, lng) {
-  this.camera.animator.cancel();
-  this.camera.setPos(goog.math.toRadians(lat),
-                     goog.math.toRadians(lng),
-                     undefined);
-});
+
+goog.exportSymbol('WebGLEarth.prototype.setPosition', function(lat, lon,
+    opt_zoom, opt_altitude, opt_heading, opt_tilt, opt_targetPosition) {
+      if (goog.isDefAndNotNull(opt_zoom)) {
+        window['console']['log']('Zoom is no longer supported.');
+      }
+
+      this.camera.animator.cancel();
+
+      lat = goog.math.toRadians(lat);
+      lon = goog.math.toRadians(lon);
+      var heading = goog.math.toRadians(opt_heading);
+      var tilt = goog.math.toRadians(opt_tilt);
+      var cam = this.camera;
+
+      if (opt_targetPosition) {
+        var newPos = weapi.Camera.calculatePositionForGivenTarget(
+            lat, lon, opt_altitude || cam.getPos()[2],
+            heading, tilt);
+
+        lat = newPos[0];
+        lon = newPos[1];
+      }
+
+      cam.setPos(lat, lon, opt_altitude || undefined);
+      if (goog.isDefAndNotNull(opt_heading)) cam.setHeading(heading);
+      if (goog.isDefAndNotNull(opt_tilt)) cam.setTilt(tilt);
+    });
+
 
 goog.exportSymbol('WebGLEarth.prototype.getPosition', function() {
   var pos = this.camera.getPos();

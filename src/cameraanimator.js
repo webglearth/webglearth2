@@ -68,14 +68,14 @@ weapi.CameraAnimator.prototype.flyTo = function(latitude, longitude,
                                                 opt_targetPosition) {
   var cam = this.camera_;
 
-  /*if (opt_targetPosition) {
-    var newPos = we.scene.Camera.calculatePositionForGivenTarget(
-        latitude, longitude, opt_altitude || cam.getAltitude(),
+  if (opt_targetPosition) {
+    var newPos = weapi.Camera.calculatePositionForGivenTarget(
+        latitude, longitude, opt_altitude || cam.getPos()[2],
         opt_heading, opt_tilt);
 
     latitude = newPos[0];
     longitude = newPos[1];
-  }*/
+  }
 
   if (goog.isDefAndNotNull(this.animation_)) {
     this.onEnd_();

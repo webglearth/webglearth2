@@ -193,3 +193,37 @@ weapi.Camera.prototype.calcDistanceToViewBounds = function(minlat, maxlat,
 
   return lookAtRange;
 };
+
+
+/**
+ * Calculates such coordinates of the camera, that when we place
+ * the camera there with specified heading and tilt the original
+ * [lat, lng] is in the center of the view and at specified distance.
+ * @param {number} lat Latitude in radians.
+ * @param {number} lng Longitude in radians.
+ * @param {number} alt Altitude in meters.
+ * @param {number=} opt_heading Heading  in radians (otherwise 0).
+ * @param {number=} opt_tilt Tilt  in radians (otherwise 0).
+ * @return {!Array.<number>} Array [lat, lng] in radians.
+ */
+weapi.Camera.calculatePositionForGivenTarget = function(lat, lng, alt,
+                                                        opt_heading,
+                                                        opt_tilt) {
+  alt /= weapi.utils.EARTH_RADIUS;
+  var innerAngle = Math.PI - (opt_tilt || 0);
+
+  // we have the following triangle:
+  //   side a=dist (desired distance of camera from the target)
+  //   side b=1 (Earth radius)
+  //   side c=1 + alt
+  //   angle gamma=innerAngle (between a and b)
+  // Using the law of sines we can calculate beta:
+  //   sin(beta) / b = sin(gamma) / c
+  var c = 1 + alt;
+  var beta = Math.asin(Math.sin(innerAngle) / c);
+  var alpha = Math.PI - beta - innerAngle;
+
+  var head = opt_heading || 0;
+
+  return [lat - Math.cos(head) * alpha, lng + Math.sin(head) * alpha];
+};
