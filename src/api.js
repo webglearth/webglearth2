@@ -14,6 +14,10 @@ goog.require('weapi.App');
 goog.require('weapi.Map');
 
 
+//TODO: miniglobe, markers+popups, events, polygons,
+//      pauseRendering, pixelcolor, mapopts, zoom
+
+
 //Constructor
 goog.exportSymbol('WebGLEarth', weapi.App);
 
@@ -22,8 +26,14 @@ goog.exportSymbol('WebGLEarth', weapi.App);
 /* Camera manipulation */
 
 goog.exportSymbol('WebGLEarth.prototype.setAltitude', function(alt) {
-  this.camera.animator.cancel();
-  this.camera.setPos(undefined, undefined, alt);
+  var cam = this.camera;
+  cam.animator.cancel();
+
+  var heading = cam.getHeading();
+  var tilt = cam.getTilt();
+
+  cam.setPos(undefined, undefined, alt);
+  cam.setHeadingAndTilt(heading, tilt);
 });
 
 goog.exportSymbol('WebGLEarth.prototype.getAltitude', function() {
