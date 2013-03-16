@@ -22,6 +22,8 @@
         zooming: true
       });
       
+      app.showMiniGlobe('../deploy/world512.jpg', 128);
+      
       mapB = app.initMap(WebGLEarth.Maps.BING, [{url : 'http://dev.virtualearth.net'}]);
       mapBo = app.initMap(WebGLEarth.Maps.BING, [{url : 'http://dev.virtualearth.net'}]);
       mapM = app.initMap(WebGLEarth.Maps.MAPQUEST);

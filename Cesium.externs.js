@@ -628,8 +628,49 @@ Cesium.Matrix3.multiplyByVector = function(matrix, cartesian, result) {};
 
 /**
  * @constructor
+ * @param {number=} opt_a00 .
+ * @param {number=} opt_a10 .
+ * @param {number=} opt_a20 .
+ * @param {number=} opt_a30 .
+ * @param {number=} opt_a01 .
+ * @param {number=} opt_a11 .
+ * @param {number=} opt_a21 .
+ * @param {number=} opt_a31 .
+ * @param {number=} opt_a02 .
+ * @param {number=} opt_a12 .
+ * @param {number=} opt_a22 .
+ * @param {number=} opt_a32 .
+ * @param {number=} opt_a03 .
+ * @param {number=} opt_a13 .
+ * @param {number=} opt_a23 .
+ * @param {number=} opt_a33 .
  */
-Cesium.Matrix4 = function() {};
+Cesium.Matrix4 = function(opt_a00, opt_a10, opt_a20, opt_a30,
+                          opt_a01, opt_a11, opt_a21, opt_a31,
+                          opt_a02, opt_a12, opt_a22, opt_a32,
+                          opt_a03, opt_a13, opt_a23, opt_a33) {};
+
+
+/**
+ * @param {Cesium.Cartesian3} translation .
+ * @param {Cesium.Matrix4=} opt_result .
+ * @return {Cesium.Matrix4} .
+ */
+Cesium.Matrix4.fromTranslation = function(translation, opt_result) {};
+
+
+/**
+ * @param {Cesium.Matrix4} matrix .
+ * @param {Cesium.Matrix4=} opt_result .
+ * @return {Cesium.Matrix4} .
+ */
+Cesium.Matrix4.prototype.multiply = function(matrix, opt_result) {};
+
+
+/**
+ * @return {Array.<number>} .
+ */
+Cesium.Matrix4.prototype.toArray = function() {};
 
 
 
@@ -681,6 +722,12 @@ Cesium.PerspectiveFrustrum.prototype.fovy;
  * @type {number}
  */
 Cesium.PerspectiveFrustrum.prototype.near;
+
+
+/**
+ * @return {!Cesium.Matrix4}
+ */
+Cesium.PerspectiveFrustrum.prototype.getProjectionMatrix = function() {};
 
 
 

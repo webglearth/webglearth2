@@ -12,9 +12,10 @@ goog.require('goog.math');
 goog.require('we.canvas2image');
 goog.require('weapi.App');
 goog.require('weapi.Map');
+goog.require('weapi.MiniGlobe');
 
 
-//TODO: miniglobe, markers+popups, events, polygons,
+//TODO: markers+popups, events, polygons, canvasProxy for screenshots
 //      pauseRendering, pixelcolor, mapopts, zoom
 
 
@@ -169,6 +170,14 @@ goog.exportSymbol('WebGLEarth.prototype.getScreenshot', function(callback) {
   }, this);
 });
 
+goog.exportSymbol('WebGLEarth.prototype.showMiniGlobe', function(src, size) {
+  if (goog.isDefAndNotNull(src)) {
+    this.miniglobe = new weapi.MiniGlobe(this, 32, 32, src);
+    this.miniglobe.setSize(size);
+  } else {
+    this.miniglobe = null;
+  }
+});
 
 ////////////////////////////////////////////////////////////////////////////////
 /* Maps */

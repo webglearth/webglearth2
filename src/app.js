@@ -25,16 +25,21 @@ weapi.App = function(divid, opt_options) {
   //TODO: map, zoom, proxyHost
   weapi.maps.initStatics();
 
+  var container = goog.dom.getElement(divid);
+  container.style.position = 'relative';
   this.canvas = goog.dom.createElement('canvas');
   this.canvas.style.width = '100%';
   this.canvas.style.height = '100%';
   this.canvas.oncontextmenu = function() {return false;};
-  goog.dom.getElement(divid).appendChild(this.canvas);
+  container.appendChild(this.canvas);
 
   /** @type {?Function} */
   this.afterFrameOnce = null;
 
   this.scene = new Cesium.Scene(this.canvas);
+
+  /** @type {?weapi.MiniGlobe} */
+  this.miniglobe = null;
 
   if (options['atmosphere'] !== false) {
     this.scene.skyAtmosphere = new Cesium.SkyAtmosphere();
@@ -81,6 +86,9 @@ weapi.App = function(divid, opt_options) {
     this.scene.initializeFrame();
     animate();
     this.scene.render();
+    if (goog.isDefAndNotNull(this.miniglobe)) {
+      this.miniglobe.draw();
+    }
     if (goog.isDefAndNotNull(this.afterFrameOnce)) {
       this.afterFrameOnce();
       this.afterFrameOnce = null;
