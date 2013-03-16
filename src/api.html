@@ -35,13 +35,27 @@
       setInterval(function() {
         document.getElementById('infodiv').innerHTML = app.getHeading() + ', ' + app.getTilt();
       }, 100);
+      
+      var londonM = app.initMarker(51.507222, -0.1275);
+      var denverM = app.initMarker(39.739167, -104.984722);
+      var cairoM = app.initMarker(30.058056, 31.228889);
+      
+      londonM.bindPopup('<h2>London</h2>This marker is already opened.', 250).openPopup();
+      denverM.bindPopup('<h2>Denver</h2>You can\'t see this marker without rotating the Earth.');
+
+      //cairoM.bindPopup('<h2>Cairo</h2>Click on me to close London\'s marker.').openPopup();
+
+      //var closeLondon = function(e) {
+      //  londonM.closePopup();
+      //};
+      //cairoM.on('click', closeLondon);
     }
   </script>
   
  </head>
  <body onload="javascript:startWE()">
    <div id="webglearthdiv" style="width:600px;height:400px;"></div>
-   <div id="infodiv" style="width:600px;height:20px;"></div>
+   <div id="infodiv" style="height:20px;"></div>
    <input type="button" value="Zoom to level 9.1" onclick="javascript:app.setZoom(9.1);" disabled/>
    <input type="button" value="What's current zoom level?" onclick="javascript:alert(app.getZoom());" disabled/>
    <input type="button" value="Set altitude to 5000km" onclick="javascript:app.setAltitude(5000000);"/>

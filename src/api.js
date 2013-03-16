@@ -179,6 +179,7 @@ goog.exportSymbol('WebGLEarth.prototype.showMiniGlobe', function(src, size) {
   }
 });
 
+
 ////////////////////////////////////////////////////////////////////////////////
 /* Maps */
 
@@ -197,6 +198,36 @@ goog.exportSymbol('WebGLEarth.Map.prototype.setOpacity',
 goog.exportSymbol('WebGLEarth.Map.prototype.getOpacity',
                   weapi.Map.prototype.getOpacity);
 
+
+////////////////////////////////////////////////////////////////////////////////
+/* Markers */
+
+goog.exportSymbol('WebGLEarth.Marker', weapi.markers.PrettyMarker);
+goog.exportSymbol('WebGLEarth.Marker.prototype.setPosition', function(lat,
+                                                                      lon) {
+      this.lat = goog.math.toRadians(lat);
+      this.lon = goog.math.toRadians(lon);
+    });
+
+goog.exportSymbol('WebGLEarth.Marker.prototype.bindPopup', function(content,
+                                                                    maxWidth,
+                                                                    closeBtn) {
+      this.attachPopup(new weapi.markers.Popup(content, maxWidth, closeBtn));
+      return this;
+    });
+
+goog.exportSymbol('WebGLEarth.Marker.prototype.openPopup', function() {
+  this.showPopup(true);
+});
+
+goog.exportSymbol('WebGLEarth.Marker.prototype.closePopup', function() {
+  this.showPopup(false);
+});
+
+goog.exportSymbol('WebGLEarth.prototype.initMarker',
+                  weapi.App.prototype.initMarker);
+goog.exportSymbol('WebGLEarth.prototype.removeMarker',
+                  weapi.App.prototype.removeMarker);
 
 ////////////////////////////////////////////////////////////////////////////////
 /* DEPRECATED */

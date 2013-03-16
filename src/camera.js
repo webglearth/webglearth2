@@ -16,7 +16,7 @@ goog.require('weapi.utils');
 
 /**
  *
- * @param {Cesium.Camera} camera .
+ * @param {!Cesium.Camera} camera .
  * @param {Cesium.Ellipsoid} ellipsoid .
  * @constructor
  */

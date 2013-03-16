@@ -11,6 +11,8 @@ goog.require('goog.dom');
 
 goog.require('weapi.Camera');
 goog.require('weapi.maps');
+goog.require('weapi.markers.MarkerManager');
+goog.require('weapi.markers.PrettyMarker');
 
 
 
@@ -27,7 +29,9 @@ weapi.App = function(divid, opt_options) {
 
   var container = goog.dom.getElement(divid);
   container.style.position = 'relative';
-  this.canvas = goog.dom.createElement('canvas');
+  container.style.overflow = 'hidden';
+  this.canvas = /** @type {!HTMLCanvasElement} */
+      (goog.dom.createElement('canvas'));
   this.canvas.style.width = '100%';
   this.canvas.style.height = '100%';
   this.canvas.oncontextmenu = function() {return false;};
@@ -77,18 +81,19 @@ weapi.App = function(divid, opt_options) {
 
   primitives.setCentralBody(this.centralBody);
 
-  function animate() {
-    // INSERT CODE HERE to update primitives based on
-    // changes to animation time, camera parameters, etc.
-  }
+  /**
+   * @type {!weapi.markers.MarkerManager}
+   */
+  this.markerManager = new weapi.markers.MarkerManager(this, container);
 
   var tick = goog.bind(function() {
     this.scene.initializeFrame();
-    animate();
     this.scene.render();
     if (goog.isDefAndNotNull(this.miniglobe)) {
       this.miniglobe.draw();
     }
+    this.markerManager.updateMarkers();
+
     if (goog.isDefAndNotNull(this.afterFrameOnce)) {
       this.afterFrameOnce();
       this.afterFrameOnce = null;
@@ -178,4 +183,32 @@ weapi.App.prototype.setOverlayMap = function(map) {
   if (goog.isDefAndNotNull(map)) {
     layers.add(map.layer);
   }
+};
+
+
+/**
+ * @param {number} lat Latitude.
+ * @param {number} lon Longitude.
+ * @param {string=} opt_iconUrl URL of the icon to use instead of the default.
+ * @param {number=} opt_width Width of the icon.
+ * @param {number=} opt_height Height of the icon.
+ * @return {!weapi.markers.PrettyMarker} New marker.
+ */
+weapi.App.prototype.initMarker = function(lat, lon,
+                                          opt_iconUrl, opt_width, opt_height) {
+  var mark = new weapi.markers.PrettyMarker(goog.math.toRadians(lat),
+                                            goog.math.toRadians(lon),
+                                            opt_iconUrl, opt_width, opt_height);
+
+  this.markerManager.addMarker(null, mark);
+
+  return mark;
+};
+
+
+/**
+ * @param {!weapi.markers.PrettyMarker} marker .
+ */
+weapi.App.prototype.removeMarker = function(marker) {
+  this.markerManager.removeMarkerEx(marker);
 };

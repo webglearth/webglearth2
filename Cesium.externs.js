@@ -60,6 +60,21 @@ Cesium.Camera.prototype.getPositionWC = function() {};
 
 
 /**
+ * @param {Cesium.Cartesian4} cartesian .
+ * @param {Cesium.Cartesian4=} opt_result .
+ * @return {Cesium.Cartesian4} .
+ */
+Cesium.Camera.prototype.worldToCameraCoordinates = function(cartesian, opt_result) {};
+
+
+/**
+ * @return {!Cesium.Matrix4}
+ */
+Cesium.Camera.prototype.getViewMatrix = function() {};
+
+
+
+/**
  * @constructor
  */
 Cesium.CameraController = function() {};
@@ -147,25 +162,25 @@ Cesium.Cartesian3 = function(x, y, z) {};
 
 
 /**
- * @type {Cesium.Cartesian3}
+ * @type {!Cesium.Cartesian3}
  */
 Cesium.Cartesian3.UNIT_X;
 
 
 /**
- * @type {Cesium.Cartesian3}
+ * @type {!Cesium.Cartesian3}
  */
 Cesium.Cartesian3.UNIT_Y;
 
 
 /**
- * @type {Cesium.Cartesian3}
+ * @type {!Cesium.Cartesian3}
  */
 Cesium.Cartesian3.UNIT_Z;
 
 
 /**
- * @type {Cesium.Cartesian3}
+ * @type {!Cesium.Cartesian3}
  */
 Cesium.Cartesian3.ZERO;
 
@@ -189,16 +204,38 @@ Cesium.Cartesian3.prototype.z;
 
 
 /**
+ * @return {number}
+ */
+Cesium.Cartesian3.prototype.magnitude = function() {};
+
+
+/**
+ * @param {Cesium.Cartesian3} right
+ * @param {Cesium.Cartesian3=} opt_result
+ * @return {!Cesium.Cartesian3}
+ */
+Cesium.Cartesian3.prototype.add = function(right, opt_result) {};
+
+
+/**
+ * @param {Cesium.Cartesian3} right
+ * @param {Cesium.Cartesian3=} opt_result
+ * @return {!Cesium.Cartesian3}
+ */
+Cesium.Cartesian3.prototype.subtract = function(right, opt_result) {};
+
+
+/**
  * @param {Cesium.Cartesian3} cartesian
  * @param {Cesium.Cartesian3} result
- * @return {Cesium.Cartesian3}
+ * @return {!Cesium.Cartesian3}
  */
 Cesium.Cartesian3.normalize = function(cartesian, result) {};
 
 
 /**
  * @param {Cesium.Cartesian3=} opt_result
- * @return {Cesium.Cartesian3}
+ * @return {!Cesium.Cartesian3}
  */
 Cesium.Cartesian3.prototype.normalize = function(opt_result) {};
 
@@ -206,14 +243,14 @@ Cesium.Cartesian3.prototype.normalize = function(opt_result) {};
 /**
  * @param {Cesium.Cartesian3} cartesian
  * @param {Cesium.Cartesian3} result
- * @return {Cesium.Cartesian3}
+ * @return {!Cesium.Cartesian3}
  */
 Cesium.Cartesian3.negate = function(cartesian, result) {};
 
 
 /**
  * @param {Cesium.Cartesian3=} opt_result
- * @return {Cesium.Cartesian3}
+ * @return {!Cesium.Cartesian3}
  */
 Cesium.Cartesian3.prototype.negate = function(opt_result) {};
 
@@ -222,7 +259,7 @@ Cesium.Cartesian3.prototype.negate = function(opt_result) {};
  * @param {Cesium.Cartesian3} left
  * @param {Cesium.Cartesian3} right
  * @param {Cesium.Cartesian3=} opt_result
- * @return {Cesium.Cartesian3}
+ * @return {!Cesium.Cartesian3}
  */
 Cesium.Cartesian3.cross = function(left, right, opt_result) {};
 
@@ -230,7 +267,7 @@ Cesium.Cartesian3.cross = function(left, right, opt_result) {};
 /**
  * @param {Cesium.Cartesian3} right
  * @param {Cesium.Cartesian3=} opt_result
- * @return {Cesium.Cartesian3}
+ * @return {!Cesium.Cartesian3}
  */
 Cesium.Cartesian3.prototype.cross = function(right, opt_result) {};
 
@@ -265,6 +302,40 @@ Cesium.Cartesian3.angleBetween = function(left, right) {};
  * @return {number}
  */
 Cesium.Cartesian3.prototype.angleBetween = function(right, opt_result) {};
+
+
+
+/**
+ * @constructor
+ * @param {number} x
+ * @param {number} y
+ * @param {number} z
+ * @param {number} w
+ */
+Cesium.Cartesian4 = function(x, y, z, w) {};
+
+
+/**
+ * @type {number}
+ */
+Cesium.Cartesian4.prototype.x;
+
+
+/**
+ * @type {number}
+ */
+Cesium.Cartesian4.prototype.y;
+
+
+/**
+ * @type {number}
+ */
+Cesium.Cartesian4.prototype.z;
+
+/**
+ * @type {number}
+ */
+Cesium.Cartesian4.prototype.w;
 
 
 
@@ -526,10 +597,10 @@ Cesium.Ellipsoid.WGS84;
 
 /**
  * @param {Cesium.Cartographic} cartographic
- * @param {Cesium.Cartesian3} result
- * @return {Cesium.Cartesian3}
+ * @param {Cesium.Cartesian3=} opt_result
+ * @return {!Cesium.Cartesian3}
  */
-Cesium.Ellipsoid.prototype.cartographicToCartesian = function(cartographic, result) {};
+Cesium.Ellipsoid.prototype.cartographicToCartesian = function(cartographic, opt_result) {};
 
 
 /**
@@ -540,6 +611,12 @@ Cesium.Ellipsoid.prototype.cartographicToCartesian = function(cartographic, resu
 Cesium.Ellipsoid.prototype.cartesianToCartographic = function(cartesian, result) {};
 
 
+/**
+ * @param {!Cesium.Cartesian3} position .
+ * @param {Cesium.Cartesian3=} opt_result .
+ * @return {!Cesium.Cartesian3}
+ */
+Cesium.Ellipsoid.prototype.transformPositionToScaledSpace = function(position, opt_result) {};
 
 /**
  * @constructor
@@ -668,6 +745,22 @@ Cesium.Matrix4.prototype.multiply = function(matrix, opt_result) {};
 
 
 /**
+ * @param {Cesium.Cartesian3} point .
+ * @param {Cesium.Cartesian4=} opt_result .
+ * @return {Cesium.Cartesian4} .
+ */
+Cesium.Matrix4.prototype.multiplyByPoint = function(point, opt_result) {};
+
+
+/**
+ * @param {Cesium.Cartesian4} point .
+ * @param {Cesium.Cartesian4=} opt_result .
+ * @return {Cesium.Cartesian4} .
+ */
+Cesium.Matrix4.prototype.multiplyByVector = function(point, opt_result) {};
+
+
+/**
  * @return {Array.<number>} .
  */
 Cesium.Matrix4.prototype.toArray = function() {};
@@ -753,7 +846,7 @@ Cesium.Scene = function(canvas) {};
 
 
 /**
- * @return {Cesium.Camera}
+ * @return {!Cesium.Camera}
  */
 Cesium.Scene.prototype.getCamera = function() {};
 
@@ -780,6 +873,12 @@ Cesium.Scene.prototype.getPrimitives = function() {};
  * @return {Cesium.ScreenSpaceCameraController}
  */
 Cesium.Scene.prototype.getScreenSpaceCameraController = function() {};
+
+
+/**
+ * @return {!Cesium.UniformState}
+ */
+Cesium.Scene.prototype.getUniformState = function() {};
 
 
 /**
@@ -844,6 +943,20 @@ Cesium.SceneMode.SCENE2D;
  * @type {Cesium.SceneMode}
  */
 Cesium.SceneMode.SCENE3D;
+
+
+
+/**
+ * @constructor
+ */
+Cesium.UniformState = function() {};
+
+
+/**
+ * @return {!Cesium.Matrix4}
+ */
+Cesium.UniformState.prototype.getModelViewProjection = function() {};
+
 
 
 /**
