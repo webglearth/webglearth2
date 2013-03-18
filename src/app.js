@@ -48,14 +48,15 @@ weapi.App = function(divid, opt_options) {
   if (options['atmosphere'] !== false) {
     this.scene.skyAtmosphere = new Cesium.SkyAtmosphere();
 
-    var skyBoxBaseUrl = '../Cesium/Source/Assets/Textures/SkyBox/tycho2t3_80';
+    //TODO: solve resources
+    var skyBoxBaseUrl = (goog.DEBUG ? '../deploy/' : '') + 'SkyBox/';
     this.scene.skyBox = new Cesium.SkyBox({
-      'positiveX' : skyBoxBaseUrl + '_px.jpg',
-      'negativeX' : skyBoxBaseUrl + '_mx.jpg',
-      'positiveY' : skyBoxBaseUrl + '_py.jpg',
-      'negativeY' : skyBoxBaseUrl + '_my.jpg',
-      'positiveZ' : skyBoxBaseUrl + '_pz.jpg',
-      'negativeZ' : skyBoxBaseUrl + '_mz.jpg'
+      'positiveX' : skyBoxBaseUrl + 'px.jpg',
+      'negativeX' : skyBoxBaseUrl + 'mx.jpg',
+      'positiveY' : skyBoxBaseUrl + 'py.jpg',
+      'negativeY' : skyBoxBaseUrl + 'my.jpg',
+      'positiveZ' : skyBoxBaseUrl + 'pz.jpg',
+      'negativeZ' : skyBoxBaseUrl + 'mz.jpg'
     });
   } else {
     //TODO: transparent color ?

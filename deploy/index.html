@@ -4,10 +4,9 @@
  <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="robots" content="index, all" />
-  <title>WebGL Earth API - Hello World</title>
-
-  <script src="../Cesium/Build/Cesium/Cesium.js"></script>
-  <script src="http://192.168.1.13:9810/compile?id=api-debug"></script>
+  <title>WebGL Earth API - Demo</title>
+  
+  <script src="index.js"></script>
 
   <script>
     var app;
@@ -30,7 +29,7 @@
 
       mapBo = app.initMap(WebGLEarth.Maps.BING, [{url : 'http://dev.virtualearth.net'}]);
       mapMo = app.initMap(WebGLEarth.Maps.MAPQUEST);
-      
+
       //make the overlays transparent
       mapBo.setOpacity(0.5);
       mapMo.setOpacity(0.5);
@@ -38,7 +37,7 @@
       setInterval(function() {
         document.getElementById('infodiv').innerHTML = app.getHeading() + ', ' + app.getTilt();
       }, 100);
-      
+    }
     
     function addSomeMarkers() {
       var londonM = app.initMarker(51.507222, -0.1275);

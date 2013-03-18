@@ -914,6 +914,12 @@ Cesium.Scene.prototype.scene2D;
 Cesium.Scene.prototype.skyBox;
 
 
+/**
+ * @type {Cesium.SkyAtmosphere}
+ */
+Cesium.Scene.prototype.skyAtmosphere;
+
+
 
 /**
  * @constructor
