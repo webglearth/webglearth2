@@ -75,6 +75,63 @@ Cesium.Camera.prototype.getViewMatrix = function() {};
 
 
 /**
+ * @param {Object} canvas .
+ * @param {Object} type .
+ * @param {Object} mod .
+ * @constructor
+ */
+Cesium.CameraEventAggregator = function(canvas, type, mod) {};
+
+
+/**
+ * @return {boolean} .
+ */
+Cesium.CameraEventAggregator.prototype.isMoving = function() {};
+
+
+/**
+ * @return {Object} .
+ */
+Cesium.CameraEventAggregator.prototype.getMovement = function() {};
+
+
+/**
+ * @return {Object} .
+ */
+Cesium.CameraEventAggregator.prototype.getLastMovement = function() {};
+
+
+/**
+ * @return {boolean} .
+ */
+Cesium.CameraEventAggregator.prototype.isButtonDown = function() {};
+
+
+/**
+ * @return {number} .
+ */
+Cesium.CameraEventAggregator.prototype.getButtonPressTime = function() {};
+
+
+/**
+ * @return {number} .
+ */
+Cesium.CameraEventAggregator.prototype.getButtonReleaseTime = function() {};
+
+
+/**
+ * @return {boolean} .
+ */
+Cesium.CameraEventAggregator.prototype.isDestroyed = function() {}
+
+
+/**
+ */
+Cesium.CameraEventAggregator.prototype.destroy = function() {};
+
+
+
+/**
  * @constructor
  */
 Cesium.CameraController = function() {};

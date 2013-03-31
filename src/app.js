@@ -10,6 +10,7 @@ goog.provide('weapi.App');
 goog.require('goog.dom');
 
 goog.require('weapi.Camera');
+goog.require('weapi.DoubleEventAggr');
 goog.require('weapi.maps');
 goog.require('weapi.markers.MarkerManager');
 goog.require('weapi.markers.PrettyMarker');
@@ -141,6 +142,16 @@ weapi.App = function(divid, opt_options) {
   if (options['panning'] === false) sscc.enableRotate = false;
   if (options['tilting'] === false) sscc.enableTilt = false; //TODO: fix axis
   if (options['zooming'] === false) sscc.enableZoom = false;
+
+  sscc['_rotateHandler'] = new weapi.DoubleEventAggr(sscc['_rotateHandler'],
+                                                     sscc['_lookHandler'],
+                                                     true, false);
+  sscc['_lookHandler'] = new Cesium.CameraEventAggregator(this.canvas,
+      Cesium['CameraEventType']['LEFT_DRAG'],
+      Cesium['KeyboardEventModifier']['ALT']);
+
+  //sscc['_cameraController']['lookUp'] =
+  //    function(a) {sscc['_cameraController']['lookDown'](a);};
 };
 
 
