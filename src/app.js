@@ -199,6 +199,72 @@ weapi.App.prototype.setOverlayMap = function(map) {
 
 
 /**
+ * Register event listener.
+ * @param {string} type Event type.
+ * @param {function(Event)} listener Function to call back.
+ * @return {number?} listenKey.
+ */
+weapi.App.prototype.on = function(type, listener) {
+  /**
+   * Wraps the listener function with a wrapper function
+   * that adds some extended event info.
+   * @param {!weapi.App} app .
+   * @param {function(Event)} listener Original listener function.
+   * @return {function(Event)} Wrapper listener.
+   * @private
+   */
+  var wrap = function(app, listener) {
+    return function(e) {
+      e.target = app;
+      e['latitude'] = null;
+      e['longitude'] = null;
+
+      var cartesian = app.camera.camera.controller.
+          pickEllipsoid(new Cesium.Cartesian2(e.offsetX, e.offsetY));
+      if (goog.isDefAndNotNull(cartesian)) {
+        var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
+
+        e['latitude'] = goog.math.toDegrees(carto.latitude);
+        e['longitude'] = goog.math.toDegrees(carto.longitude);
+        e['altitude'] = carto.height;
+      }
+
+      listener(e);
+    };
+  };
+  var key = goog.events.listen(this.canvas, type, wrap(this, listener));
+
+  listener[goog.getUid(this) + '___eventKey_' + type] = key;
+
+  return key;
+};
+
+
+/**
+ * Unregister event listener.
+ * @param {string|number|null} typeOrKey Event type or listenKey.
+ * @param {function(Event)} listener Function that was used to register.
+ */
+weapi.App.prototype.off = function(typeOrKey, listener) {
+  if (goog.isDefAndNotNull(listener)) {
+    var key = listener[goog.getUid(this) + '___eventKey_' + typeOrKey];
+    if (goog.isDefAndNotNull(key)) goog.events.unlistenByKey(key);
+  } else if (!goog.isString(typeOrKey)) {
+    goog.events.unlistenByKey(typeOrKey);
+  }
+};
+
+
+/**
+ * Unregister all event listeners of certain type.
+ * @param {string} type Event type.
+ */
+weapi.App.prototype.offAll = function(type) {
+  goog.events.removeAll(this.canvas, type);
+};
+
+
+/**
  * @param {number} lat Latitude.
  * @param {number} lon Longitude.
  * @param {string=} opt_iconUrl URL of the icon to use instead of the default.

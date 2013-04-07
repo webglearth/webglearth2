@@ -15,7 +15,7 @@ goog.require('weapi.Map');
 goog.require('weapi.MiniGlobe');
 
 
-//TODO: markers+popups, events, polygons, canvasProxy for screenshots
+//TODO: polygons, canvasProxy for screenshots
 //      pauseRendering, pixelcolor, mapopts, zoom
 
 
@@ -228,6 +228,33 @@ goog.exportSymbol('WebGLEarth.prototype.initMarker',
                   weapi.App.prototype.initMarker);
 goog.exportSymbol('WebGLEarth.prototype.removeMarker',
                   weapi.App.prototype.removeMarker);
+
+goog.exportSymbol('WebGLEarth.Marker.prototype.on', function(type, listener) {
+  /**
+   * Wraps the listener function with a wrapper function
+   * that adds some extended event info.
+   * @param {!weapi.markers.AbstractMarker} marker .
+   * @param {function(Event)} listener Original listener function.
+   * @return {function(Event)} Wrapper listener.
+   */
+  var wrap = function(marker, listener) {
+    return function(e) {
+      e.target = marker;
+      e['latitude'] = goog.math.toDegrees(marker.lat);
+      e['longitude'] = goog.math.toDegrees(marker.lon);
+
+      listener(e);
+    };
+  };
+  var key = goog.events.listen(this.element, type, wrap(this, listener));
+  listener[goog.getUid(this) + '___eventKey_' + type] = key;
+
+  return key;
+});
+goog.exportSymbol('WebGLEarth.Marker.prototype.off', weapi.App.prototype.off);
+goog.exportSymbol('WebGLEarth.Marker.prototype.offAll', function(type) {
+  goog.events.removeAll(this.element, type);
+});
 
 ////////////////////////////////////////////////////////////////////////////////
 /* DEPRECATED */

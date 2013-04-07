@@ -662,10 +662,10 @@ Cesium.Ellipsoid.prototype.cartographicToCartesian = function(cartographic, opt_
 
 /**
  * @param {Cesium.Cartesian3} cartesian
- * @param {Cesium.Cartographic} result
+ * @param {Cesium.Cartographic=} opt_result
  * @return {Cesium.Cartographic}
  */
-Cesium.Ellipsoid.prototype.cartesianToCartographic = function(cartesian, result) {};
+Cesium.Ellipsoid.prototype.cartesianToCartographic = function(cartesian, opt_result) {};
 
 
 /**
