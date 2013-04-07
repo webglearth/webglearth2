@@ -6,11 +6,13 @@
  */
 
 goog.provide('weapi');
+goog.provide('weapi.exports.Polygon');
 
 goog.require('goog.math');
 
 goog.require('we.canvas2image');
 goog.require('weapi.App');
+goog.require('weapi.EditablePolygon');
 goog.require('weapi.Map');
 goog.require('weapi.MiniGlobe');
 
@@ -255,6 +257,84 @@ goog.exportSymbol('WebGLEarth.Marker.prototype.off', weapi.App.prototype.off);
 goog.exportSymbol('WebGLEarth.Marker.prototype.offAll', function(type) {
   goog.events.removeAll(this.element, type);
 });
+
+
+////////////////////////////////////////////////////////////////////////////////
+/* Polygons */
+
+
+
+/**
+ * @param {!weapi.App} app .
+ * @constructor
+ * @extends {weapi.EditablePolygon}
+ */
+weapi.exports.Polygon = function(app) {
+  goog.base(this, app, app.markerManager);
+};
+goog.inherits(weapi.exports.Polygon, weapi.EditablePolygon);
+
+goog.exportSymbol('WebGLEarth.Polygon', weapi.exports.Polygon);
+
+goog.exportSymbol('WebGLEarth.Polygon.prototype.destroy',
+                  weapi.exports.Polygon.prototype.destroy);
+
+goog.exportSymbol('WebGLEarth.Polygon.prototype.enableClickToAdd',
+                  weapi.exports.Polygon.prototype.enableClickToAdd);
+goog.exportSymbol('WebGLEarth.Polygon.prototype.disableClickToAdd',
+                  weapi.exports.Polygon.prototype.disableClickToAdd);
+
+goog.exportSymbol('WebGLEarth.Polygon.prototype.setFillColor',
+                  weapi.exports.Polygon.prototype.setFillColor);
+goog.exportSymbol('WebGLEarth.Polygon.prototype.setStrokeColor',
+                  weapi.exports.Polygon.prototype.setStrokeColor);
+
+goog.exportSymbol('WebGLEarth.Polygon.prototype.setOnChange',
+                  weapi.exports.Polygon.prototype.setOnChange);
+goog.exportSymbol('WebGLEarth.Polygon.prototype.isValid',
+                  weapi.exports.Polygon.prototype.isValid);
+goog.exportSymbol('WebGLEarth.Polygon.prototype.getRoughArea',
+                  weapi.exports.Polygon.prototype.getRoughArea);
+goog.exportSymbol('WebGLEarth.Polygon.prototype.intersects',
+                  weapi.exports.Polygon.prototype.intersects);
+
+goog.exportSymbol('WebGLEarth.Polygon.prototype.setIcon',
+                  weapi.exports.Polygon.prototype.setIcon);
+goog.exportSymbol('WebGLEarth.Polygon.prototype.showDraggers',
+                  weapi.exports.Polygon.prototype.showDraggers);
+
+goog.exportSymbol('WebGLEarth.Polygon.prototype.addPoint',
+                  weapi.exports.Polygon.prototype.addPoint);
+goog.exportSymbol('WebGLEarth.Polygon.prototype.movePoint',
+                  weapi.exports.Polygon.prototype.movePoint);
+goog.exportSymbol('WebGLEarth.Polygon.prototype.removePoint',
+                  weapi.exports.Polygon.prototype.removePoint);
+
+goog.exportSymbol('WebGLEarth.Polygon.prototype.getPoints',
+                  weapi.exports.Polygon.prototype.getPoints);
+goog.exportSymbol('WebGLEarth.Polygon.prototype.getCentroid',
+                  weapi.exports.Polygon.prototype.getCentroid);
+
+goog.exportSymbol('WebGLEarth.Polygon.prototype.onClick',
+                  function(callback) {
+                    goog.events.listen(this.app.canvas,
+                        goog.events.EventType.CLICK, function(e) {
+                      var cartesian = this.app.camera.camera.controller.
+                          pickEllipsoid(
+                          new Cesium.Cartesian2(e.offsetX, e.offsetY));
+                      if (goog.isDefAndNotNull(cartesian)) {
+                        var carto = Cesium.Ellipsoid.WGS84.
+                            cartesianToCartographic(cartesian);
+                        if (this.isPointIn(
+                            goog.math.toDegrees(carto.latitude),
+                            goog.math.toDegrees(carto.longitude)) ||
+                                this.icon_.isPointIn(e.offsetX, e.offsetY)) {
+                          callback(this);
+                        }
+                      }
+                    }, false, this);
+                  });
+
 
 ////////////////////////////////////////////////////////////////////////////////
 /* DEPRECATED */

@@ -398,9 +398,9 @@ Cesium.Cartesian4.prototype.w;
 
 /**
  * @constructor
- * @param {number} longitude
- * @param {number} latitude
- * @param {number} height
+ * @param {number=} longitude
+ * @param {number=} latitude
+ * @param {number=} height
  */
 Cesium.Cartographic = function(longitude, latitude, height) {};
 
@@ -421,6 +421,14 @@ Cesium.Cartographic.prototype.latitude;
  * @type {number}
  */
 Cesium.Cartographic.prototype.height;
+
+
+/**
+ * @param {number} lat .
+ * @param {number} lng .
+ * @return {!Cesium.Cartographic}
+ */
+Cesium.Cartographic.fromDegrees = function(lat, lng) {};
 
 
 
@@ -447,6 +455,64 @@ Cesium.CentralBody.prototype.getEllipsoid = function() {};
 /**
  * @constructor
  */
+Cesium.Polygon = function() {};
+
+
+/**
+ * @param {!Array.<!Cesium.Cartesian3>} positions .
+ */
+Cesium.Polygon.prototype.setPositions = function(positions) {};
+
+
+/**
+ * @type {boolean} .
+ */
+Cesium.Polygon.prototype.show;
+
+
+
+/**
+ * @constructor
+ */
+Cesium.PolylineCollection = function() {};
+
+
+/**
+ * @param {Object=} opt_opts .
+ * @return {!Cesium.Polyline} .
+ */
+Cesium.PolylineCollection.prototype.add = function(opt_opts) {};
+
+
+
+/**
+ * @constructor
+ */
+Cesium.Polyline = function() {};
+
+
+/**
+ * @param {!Array.<!Cesium.Cartesian3>} positions .
+ */
+Cesium.Polyline.prototype.setPositions = function(positions) {};
+
+
+/**
+ * @param {!Cesium.Color} color .
+ */
+Cesium.Polyline.prototype.setColor = function(color) {};
+
+
+/**
+ * @param {number} width .
+ */
+Cesium.Polyline.prototype.setWidth = function(width) {};
+
+
+
+/**
+ * @constructor
+ */
 Cesium.CompositePrimitive = function() {};
 
 
@@ -460,6 +526,18 @@ Cesium.CompositePrimitive.prototype.getCentralBody = function() {};
  * @param {Cesium.CentralBody} centralBody
  */
 Cesium.CompositePrimitive.prototype.setCentralBody = function(centralBody) {};
+
+
+/**
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection} poly .
+ */
+Cesium.CompositePrimitive.prototype.add = function(poly) {};
+
+
+/**
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection} poly .
+ */
+Cesium.CompositePrimitive.prototype.remove = function(poly) {};
 
 
 
@@ -658,6 +736,14 @@ Cesium.Ellipsoid.WGS84;
  * @return {!Cesium.Cartesian3}
  */
 Cesium.Ellipsoid.prototype.cartographicToCartesian = function(cartographic, opt_result) {};
+
+
+/**
+ * @param {!Array.<Cesium.Cartographic>} cartographic
+ * @param {!Array.<Cesium.Cartesian3>=} opt_result
+ * @return {!Array.<Cesium.Cartesian3>}
+ */
+Cesium.Ellipsoid.prototype.cartographicArrayToCartesianArray = function(cartographic, opt_result) {};
 
 
 /**
