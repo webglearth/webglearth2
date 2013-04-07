@@ -178,20 +178,21 @@ if (BlobBuilder_ && (saveAs_ || saveBlob_)) {
   };
 }
 
-/*
+
+/**
  *
- * param {!HTMLCanvasElement} canvas .
- * param {we.ui.markers.MarkerManager=} opt_markerMgr .
- * param {we.scene.MiniGlobe=} opt_miniGlobe .
- * return {!HTMLCanvasElement} Canvas with possibly additional content.
- /
+ * @param {!HTMLCanvasElement} canvas .
+ * @param {weapi.markers.MarkerManager=} opt_markerMgr .
+ * @param {weapi.MiniGlobe=} opt_miniGlobe .
+ * @return {!HTMLCanvasElement} Canvas with possibly additional content.
+ */
 we.canvas2image.prepareCanvas = function(canvas, opt_markerMgr, opt_miniGlobe) {
   var canvas_ = canvas;
   if (opt_markerMgr || opt_miniGlobe) {
     canvas_ = goog.dom.createElement('canvas');
     canvas_.width = canvas.width;
     canvas_.height = canvas.height;
-    var ctx = /** type {!CanvasRenderingContext2D} /
+    var ctx = /** @type {!CanvasRenderingContext2D} */
         (canvas_.getContext('2d'));
     ctx.drawImage(canvas, 0, 0);
     if (opt_markerMgr) {
@@ -203,8 +204,8 @@ we.canvas2image.prepareCanvas = function(canvas, opt_markerMgr, opt_miniGlobe) {
       opt_miniGlobe.drawToCanvas2D(ctx);
     }
   }
-  return /** type {!HTMLCanvasElement} /(canvas_);
-};*/
+  return /** @type {!HTMLCanvasElement} */(canvas_);
+};
 
 
 /**

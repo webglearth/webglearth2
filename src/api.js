@@ -17,8 +17,7 @@ goog.require('weapi.Map');
 goog.require('weapi.MiniGlobe');
 
 
-//TODO: polygons, canvasProxy for screenshots
-//      pauseRendering, pixelcolor, mapopts, zoom
+//TODO: polygons -- new polyicons, pauseRendering, pixelcolor, mapopts, zoom
 
 
 //Constructor
@@ -156,19 +155,19 @@ goog.exportSymbol('WebGLEarth.prototype.handleResize',
 
 goog.exportSymbol('WebGLEarth.prototype.saveScreenshot', function(name) {
   this.afterFrameOnce = goog.bind(function() {
-    //var canvas_ = we.canvas2image.prepareCanvas(this.context.canvas,
-    //                                            this.markerManager,
-    //                                            this.context.scene.miniGlobe);
-    we.canvas2image.saveCanvasAsPNG(this.scene.getCanvas(), name);
+    var canvas_ = we.canvas2image.prepareCanvas(this.scene.getCanvas(),
+                                                this.markerManager,
+                                                this.miniglobe);
+    we.canvas2image.saveCanvasAsPNG(canvas_, name);
   }, this);
 });
 
 goog.exportSymbol('WebGLEarth.prototype.getScreenshot', function(callback) {
   this.afterFrameOnce = goog.bind(function() {
-    //var canvas_ = we.canvas2image.prepareCanvas(this.context.canvas,
-    //                                            this.markerManager,
-    //                                            this.context.scene.miniGlobe);
-    callback(we.canvas2image.getCanvasAsDataURL(this.scene.getCanvas()));
+    var canvas_ = we.canvas2image.prepareCanvas(this.scene.getCanvas(),
+                                                this.markerManager,
+                                                this.miniglobe);
+    callback(we.canvas2image.getCanvasAsDataURL(canvas_));
   }, this);
 });
 
