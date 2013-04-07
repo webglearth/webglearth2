@@ -17,10 +17,16 @@ goog.require('weapi.markers.Popup');
  * @inheritDoc
  * @param {number} lat .
  * @param {number} lon .
+ * @param {!weapi.App} app .
  * @extends {weapi.markers.AbstractMarker}
  * @constructor
  */
-weapi.markers.PolyIcon = function(lat, lon) {
+weapi.markers.PolyIcon = function(lat, lon, app) {
+  /**
+   * @type {!weapi.App}
+   */
+  this.app = app;
+
   /**
    * @type {!HTMLImageElement}
    * @private
@@ -78,10 +84,15 @@ weapi.markers.PolyIcon.REFERENCE_DISTANCE = 1000;
 weapi.markers.PolyIcon.prototype.setXY = function(x, y) {
   weapi.markers.PolyIcon.superClass_.setXY.call(this, x, y);
 
-  //var distance = this.scene_.calcDistanceToLatLong(this.lat, this.lon) *
-  //               we.scene.EARTH_RADIUS;
-  var height = 50;//
-  //(weapi.markers.PolyIcon.REFERENCE_DISTANCE * this.height_) / distance;
+  var pos = Cesium.Ellipsoid.WGS84.cartographicToCartesian(
+      new Cesium.Cartographic(this.lon, this.lat));
+  var cam = this.app.camera.camera.position;
+  var xto2 = function(x) {return x * x;};
+  var distance = Math.sqrt(xto2(pos.x - cam.x) +
+                           xto2(pos.y - cam.y) +
+                           xto2(pos.z - cam.z));
+  var height =
+      (weapi.markers.PolyIcon.REFERENCE_DISTANCE * this.height_) / distance;
   height = goog.math.clamp(height,
                            this.minHeight_,
                            this.maxHeight_ || Number.MAX_VALUE);
@@ -109,6 +120,7 @@ weapi.markers.PolyIcon.prototype.setImage = function(src, height,
   this.image_.style.display = 'none';
   this.image_.src = src;
   this.src = src;
+  this.enabled = this.src.length > 0;
 
   this.height_ = height;
   this.minHeight_ = opt_minHeight || 0;

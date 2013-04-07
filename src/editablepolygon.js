@@ -70,7 +70,7 @@ weapi.EditablePolygon = function(app, markermanager) {
    * @type {!weapi.markers.PolyIcon}
    * @private
    */
-  this.icon_ = new weapi.markers.PolyIcon(0, 0);
+  this.icon_ = new weapi.markers.PolyIcon(0, 0, this.app);
   //this.icon_.setImage('47.png', 100);
 
   this.iconKey_ = this.markermanager_.addMarker(null, this.icon_);
