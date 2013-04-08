@@ -215,3 +215,43 @@ weapi.Camera.calculatePositionForGivenTarget = function(lat, lng, alt,
 
   return [lat - Math.cos(head) * alpha, lng + Math.sin(head) * alpha];
 };
+
+
+/**
+ * Calculates altitude from zoom (very rough approximation for deprecated API)
+ * @param {!HTMLCanvasElement} canvas .
+ * @param {number} fov Vertical fov in radians.
+ * @param {number} zoom Zoom.
+ * @param {number} latitude Latitude in radians.
+ * @return {number} Calculated altitude.
+ */
+weapi.Camera.calcAltitudeForZoom = function(canvas, fov, zoom, latitude) {
+  // 0.7 is old constant from WebGL Earth, 256 is tile size
+  var tilesVertically = 0.7 * canvas.height / 256;
+
+  var o = Math.cos(Math.abs(latitude)) * 2 * Math.PI;
+  var thisPosDeformation = o / Math.pow(2, zoom);
+  var sizeIWannaSee = thisPosDeformation * tilesVertically;
+  return (1 / Math.tan(fov / 2)) * (sizeIWannaSee / 2) *
+         weapi.utils.EARTH_RADIUS;
+};
+
+
+/**
+ * Calculates zoom from altitude (very rough approximation for deprecated API)
+ * @param {!HTMLCanvasElement} canvas .
+ * @param {number} fov Vertical fov in radians.
+ * @param {number} altitude Altitude in meters.
+ * @param {number} latitude Latitude in radians.
+ * @return {number} Calculated zoom.
+ */
+weapi.Camera.calcZoomForAltitude = function(canvas, fov, altitude, latitude) {
+  // 0.7 is old constant from WebGL Earth, 256 is tile size
+  var tilesVertically = 0.7 * canvas.height / 256;
+
+  var sizeISee = 2 * (altitude / weapi.utils.EARTH_RADIUS) * Math.tan(fov / 2);
+  var sizeOfOneTile = sizeISee / tilesVertically;
+  var o = Math.cos(Math.abs(latitude)) * 2 * Math.PI;
+
+  return Math.log(o / sizeOfOneTile) / Math.LN2;
+};

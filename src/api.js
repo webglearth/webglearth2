@@ -17,7 +17,7 @@ goog.require('weapi.Map');
 goog.require('weapi.MiniGlobe');
 
 
-//TODO: reversed tilting, polygons -- new polyicons, pixelcolor, mapopts, zoom
+//TODO: reversed tilting, polygons -- new polyicons, pixelcolor, mapopts
 
 
 //Constructor
@@ -42,17 +42,36 @@ goog.exportSymbol('WebGLEarth.prototype.getAltitude', function() {
   return this.camera.getPos()[2];
 });
 
+goog.exportSymbol('WebGLEarth.prototype.setZoom', function(zoom) {
+  var alt = weapi.Camera.calcAltitudeForZoom(this.canvas,
+                                             this.camera.camera.frustum.fovy,
+                                             zoom, this.camera.getPos()[0]);
+  this['setAltitude'](alt);
+});
+
+goog.exportSymbol('WebGLEarth.prototype.getZoom', function() {
+  var pos = this.camera.getPos();
+  var zoom = weapi.Camera.calcZoomForAltitude(this.canvas,
+                                              this.camera.camera.frustum.fovy,
+                                              pos[2], pos[0]);
+  return zoom;
+});
+
 goog.exportSymbol('WebGLEarth.prototype.setPosition', function(lat, lon,
     opt_zoom, opt_altitude, opt_heading, opt_tilt, opt_targetPosition) {
-      if (goog.isDefAndNotNull(opt_zoom)) {
-        window['console']['log']('Zoom is no longer supported.');
-      }
-
       var cam = this.camera;
       cam.animator.cancel();
 
       lat = goog.math.toRadians(lat);
       lon = goog.math.toRadians(lon);
+
+      if (goog.isDefAndNotNull(opt_zoom)) {
+        //window['console']['log']('Zoom is no longer supported.');
+        opt_altitude = weapi.Camera.calcAltitudeForZoom(this.canvas,
+                                                        cam.camera.frustum.fovy,
+                                                        opt_zoom, lat);
+      }
+
       var alt = opt_altitude || cam.getPos()[2];
       var heading = goog.math.toRadians(opt_heading) || cam.getHeading();
       var tilt = goog.math.toRadians(opt_tilt) || cam.getTilt();
@@ -64,6 +83,13 @@ goog.exportSymbol('WebGLEarth.prototype.setPosition', function(lat, lon,
 
         lat = newPos[0];
         lon = newPos[1];
+        if (goog.isDefAndNotNull(opt_zoom)) {
+          // recalc altitude to better fit modified latitude
+          //window['console']['log']('Zoom is no longer supported.');
+          alt = weapi.Camera.calcAltitudeForZoom(this.canvas,
+                                                 cam.camera.frustum.fovy,
+                                                 opt_zoom, lat);
+        }
       }
 
       cam.setPosHeadingAndTilt(lat, lon, alt, heading, tilt);
