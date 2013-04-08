@@ -17,7 +17,7 @@ goog.require('weapi.Map');
 goog.require('weapi.MiniGlobe');
 
 
-//TODO: reversed tilting, polygons -- new polyicons, pixelcolor, mapopts
+//TODO: reversed tilting, polygons -- new polyicons, pixelcolor, WMS
 
 
 //Constructor
@@ -219,7 +219,9 @@ goog.exportSymbol('WebGLEarth.prototype.resumeRendering', function() {
 /* Maps */
 
 goog.exportSymbol('WebGLEarth.Maps', weapi.maps.MapType);
-goog.exportSymbol('WebGLEarth.prototype.initMap', weapi.maps.initMap);
+goog.exportSymbol('WebGLEarth.prototype.initMap', function(type, opts) {
+  return weapi.maps.initMap(this, type, opts);
+});
 goog.exportSymbol('WebGLEarth.prototype.setBaseMap',
                   weapi.App.prototype.setBaseMap);
 goog.exportSymbol('WebGLEarth.prototype.setOverlayMap',

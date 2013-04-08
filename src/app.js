@@ -25,8 +25,8 @@ goog.require('weapi.markers.PrettyMarker');
  */
 weapi.App = function(divid, opt_options) {
   var options = opt_options || {};
-  //TODO: map, zoom, proxyHost
-  weapi.maps.initStatics();
+
+  weapi.maps.initStatics(this);
 
   var container = goog.dom.getElement(divid);
   container.style.position = 'relative';
@@ -48,6 +48,16 @@ weapi.App = function(divid, opt_options) {
 
   /** @type {boolean} */
   this.forcedPause = false;
+
+  /** @type {?string} */
+  var proxyHost = opt_options['proxyHost'] || null;
+
+  /* type {{getURL: function(string) : string}} */
+  this.mapProxyObject = {
+    'getURL': function(url) {
+      return proxyHost + url;
+    }
+  };
 
   if (options['atmosphere'] !== false) {
     this.scene.skyAtmosphere = new Cesium.SkyAtmosphere();

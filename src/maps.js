@@ -10,6 +10,7 @@ goog.provide('weapi.maps.MapType');
 
 goog.require('goog.structs.Map');
 
+goog.require('weapi.CustomMap');
 goog.require('weapi.Map');
 
 
@@ -34,32 +35,78 @@ weapi.maps.mapMap = new goog.structs.Map();
 
 /**
  * TODO: cleanup
+ * @param {!weapi.App} app .
  * @param {!weapi.maps.MapType} type Type of the map.
- * @param {...*} var_args Optional parameters to be passed to the TileProvider.
+ * @param {!Object.<string, Object>|!Array.<Object>=} opt_opts Map options.
  * @return {weapi.Map} Initialized TileProvider.
  */
-weapi.maps.initMap = function(type, var_args) {
+weapi.maps.initMap = function(app, type, opt_opts) {
 
   /** @type {string} */
   var key = type;
-  if (goog.isDefAndNotNull(var_args) && var_args.length > 0)
-    key += var_args[0];
 
-  var tileProviderCtor;
+  var mapopts = null;
+  var aropts = null;
+  if (goog.isDefAndNotNull(opt_opts)) {
+    if (goog.isArray(opt_opts)) {
+      if (opt_opts.length > 0) key += opt_opts[0];
+      aropts = opt_opts;
+      //alert(type + ' got array');
+    } else {
+      key += (opt_opts['name'] || opt_opts['url']);
+      mapopts = opt_opts;
+      //alert(type + ' got object');
+    }
+  }
+
+  var tileProvider;
 
   switch (type) {
-    case weapi.maps.MapType.OSM:
     case weapi.maps.MapType.MAPQUEST:
-      tileProviderCtor = Cesium.OpenStreetMapImageryProvider;
+      if (!mapopts) {
+        mapopts = {};
+        mapopts['url'] = 'http://otile1.mqcdn.com/tiles/1.0.0/osm/';
+      }
+      tileProvider = new Cesium.OpenStreetMapImageryProvider(mapopts);
+      break;
+    case weapi.maps.MapType.OSM:
+      if (!mapopts) {
+        mapopts = {};
+        mapopts['url'] = 'http://tile.openstreetmap.org';
+      }
+      tileProvider = new Cesium.OpenStreetMapImageryProvider(mapopts);
       break;
     case weapi.maps.MapType.BING:
-      tileProviderCtor = Cesium.BingMapsImageryProvider;
+      if (aropts) {
+        mapopts = {};
+        mapopts['url'] = 'http://dev.virtualearth.net';
+
+        if (aropts[0] == 'Aerial')
+          mapopts['mapStyle'] = Cesium.BingMapsStyle.AERIAL;
+        if (aropts[0] == 'AerialWithLabels')
+          mapopts['mapStyle'] = Cesium.BingMapsStyle.AERIAL_WITH_LABELS;
+        if (aropts[0] == 'Road')
+          mapopts['mapStyle'] = Cesium.BingMapsStyle.ROAD;
+
+        mapopts['key'] = aropts[1];
+      }
+      tileProvider = new Cesium.BingMapsImageryProvider(mapopts);
       break;
     case weapi.maps.MapType.WMS:
-      tileProviderCtor = Cesium.WebMapServiceImageryProvider;
+      //tileProvider = new Cesium.WebMapServiceImageryProvider(mapopts);
       break;
     case weapi.maps.MapType.CUSTOM:
-      tileProviderCtor = Cesium.TileMapServiceImageryProvider;
+      if (aropts) {
+        mapopts = {};
+        mapopts['url'] = aropts[1];
+        mapopts['maximumLevel'] = aropts[3];
+        mapopts['tileSize'] = aropts[4];
+        mapopts['flipY'] = aropts[5];
+        mapopts['subdomains'] = aropts[6];
+        mapopts['copyright'] = aropts[7];
+        mapopts['proxy'] = app.mapProxyObject;
+      }
+      tileProvider = new weapi.CustomMap(mapopts);
       break;
     default:
       alert('Unknown MapType \'' + type + '\' !');
@@ -67,25 +114,8 @@ weapi.maps.initMap = function(type, var_args) {
       break;
   }
 
-  /*
-   * This is a Proxy class for TileProvider which allows me to call TileProvider
-   * constructors with var_args.
-   */
-  function construct(klass, var_args) {
-    /**
-     * @param {...*} var_args Arguments.
-     * @constructor
-     */
-    function TPProxy(var_args) {
-      klass.apply(this, var_args);
-    };
-    TPProxy.prototype = klass.prototype;
-    return new TPProxy(var_args);
-  }
-
-  var tileProvider = construct(tileProviderCtor, var_args);
-
-  var map = new weapi.Map(new Cesium.ImageryLayer(tileProvider));
+  var map = new weapi.Map(new Cesium.ImageryLayer(
+      /** @type {!Cesium.ImageryProvider} */(tileProvider)));
 
   weapi.maps.mapMap.set(key, map);
 
@@ -109,8 +139,9 @@ weapi.maps.getMap = function(type, opt_subtype) {
 
 
 /**
- * Initializes maps that does not require any special parameters (keys etc.)
+ * @param {!weapi.App} app .
+ * Initializes maps that does not require any special parameters (keys etc.).
  */
-weapi.maps.initStatics = function() {
-  weapi.maps.initMap(weapi.maps.MapType.OSM);
+weapi.maps.initStatics = function(app) {
+  weapi.maps.initMap(app, weapi.maps.MapType.OSM);
 };

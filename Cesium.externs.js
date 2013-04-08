@@ -588,6 +588,13 @@ Cesium.ImageryLayer = function(imageryProvider) {};
 Cesium.ImageryLayer.prototype.getImageryProvider = function() {};
 
 
+/**
+ * @param {string} url .
+ * @return {Object} .
+ */
+Cesium.ImageryLayer.prototype.loadImage = function(url) {};
+
+
 
 /**
  * @constructor
@@ -1177,6 +1184,15 @@ Cesium.SingleTileImageryProvider = function(options) {};
  * @typedef {{url: string}}
  */
 Cesium.SingleTileImageryProviderOptions;
+
+
+
+/**
+ * @constructor
+ * @extends {Cesium.ImageryProvider}
+ * @param {Object} options
+ */
+Cesium.TileMapServiceImageryProvider = function(options) {};
 
 
 

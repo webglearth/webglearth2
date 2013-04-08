@@ -12,6 +12,7 @@
   <script>
     var app;
     var mapB, mapM;
+    var customTMS;
     function startWE() {
       app = new WebGLEarth('webglearthdiv', {
         atmosphere: true,
@@ -19,18 +20,24 @@
         altitude: 7000000,
         panning: true,
         tilting: true,
-        zooming: true
+        zooming: true,
+        proxyHost: 'http://srtm.webglearth.com/cgi-bin/corsproxy.fcgi?url='
       });
       
       app.showMiniGlobe('../deploy/world512.jpg', 128);
       
-      mapB = app.initMap(WebGLEarth.Maps.BING, [{url : 'http://dev.virtualearth.net'}]);
+      // Get your own key from: https://www.bingmapsportal.com/
+      var bingKey = 'AsLurrtJotbxkJmnsefUYbatUuBkeBTzTL930TvcOekeG8SaQPY9Z5LDKtiuzAOu';
+    
+      mapB = app.initMap(WebGLEarth.Maps.BING, ['AerialWithLabels', bingKey]);
       mapM = app.initMap(WebGLEarth.Maps.MAPQUEST);
       app.setBaseMap(mapM);
 
-      mapBo = app.initMap(WebGLEarth.Maps.BING, [{url : 'http://dev.virtualearth.net'}]);
+      mapBo = app.initMap(WebGLEarth.Maps.BING, ['AerialWithLabels', bingKey]);
       mapMo = app.initMap(WebGLEarth.Maps.MAPQUEST);
       
+      customTMS = app.initMap(WebGLEarth.Maps.CUSTOM, ['TMS','http://webglearth.googlecode.com/svn/resources/tms/{z}/{x}/{y}.jpg',1,5,256,true]);
+
       //make the overlays transparent
       mapBo.setOpacity(0.5);
       mapMo.setOpacity(0.5);
@@ -100,6 +107,7 @@
    <br />
    <input type="button" value="Switch to MapQuest" onclick="javascript:app.setBaseMap(mapM)"/>
    <input type="button" value="Switch to Bing" onclick="javascript:app.setBaseMap(mapB)"/>
+   <input type="button" value="Switch to Custom TMS" onclick="javascript:app.setBaseMap(customTMS)"/>
    <input type="button" value="Switch Overlay to MapQuest" onclick="javascript:app.setOverlayMap(mapMo)"/>
    <input type="button" value="Switch Overlay to Bing" onclick="javascript:app.setOverlayMap(mapBo)"/>
    <input type="button" value="Disable overlay" onclick="javascript:app.setOverlayMap(null)"/>
