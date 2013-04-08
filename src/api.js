@@ -17,7 +17,7 @@ goog.require('weapi.Map');
 goog.require('weapi.MiniGlobe');
 
 
-//TODO: polygons -- new polyicons, pauseRendering, pixelcolor, mapopts, zoom
+//TODO: reversed tilting, polygons -- new polyicons, pixelcolor, mapopts, zoom
 
 
 //Constructor
@@ -178,6 +178,14 @@ goog.exportSymbol('WebGLEarth.prototype.showMiniGlobe', function(src, size) {
   } else {
     this.miniglobe = null;
   }
+});
+
+goog.exportSymbol('WebGLEarth.prototype.pauseRendering', function() {
+  this.forcedPause = true;
+});
+
+goog.exportSymbol('WebGLEarth.prototype.resumeRendering', function() {
+  this.forcedPause = false;
 });
 
 

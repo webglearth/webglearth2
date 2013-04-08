@@ -46,6 +46,9 @@ weapi.App = function(divid, opt_options) {
   /** @type {?weapi.MiniGlobe} */
   this.miniglobe = null;
 
+  /** @type {boolean} */
+  this.forcedPause = false;
+
   if (options['atmosphere'] !== false) {
     this.scene.skyAtmosphere = new Cesium.SkyAtmosphere();
 
@@ -89,16 +92,18 @@ weapi.App = function(divid, opt_options) {
   this.markerManager = new weapi.markers.MarkerManager(this, container);
 
   var tick = goog.bind(function() {
-    this.scene.initializeFrame();
-    this.scene.render();
-    if (goog.isDefAndNotNull(this.miniglobe)) {
-      this.miniglobe.draw();
-    }
-    this.markerManager.updateMarkers();
+    if (!this.forcedPause) {
+      this.scene.initializeFrame();
+      this.scene.render();
+      if (goog.isDefAndNotNull(this.miniglobe)) {
+        this.miniglobe.draw();
+      }
+      this.markerManager.updateMarkers();
 
-    if (goog.isDefAndNotNull(this.afterFrameOnce)) {
-      this.afterFrameOnce();
-      this.afterFrameOnce = null;
+      if (goog.isDefAndNotNull(this.afterFrameOnce)) {
+        this.afterFrameOnce();
+        this.afterFrameOnce = null;
+      }
     }
     Cesium.requestAnimationFrame(tick);
   }, this);
