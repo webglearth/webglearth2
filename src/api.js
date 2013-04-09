@@ -295,6 +295,13 @@ goog.exportSymbol('WebGLEarth.Marker.prototype.offAll', function(type) {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+/* Events */
+
+goog.exportSymbol('WebGLEarth.prototype.on', weapi.App.prototype.on);
+goog.exportSymbol('WebGLEarth.prototype.off', weapi.App.prototype.off);
+goog.exportSymbol('WebGLEarth.prototype.offAll', weapi.App.prototype.offAll);
+
+////////////////////////////////////////////////////////////////////////////////
 /* Polygons */
 
 
