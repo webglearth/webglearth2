@@ -156,7 +156,7 @@ weapi.App = function(divid, opt_options) {
 
   sscc['_rotateHandler'] = new weapi.DoubleEventAggr(sscc['_rotateHandler'],
                                                      sscc['_lookHandler'],
-                                                     true, false);
+                                                     true, true);
   sscc['_lookHandler'] = new Cesium.CameraEventAggregator(this.canvas,
       Cesium['CameraEventType']['LEFT_DRAG'],
       Cesium['KeyboardEventModifier']['ALT']);

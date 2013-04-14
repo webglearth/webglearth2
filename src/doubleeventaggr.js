@@ -48,14 +48,14 @@ weapi.DoubleEventAggr.prototype['getMovement'] = function() {
   var chosen = chooseA ? a : b;
 
   // invert the tilting direction
-  //if ((chooseA && this.invA_) ||
-  //    (!chooseA && this.invB_)) {
-  //var tmp = chosen['startPosition']['y'];
-  //chosen['startPosition']['y'] *= -1;// = -chosen['endPosition']['y'];
-  //chosen['endPosition']['y'] *= -1;//= -tmp;
-  //chosen['motion']['x'] *= -1;
-  //chosen['motion']['y'] *= -1;
-  //}
+  if ((chooseA && this.invA_) ||
+      (!chooseA && this.invB_)) {
+    var tmp = chosen['startPosition']['y'];
+    chosen['startPosition']['y'] = chosen['endPosition']['y'];
+    chosen['endPosition']['y'] = -tmp;
+    //chosen['motion']['x'] *= -1;
+    //chosen['motion']['y'] *= -1;
+  }
 
   return chosen;
 };
