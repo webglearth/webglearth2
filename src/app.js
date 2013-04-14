@@ -55,7 +55,7 @@ weapi.App = function(divid, opt_options) {
   /* type {{getURL: function(string) : string}} */
   this.mapProxyObject = {
     'getURL': function(url) {
-      return proxyHost + url;
+      return proxyHost + encodeURIComponent(url);
     }
   };
 
@@ -81,11 +81,7 @@ weapi.App = function(divid, opt_options) {
   // Bing Maps
   var bing = new Cesium.BingMapsImageryProvider({
     'url' : 'http://dev.virtualearth.net',
-    'mapStyle' : Cesium.BingMapsStyle.AERIAL_WITH_LABELS,
-    // Some versions of Safari support WebGL, but don't correctly implement
-    // cross-origin image loading, so we need to load Bing imagery using a proxy
-    proxy: Cesium.FeatureDetection.supportsCrossOriginImagery() ?
-        undefined : new Cesium.DefaultProxy('/proxy/')
+    'mapStyle' : Cesium.BingMapsStyle.AERIAL_WITH_LABELS
   });
 
   var ellipsoid = Cesium.Ellipsoid.WGS84;

@@ -17,7 +17,7 @@ goog.require('weapi.Map');
 goog.require('weapi.MiniGlobe');
 
 
-//TODO: reversed tilting, polygons -- new polyicons, pixelcolor, WMS
+//TODO: reversed tilting, polygons -- new polyicons, pixelcolor
 
 
 //Constructor

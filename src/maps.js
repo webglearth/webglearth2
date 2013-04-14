@@ -8,6 +8,7 @@
 goog.provide('weapi.maps');
 goog.provide('weapi.maps.MapType');
 
+goog.require('goog.Uri.QueryData');
 goog.require('goog.structs.Map');
 
 goog.require('weapi.CustomMap');
@@ -94,6 +95,32 @@ weapi.maps.initMap = function(app, type, opt_opts) {
       break;
     case weapi.maps.MapType.WMS:
       //tileProvider = new Cesium.WebMapServiceImageryProvider(mapopts);
+      if (aropts) {
+        mapopts = {};
+        mapopts['parameters'] = {};
+        mapopts['url'] = aropts[1];
+        if (aropts[2] && aropts[2].length > 0) {
+          mapopts['parameters']['version'] = aropts[2];
+        }
+        mapopts['layers'] = aropts[3];
+        mapopts['parameters']['crs'] = aropts[4];
+        if (aropts[5] && aropts[5].length > 0) {
+          mapopts['parameters']['format'] = aropts[5];
+        }
+        if (aropts[6] && aropts[6].length > 0) {
+          mapopts['parameters']['styles'] = aropts[6];
+        }
+        if (aropts[7] && aropts[7].length > 0) {
+          var q = new goog.Uri.QueryData(aropts[7]);
+          goog.array.forEach(q.getKeys(), function(el, i, arr) {
+            mapopts['parameters'][el] = q.get(el);
+          });
+        }
+        // ignore minzoom aropts[8];
+        mapopts['maximumLevel'] = aropts[9];
+        mapopts['proxy'] = app.mapProxyObject;
+      }
+      tileProvider = new Cesium.WebMapServiceImageryProvider(mapopts);
       break;
     case weapi.maps.MapType.CUSTOM:
       if (aropts) {

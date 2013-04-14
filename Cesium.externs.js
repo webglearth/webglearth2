@@ -939,6 +939,15 @@ Cesium.OpenStreetMapImageryProvider = function(options) {};
 
 /**
  * @constructor
+ * @param {Object} options
+ * @extends {Cesium.ImageryProvider}
+ */
+Cesium.WebMapServiceImageryProvider = function(options) {};
+
+
+
+/**
+ * @constructor
  */
 Cesium.PerspectiveFrustrum = function() {};
 
