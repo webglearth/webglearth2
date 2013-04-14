@@ -163,6 +163,16 @@ weapi.App = function(divid, opt_options) {
 
   //sscc['_cameraController']['lookUp'] =
   //    function(a) {sscc['_cameraController']['lookDown'](a);};
+
+  //HACK for color picking:
+  // when Cesium creates texture from image, it discards original image.
+  // It is however very unefficient to preform color picking on WebGLTexture.
+  // Therefore, clone the image reference prior to creating the texture.
+  var orig = Cesium['ImageryLayer'].prototype['_createTexture'];
+  Cesium['ImageryLayer'].prototype['_createTexture'] = function(ctx, imgry) {
+    imgry['__image__'] = imgry['image'];
+    orig.call(this, ctx, imgry);
+  };
 };
 
 
@@ -300,4 +310,50 @@ weapi.App.prototype.initMarker = function(lat, lon,
  */
 weapi.App.prototype.removeMarker = function(marker) {
   this.markerManager.removeMarkerEx(marker);
+};
+
+
+/**
+ * @param {number} lat Latitude in radians.
+ * @param {number} lng Longitude in radians.
+ * @return {Array.<number>} Pixel data
+ *                          [r 0-255, g 0-255, b 0-255, a 0-1, zoomLevel].
+ */
+weapi.App.prototype.getBestAvailablePixelColorFromLayer = function(lat, lng) {
+  var layer = this.centralBody.getImageryLayers().get(0);
+  var provider = layer.getImageryProvider();
+  var scheme = provider.getTilingScheme();
+  var position = new Cesium.Cartographic(lng, lat);
+
+  var result = null;
+  var zoom = provider.getMaximumLevel();
+
+  while (zoom >= 0) {
+    var tileXY = scheme['positionToTileXY'](position, zoom);
+    var imagery = layer['getImageryFromCache'](tileXY.x, tileXY.y,
+                                               zoom, undefined);
+    if (imagery['__image__']) {
+      var pixelX = Math.floor((tileXY.x - Math.floor(tileXY.x)) *
+                   provider.getTileWidth());
+      var pixelY = Math.floor((tileXY.y - Math.floor(tileXY.y)) *
+                   provider.getTileHeight());
+
+      var canvas = goog.dom.createElement('canvas');
+      canvas.width = 1;
+      canvas.height = 1;
+      var context = canvas.getContext('2d');
+      context.drawImage(imagery['__image__'], pixelX, pixelY, 1, 1, 0, 0, 1, 1);
+
+      var data = context.getImageData(0, 0, 1, 1).data;
+
+      result = [data[0], data[1], data[2], data[3] / 255, zoom];
+    }
+    imagery['releaseReference']();
+
+    if (result) return result;
+
+    zoom--;
+  }
+
+  return [0, 0, 0, 0, -1];
 };

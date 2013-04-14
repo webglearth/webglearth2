@@ -86,6 +86,31 @@
       
       document.getElementById("addmarkers").disabled = true;
     }
+    var colorQueryMarker;
+    var intervalTimer;
+    function queryColor() {
+      if (!app) return;
+
+      var lat = parseFloat(document.getElementById('colorlat').value, 10);
+      var lng = parseFloat(document.getElementById('colorlng').value, 10);
+      var colorbox = document.getElementById('colorbox');
+      
+      if (!colorQueryMarker) {
+        colorQueryMarker = app.initMarker(lat, lng);
+      } else {
+        colorQueryMarker.setPosition(lat, lng);
+      }
+      
+      if (intervalTimer) clearInterval(intervalTimer);
+      intervalTimer = setInterval(function() {
+        var res = app.getBestAvailablePixelColor(lat, lng);
+        colorbox.innerHTML = res.toString();
+        colorbox.style.backgroundColor = "rgba(" + res[0] + "," +
+                                                   res[1] + "," +
+                                                   res[2] + "," +
+                                                   res[3] + ")";
+      }, 500);
+    }
   </script>
   
  </head>
@@ -125,7 +150,7 @@
    <br />
    <input type="button" value="Add some markers" id="addmarkers" onclick="javascript:addSomeMarkers()" />
    &nbsp;&nbsp;&nbsp;&nbsp;
-   Pick color for position <input type="text" id="colorlat" value="32.65" size="8" />,<input type="text" id="colorlng" value="-16.9166" size="8" /> <input type="button" value="Query color" onclick="javascript:queryColor()" disabled/><div id="colorbox" style="display:inline-block;width:150px;text-align:center;text-shadow:0 0 3px #fff;"></div>
+   Pick color for position <input type="text" id="colorlat" value="32.65" size="8" />,<input type="text" id="colorlng" value="-16.9166" size="8" /> <input type="button" value="Query color" onclick="javascript:queryColor()" /><div id="colorbox" style="display:inline-block;width:150px;text-align:center;text-shadow:0 0 3px #fff;"></div>
    <br />
    <img id="screenshot" />
  </body>

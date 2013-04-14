@@ -17,7 +17,7 @@ goog.require('weapi.Map');
 goog.require('weapi.MiniGlobe');
 
 
-//TODO: reversed tilting, polygons -- new polyicons, pixelcolor
+//TODO: reversed tilting, polygons -- new polyicons
 
 
 //Constructor
@@ -214,6 +214,11 @@ goog.exportSymbol('WebGLEarth.prototype.resumeRendering', function() {
   this.forcedPause = false;
 });
 
+goog.exportSymbol('WebGLEarth.prototype.getBestAvailablePixelColor',
+    function(lat, lng) {
+      return this.getBestAvailablePixelColorFromLayer(
+          lat / 180 * Math.PI, lng / 180 * Math.PI);
+    });
 
 ////////////////////////////////////////////////////////////////////////////////
 /* Maps */
