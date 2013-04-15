@@ -9,9 +9,9 @@ goog.provide('weapi.EditablePolygon');
 
 goog.require('goog.color');
 
+goog.require('weapi.PolyIcon');
 goog.require('weapi.Polygon');
 goog.require('weapi.markers.PolyDragger');
-goog.require('weapi.markers.PolyIcon');
 
 
 
@@ -39,8 +39,8 @@ weapi.EditablePolygon = function(app, markermanager) {
    */
   this.polygon_ = new weapi.Polygon();
 
-  this.app.scene.getPrimitives().add(this.polygon_.primitive);
-  this.app.scene.getPrimitives().add(this.polygon_.primitiveLineCol);
+  this.app.polygonComposite.add(this.polygon_.primitive);
+  this.app.polygonComposite.add(this.polygon_.primitiveLineCol);
 
   /**
    * @type {!Object.<number, string>}
@@ -67,14 +67,11 @@ weapi.EditablePolygon = function(app, markermanager) {
   this.clickListenKey_ = null;
 
   /**
-   * @type {!weapi.markers.PolyIcon}
+   * @type {!weapi.PolyIcon}
    * @private
    */
-  this.icon_ = new weapi.markers.PolyIcon(0, 0, this.app);
+  this.icon_ = new weapi.PolyIcon(0, 0, this.app);
   //this.icon_.setImage('47.png', 100);
-
-  this.iconKey_ = this.markermanager_.addMarker(null, this.icon_);
-  this.icon_.enable(false);
 
   /**
    * @type {!function()}
@@ -94,10 +91,10 @@ weapi.EditablePolygon = function(app, markermanager) {
  */
 weapi.EditablePolygon.prototype.destroy = function() {
   this.disableClickToAdd();
-  this.app.scene.getPrimitives().remove(this.polygon_.primitive);
-  this.app.scene.getPrimitives().remove(this.polygon_.primitiveLineCol);
+  this.app.polygonComposite.remove(this.polygon_.primitive);
+  this.app.polygonComposite.remove(this.polygon_.primitiveLineCol);
   this.onchange_ = goog.nullFunction;
-  this.markermanager_.removeMarker(this.iconKey_);
+  this.icon_.destroy();
   goog.object.forEach(this.midDraggers_, function(el, key, obj) {
     this.markermanager_.removeMarker(el);
   }, this);
@@ -259,9 +256,9 @@ weapi.EditablePolygon.prototype.intersects = function(other) {
 weapi.EditablePolygon.prototype.repositionIcon_ = function() {
   var avg = this.polygon_.calcCentroid() || this.polygon_.calcAverage();
 
-  this.icon_.lat = goog.math.toRadians(avg[1]);
-  this.icon_.lon = goog.math.toRadians(avg[0]);
-  this.icon_.enable(this.icon_.src.length > 0 && this.polygon_.isValid());
+  this.icon_.setLatLng(goog.math.toRadians(avg[1]),
+                       goog.math.toRadians(avg[0]));
+  this.icon_.enable(this.polygon_.isValid());
 };
 
 

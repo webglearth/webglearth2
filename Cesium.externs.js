@@ -9,6 +9,111 @@ var Cesium = {};
 /**
  * @constructor
  */
+Cesium.Billboard = function() {};
+
+
+/**
+ * @param {!Cesium.Cartesian3} pos .
+ */
+Cesium.Billboard.prototype.setPosition = function(pos) {};
+
+
+/**
+ * @param {boolean} show .
+ */
+Cesium.Billboard.prototype.setShow = function(show) {};
+
+
+/**
+ * @param {number} scale .
+ */
+Cesium.Billboard.prototype.setScale = function(scale) {};
+
+
+/**
+ * @param {number} index .
+ */
+Cesium.Billboard.prototype.setImageIndex = function(index) {};
+
+
+/**
+ * @constructor
+ */
+Cesium.BillboardCollection = function() {};
+
+
+/**
+ * @param {Object=} opt_opts .
+ * @return {Cesium.Billboard} .
+ */
+Cesium.BillboardCollection.prototype.add = function(opt_opts) {};
+
+
+/**
+ * @param {Cesium.Billboard} what .
+ */
+Cesium.BillboardCollection.prototype.remove = function(what) {};
+
+
+/**
+ * @param {Cesium.TextureAtlas} what .
+ */
+Cesium.BillboardCollection.prototype.setTextureAtlas = function(what) {};
+
+
+/**
+ * @constructor
+ */
+Cesium.TextureAtlas = function() {};
+
+
+/**
+ * @param {Image} image .
+ */
+Cesium.TextureAtlas.prototype.addImage = function(image) {};
+
+
+/**
+ * @return {Array.<Cesium.BoundingRectangle>} .
+ */
+Cesium.TextureAtlas.prototype.getTextureCoordinates = function() {};
+
+
+
+/**
+ * @constructor
+ */
+Cesium.BoundingRectangle = function() {};
+
+
+/**
+ * @type {number}
+ */
+Cesium.BoundingRectangle.prototype.x;
+
+
+/**
+ * @type {number}
+ */
+Cesium.BoundingRectangle.prototype.y;
+
+
+/**
+ * @type {number}
+ */
+Cesium.BoundingRectangle.prototype.width;
+
+
+/**
+ * @type {number}
+ */
+Cesium.BoundingRectangle.prototype.height;
+
+
+
+/**
+ * @constructor
+ */
 Cesium.Camera = function() {};
 
 
@@ -529,13 +634,13 @@ Cesium.CompositePrimitive.prototype.setCentralBody = function(centralBody) {};
 
 
 /**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection} poly .
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.CompositePrimitive} poly .
  */
 Cesium.CompositePrimitive.prototype.add = function(poly) {};
 
 
 /**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection} poly .
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.CompositePrimitive} poly .
  */
 Cesium.CompositePrimitive.prototype.remove = function(poly) {};
 
@@ -545,6 +650,12 @@ Cesium.CompositePrimitive.prototype.remove = function(poly) {};
  * @constructor
  */
 Cesium.Context = function() {};
+
+
+/**
+ * @return {!Cesium.TextureAtlas}
+ */
+Cesium.Context.prototype.createTextureAtlas = function() {};
 
 
 

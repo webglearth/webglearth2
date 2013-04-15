@@ -11,6 +11,7 @@ goog.require('goog.dom');
 
 goog.require('weapi.Camera');
 goog.require('weapi.DoubleEventAggr');
+goog.require('weapi.NoRepeatTextureAtlas');
 goog.require('weapi.maps');
 goog.require('weapi.markers.MarkerManager');
 goog.require('weapi.markers.PrettyMarker');
@@ -96,6 +97,24 @@ weapi.App = function(divid, opt_options) {
    * @type {!weapi.markers.MarkerManager}
    */
   this.markerManager = new weapi.markers.MarkerManager(this, container);
+
+  /**
+   * @type {!Cesium.CompositePrimitive}
+   */
+  this.polygonComposite = new Cesium.CompositePrimitive();
+  primitives.add(this.polygonComposite);
+
+  /**
+   * @type {!weapi.NoRepeatTextureAtlas}
+   */
+  this.polyIconAtlas = new weapi.NoRepeatTextureAtlas(this);
+
+  /**
+   * @type {!Cesium.BillboardCollection}
+   */
+  this.polyIconCollection = new Cesium.BillboardCollection();
+  this.polyIconCollection.setTextureAtlas(this.polyIconAtlas.atlas);
+  primitives.add(this.polyIconCollection);
 
   var tick = goog.bind(function() {
     if (!this.forcedPause) {
