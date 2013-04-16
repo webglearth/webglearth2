@@ -114,6 +114,7 @@ weapi.App = function(divid, opt_options) {
    */
   this.polyIconCollection = new Cesium.BillboardCollection();
   this.polyIconCollection.setTextureAtlas(this.polyIconAtlas.atlas);
+  this.polyIconCollection.sizeReal = true;
   primitives.add(this.polyIconCollection);
 
   var tick = goog.bind(function() {

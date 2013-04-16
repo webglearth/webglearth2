@@ -179,9 +179,10 @@ weapi.EditablePolygon.prototype.setStrokeColor = function(hexColor, opt_a) {
 
 /**
  * @param {string} src URL of the image to use.
- * @param {number} height Height of the image in meters (0 for no resizing).
- * @param {number=} opt_minHeight Minimal height of the image in pixels.
- * @param {?number=} opt_maxHeight Maximal height of the image in pixels.
+ * @param {number} height Desired height of the image in pixels
+ *                        when observed from the reference distance.
+ * @param {number=} opt_minHeight Minimal height of the image in pixels (TODO).
+ * @param {?number=} opt_maxHeight Maximal height of the image in pixels (TODO).
  */
 weapi.EditablePolygon.prototype.setIcon = function(src, height,
                                                    opt_minHeight,

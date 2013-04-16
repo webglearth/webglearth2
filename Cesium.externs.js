@@ -37,6 +37,37 @@ Cesium.Billboard.prototype.setImageIndex = function(index) {};
 
 
 /**
+ * @param {!Cesium.VerticalOrigin} value .
+ */
+Cesium.Billboard.prototype.setVerticalOrigin = function(value) {};
+
+
+/**
+ * @constructor
+ */
+Cesium.VerticalOrigin = function() {};
+
+
+/**
+ * @type {!Cesium.VerticalOrigin} .
+ */
+Cesium.VerticalOrigin.TOP;
+
+
+/**
+ * @type {!Cesium.VerticalOrigin} .
+ */
+Cesium.VerticalOrigin.CENTER;
+
+
+/**
+ * @type {!Cesium.VerticalOrigin} .
+ */
+Cesium.VerticalOrigin.BOTTOM;
+
+
+
+/**
  * @constructor
  */
 Cesium.BillboardCollection = function() {};
@@ -62,6 +93,13 @@ Cesium.BillboardCollection.prototype.setTextureAtlas = function(what) {};
 
 
 /**
+ * @type {boolean} .
+ */
+Cesium.BillboardCollection.prototype.sizeReal;
+
+
+
+/**
  * @constructor
  */
 Cesium.TextureAtlas = function() {};
@@ -77,6 +115,31 @@ Cesium.TextureAtlas.prototype.addImage = function(image) {};
  * @return {Array.<Cesium.BoundingRectangle>} .
  */
 Cesium.TextureAtlas.prototype.getTextureCoordinates = function() {};
+
+
+/**
+ * @return {!Cesium.Texture} .
+ */
+Cesium.TextureAtlas.prototype.getTexture = function() {};
+
+
+
+/**
+ * @constructor
+ */
+Cesium.Texture = function() {};
+
+
+/**
+ * @return {number} .
+ */
+Cesium.Texture.prototype.getWidth = function() {};
+
+
+/**
+ * @return {number} .
+ */
+Cesium.Texture.prototype.getHeight = function() {};
 
 
 
