@@ -30,15 +30,29 @@ weapi.PolyIcon = function(lat, lng, app) {
   this.billboard = null;
 
   /**
-   * @type {!Cesium.Cartesian3}
+   * @type {number}
+   * @private
    */
-  this.position = Cesium.Ellipsoid.WGS84.cartographicToCartesian(
-      new Cesium.Cartographic(lng, lat));
+  this.lat_ = 0;
+
+  /**
+   * @type {number}
+   * @private
+   */
+  this.lng_ = 0;
+
+  this.setLatLng(lat, lng);
 
   /**
    * @type {string}
    */
   this.src = '';
+
+  /**
+   * @type {number}
+   * @private
+   */
+  this.height_ = 0;
 
   /**
    * @type {number}
@@ -65,11 +79,14 @@ weapi.PolyIcon.REFERENCE_DISTANCE = 1000;
  * @param {number} lng in radians.
  */
 weapi.PolyIcon.prototype.setLatLng = function(lat, lng) {
-  this.position = Cesium.Ellipsoid.WGS84.cartographicToCartesian(
-      new Cesium.Cartographic(lng, lat));
+  this.lat_ = lat;
+  this.lng_ = lng;
 
   if (this.billboard) {
-    this.billboard.setPosition(this.position);
+    var position = Cesium.Ellipsoid.WGS84.cartographicToCartesian(
+        new Cesium.Cartographic(this.lng_, this.lat_, this.height_));
+
+    this.billboard.setPosition(position);
   }
 };
 
@@ -107,7 +124,7 @@ weapi.PolyIcon.prototype.setImage = function(src, height,
   if (src.length > 0) {
     if (!this.billboard) {
       this.billboard = this.app.polyIconCollection.add();
-      this.billboard.setPosition(this.position);
+      this.setLatLng(this.lat_, this.lng_);
     }
     this.app.polyIconAtlas.getImageIndex(src, goog.bind(function(index) {
       this.billboard.setImageIndex(index);
@@ -116,7 +133,9 @@ weapi.PolyIcon.prototype.setImage = function(src, height,
       var h = coords.height * texture.getHeight();
 
       //window['console']['log'](height);
+      this.height_ = height;
       this.billboard.setScale(weapi.PolyIcon.REFERENCE_DISTANCE * height / h);
+      this.setLatLng(this.lat_, this.lng_);
     }, this));
     //this.billboard.setVerticalOrigin(Cesium.VerticalOrigin.BOTTOM);
   } else {
