@@ -186,6 +186,7 @@ goog.exportSymbol('WebGLEarth.prototype.saveScreenshot', function(name) {
                                                 this.miniglobe);
     we.canvas2image.saveCanvasAsPNG(canvas_, name);
   }, this);
+  this.sceneChanged = true;
 });
 
 goog.exportSymbol('WebGLEarth.prototype.getScreenshot', function(callback) {
@@ -195,6 +196,7 @@ goog.exportSymbol('WebGLEarth.prototype.getScreenshot', function(callback) {
                                                 this.miniglobe);
     callback(we.canvas2image.getCanvasAsDataURL(canvas_));
   }, this);
+  this.sceneChanged = true;
 });
 
 goog.exportSymbol('WebGLEarth.prototype.showMiniGlobe', function(src, size) {
@@ -204,6 +206,8 @@ goog.exportSymbol('WebGLEarth.prototype.showMiniGlobe', function(src, size) {
   } else {
     this.miniglobe = null;
   }
+
+  this.sceneChanged = true;
 });
 
 goog.exportSymbol('WebGLEarth.prototype.pauseRendering', function() {

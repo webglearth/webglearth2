@@ -1094,6 +1094,13 @@ Cesium.Matrix4.prototype.multiply = function(matrix, opt_result) {};
 
 
 /**
+ * @param {Cesium.Matrix4} matrix .
+ * @return {boolean} .
+ */
+Cesium.Matrix4.prototype.equals = function(matrix) {};
+
+
+/**
  * @param {Cesium.Cartesian3} point .
  * @param {Cesium.Cartesian4=} opt_result .
  * @return {Cesium.Cartesian4} .

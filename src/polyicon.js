@@ -136,6 +136,7 @@ weapi.PolyIcon.prototype.setImage = function(src, height,
       this.height_ = height;
       this.billboard.setScale(weapi.PolyIcon.REFERENCE_DISTANCE * height / h);
       this.setLatLng(this.lat_, this.lng_);
+      this.app.sceneChanged = true;
     }, this));
     //this.billboard.setVerticalOrigin(Cesium.VerticalOrigin.BOTTOM);
   } else {

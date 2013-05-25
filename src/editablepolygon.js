@@ -41,6 +41,7 @@ weapi.EditablePolygon = function(app, markermanager) {
 
   this.app.polygonComposite.add(this.polygon_.primitive);
   this.app.polygonComposite.add(this.polygon_.primitiveLineCol);
+  this.app.sceneChanged = true;
 
   /**
    * @type {!Object.<number, string>}
@@ -93,6 +94,7 @@ weapi.EditablePolygon.prototype.destroy = function() {
   this.disableClickToAdd();
   this.app.polygonComposite.remove(this.polygon_.primitive);
   this.app.polygonComposite.remove(this.polygon_.primitiveLineCol);
+  this.app.sceneChanged = true;
   this.onchange_ = goog.nullFunction;
   this.icon_.destroy();
   goog.object.forEach(this.midDraggers_, function(el, key, obj) {
@@ -157,7 +159,7 @@ weapi.EditablePolygon.prototype.setFillColor = function(hexColor, opt_a) {
   this.polygon_.primitive.material.uniforms['color'] =
       new Cesium.Color(r, g, b, opt_a);
 
-  //this.scene.context.sceneChanged = true;
+  this.app.sceneChanged = true;
 };
 
 
@@ -174,7 +176,7 @@ weapi.EditablePolygon.prototype.setStrokeColor = function(hexColor, opt_a) {
   this.polygon_.primitiveLine.getMaterial().uniforms['color'] =
       new Cesium.Color(r, g, b, opt_a);
 
-  //this.scene.context.sceneChanged = true;
+  this.app.sceneChanged = true;
 };
 
 
@@ -190,6 +192,7 @@ weapi.EditablePolygon.prototype.setIcon = function(src, height,
                                                    opt_maxHeight) {
   this.icon_.setImage(src, height, opt_minHeight, opt_maxHeight);
   this.repositionIcon_();
+  this.app.sceneChanged = true;
 };
 
 
@@ -277,6 +280,7 @@ weapi.EditablePolygon.prototype.showDraggers = function(visible, opt_midOnly) {
       this.markermanager_.getMarker(el).enable(visible);
     }, this);
   }
+  this.app.sceneChanged = true;
 };
 
 
@@ -308,6 +312,7 @@ weapi.EditablePolygon.prototype.repositionMidsAround_ = function(fixedId) {
     this.midMap_[neighs[0]].lon =
         goog.math.toRadians((coordsPrev[0] + coordsHere[0]) / 2);
   }
+  this.app.sceneChanged = true;
 };
 
 
@@ -379,6 +384,8 @@ weapi.EditablePolygon.prototype.addPoint = function(lat, lng,
   this.checkPointOrientationChange_();
   this.onchange_();
 
+  this.app.sceneChanged = true;
+
   return fixedId;
 };
 
@@ -396,6 +403,8 @@ weapi.EditablePolygon.prototype.movePoint = function(fixedId, lat, lng) {
   this.checkPointOrientationChange_();
   this.repositionMidsAround_(fixedId);
   this.repositionIcon_();
+
+  this.app.sceneChanged = true;
 
   this.onchange_();
 };
@@ -428,6 +437,8 @@ weapi.EditablePolygon.prototype.removePoint = function(fixedId) {
     this.repositionMidsAround_(fixedId);
     this.repositionMidsAround_(neighs[1]);
   }
+
+  this.app.sceneChanged = true;
 
   this.onchange_();
 };

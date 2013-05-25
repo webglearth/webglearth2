@@ -50,6 +50,19 @@ weapi.App = function(divid, opt_options) {
   /** @type {boolean} */
   this.forcedPause = false;
 
+  /** @type {boolean} */
+  this.sceneChanged = true;
+
+  // Debug stats for the rendering: (uncomment here and stats[_]++ below)
+  //var stats = [0, 0];
+  //setInterval(function() {
+  //  window['console']['log']('rendered:', stats[0], 'ommited:', stats[1],
+  //                           'rendered %:', stats[0] / (stats[0] + stats[1]));
+  //}, 2000);
+
+  /** @type {?Cesium.Matrix4} */
+  this.lastViewMatrix = null;
+
   /** @type {?string} */
   var proxyHost = opt_options['proxyHost'] || null;
 
@@ -119,16 +132,31 @@ weapi.App = function(divid, opt_options) {
 
   var tick = goog.bind(function() {
     if (!this.forcedPause) {
-      this.scene.initializeFrame();
-      this.scene.render();
-      if (goog.isDefAndNotNull(this.miniglobe)) {
-        this.miniglobe.draw();
-      }
-      this.markerManager.updateMarkers();
+      this.scene.initializeFrame(); // to update camera from animators and sscc
 
-      if (goog.isDefAndNotNull(this.afterFrameOnce)) {
-        this.afterFrameOnce();
-        this.afterFrameOnce = null;
+      var renderNeeded = this.sceneChanged;
+      this.sceneChanged = false;
+      if (!renderNeeded) {
+        // extended sceneChanged detection
+        var viewMatrix = this.camera.camera.getViewMatrix();
+        if (!this.lastViewMatrix || !this.lastViewMatrix.equals(viewMatrix)) {
+          this.lastViewMatrix = viewMatrix;
+          renderNeeded = true;
+        }
+      }
+      if (renderNeeded) {
+        //stats[0]++;
+        this.scene.render();
+        if (goog.isDefAndNotNull(this.miniglobe)) {
+          this.miniglobe.draw();
+        }
+        this.markerManager.updateMarkers();
+        if (goog.isDefAndNotNull(this.afterFrameOnce)) {
+          this.afterFrameOnce();
+          this.afterFrameOnce = null;
+        }
+      } else {
+        //stats[1]++;
       }
     }
     Cesium.requestAnimationFrame(tick);
@@ -193,6 +221,15 @@ weapi.App = function(divid, opt_options) {
     imgry['__image__'] = imgry['image'];
     orig.call(this, ctx, imgry);
   };
+
+  // + HACK for sceneChange detection after loading tiles:
+  var that = this;
+  var orig2 = Cesium['Tile'].prototype['processStateMachine'];
+  Cesium['Tile'].prototype['processStateMachine'] = function(c, tp, ic) {
+    /*if (this['isRenderable']) */that.sceneChanged = true;
+
+    orig2.call(this, c, tp, ic);
+  };
 };
 
 
@@ -210,6 +247,8 @@ weapi.App.prototype.handleResize = function() {
   this.canvas.width = width;
   this.canvas.height = height;
   this.scene.getCamera().frustum.aspectRatio = width / height;
+
+  this.sceneChanged = true;
 };
 
 
@@ -221,6 +260,8 @@ weapi.App.prototype.setBaseMap = function(map) {
   //this.centralBody.getImageryLayers().get(0) = map.layer;
   layers.remove(layers.get(0), false);
   layers.add(map.layer, 0);
+
+  this.sceneChanged = true;
 };
 
 
@@ -236,6 +277,8 @@ weapi.App.prototype.setOverlayMap = function(map) {
   if (goog.isDefAndNotNull(map)) {
     layers.add(map.layer);
   }
+
+  this.sceneChanged = true;
 };
 
 
@@ -321,6 +364,8 @@ weapi.App.prototype.initMarker = function(lat, lon,
 
   this.markerManager.addMarker(null, mark);
 
+  this.sceneChanged = true;
+
   return mark;
 };
 
@@ -330,6 +375,8 @@ weapi.App.prototype.initMarker = function(lat, lon,
  */
 weapi.App.prototype.removeMarker = function(marker) {
   this.markerManager.removeMarkerEx(marker);
+
+  this.sceneChanged = true;
 };
 
 
