@@ -112,10 +112,9 @@ weapi.App = function(divid, opt_options) {
   this.markerManager = new weapi.markers.MarkerManager(this, container);
 
   /**
-   * @type {!Cesium.CompositePrimitive}
+   * @type {!Array.<!Cesium.CompositePrimitive>}
    */
-  this.polygonComposite = new Cesium.CompositePrimitive();
-  primitives.add(this.polygonComposite);
+  this.composites = [];
 
   /**
    * @type {!weapi.NoRepeatTextureAtlas}
@@ -230,6 +229,42 @@ weapi.App = function(divid, opt_options) {
 
     orig2.call(this, c, tp, ic);
   };
+};
+
+
+/**
+ * @define {number} Maximum size of the group of primitives;.
+ */
+weapi.App.PRIMITIVE_GROUPING_SIZE = 10;
+
+
+/**
+ * @param {!Cesium.BillboardCollection|!Cesium.CompositePrimitive|
+ *         !Cesium.Polygon|!Cesium.PolylineCollection} object .
+ */
+weapi.App.prototype.addPrimitive = function(object) {
+  var composite = goog.array.findRight(this.composites, function(el, i, arr) {
+    return el['getLength']() < weapi.App.PRIMITIVE_GROUPING_SIZE;
+  });
+
+  if (!composite) {
+    composite = new Cesium.CompositePrimitive();
+    this.composites.push(composite);
+    this.scene.getPrimitives().add(composite);
+  }
+
+  composite.add(object);
+};
+
+
+/**
+ * @param {!Cesium.BillboardCollection|!Cesium.CompositePrimitive|
+ *         !Cesium.Polygon|!Cesium.PolylineCollection} object .
+ */
+weapi.App.prototype.removePrimitive = function(object) {
+  goog.array.forEach(this.composites, function(el, i, arr) {
+    el['remove'](object);
+  });
 };
 
 

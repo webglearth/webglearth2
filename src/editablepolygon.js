@@ -39,8 +39,8 @@ weapi.EditablePolygon = function(app, markermanager) {
    */
   this.polygon_ = new weapi.Polygon();
 
-  this.app.polygonComposite.add(this.polygon_.primitive);
-  this.app.polygonComposite.add(this.polygon_.primitiveLineCol);
+  this.app.addPrimitive(this.polygon_.primitive);
+  this.app.addPrimitive(this.polygon_.primitiveLineCol);
   this.app.sceneChanged = true;
 
   /**
@@ -92,8 +92,8 @@ weapi.EditablePolygon = function(app, markermanager) {
  */
 weapi.EditablePolygon.prototype.destroy = function() {
   this.disableClickToAdd();
-  this.app.polygonComposite.remove(this.polygon_.primitive);
-  this.app.polygonComposite.remove(this.polygon_.primitiveLineCol);
+  this.app.removePrimitive(this.polygon_.primitive);
+  this.app.removePrimitive(this.polygon_.primitiveLineCol);
   this.app.sceneChanged = true;
   this.onchange_ = goog.nullFunction;
   this.icon_.destroy();
