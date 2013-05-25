@@ -50,11 +50,11 @@ weapi.Polygon = function() {
    */
   this.numVertices_ = 0;
 
-  this.primitive['material']['uniforms']['color'] =
-      new Cesium.Color(1, 0, 0, .8);
+  this.primitive.material.uniforms['color'] = new Cesium.Color(1, 0, 0, .8);
 
-  this.primitiveLine.setColor(new Cesium.Color(0, 0, 0, 1));
-  this.primitiveLine.setWidth(3);
+  this.primitiveLine.getMaterial().uniforms['color'] =
+      new Cesium.Color(0, 0, 0, 1);
+  this.primitiveLine.setWidth(2);
 
   /**
    * @type {number}

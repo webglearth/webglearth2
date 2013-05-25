@@ -154,7 +154,7 @@ weapi.EditablePolygon.prototype.setFillColor = function(hexColor, opt_a) {
   var g = parseInt(hexColor.substr(3, 2), 16) / 255;
   var b = parseInt(hexColor.substr(5, 2), 16) / 255;
 
-  this.polygon_.primitive['material']['uniforms']['color'] =
+  this.polygon_.primitive.material.uniforms['color'] =
       new Cesium.Color(r, g, b, opt_a);
 
   //this.scene.context.sceneChanged = true;
@@ -171,7 +171,8 @@ weapi.EditablePolygon.prototype.setStrokeColor = function(hexColor, opt_a) {
   var g = parseInt(hexColor.substr(3, 2), 16) / 255;
   var b = parseInt(hexColor.substr(5, 2), 16) / 255;
 
-  this.polygon_.primitiveLine.setColor(new Cesium.Color(r, g, b, opt_a));
+  this.polygon_.primitiveLine.getMaterial().uniforms['color'] =
+      new Cesium.Color(r, g, b, opt_a);
 
   //this.scene.context.sceneChanged = true;
 };

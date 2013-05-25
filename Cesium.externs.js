@@ -633,6 +633,12 @@ Cesium.Polygon.prototype.setPositions = function(positions) {};
 
 
 /**
+ * @type {!Cesium.Material} material .
+ */
+Cesium.Polygon.prototype.material;
+
+
+/**
  * @type {boolean} .
  */
 Cesium.Polygon.prototype.show;
@@ -652,6 +658,19 @@ Cesium.PolylineCollection = function() {};
 Cesium.PolylineCollection.prototype.add = function(opt_opts) {};
 
 
+/**
+ * @constructor
+ */
+Cesium.Material = function() {};
+
+
+/**
+ * @type {!Object} .
+ */
+Cesium.Material.prototype.uniforms;
+
+
+
 
 /**
  * @constructor
@@ -666,9 +685,15 @@ Cesium.Polyline.prototype.setPositions = function(positions) {};
 
 
 /**
- * @param {!Cesium.Color} color .
+ * @param {!Cesium.Material} material .
  */
-Cesium.Polyline.prototype.setColor = function(color) {};
+Cesium.Polyline.prototype.setMaterial = function(material) {};
+
+
+/**
+ * @return {!Cesium.Material} material .
+ */
+Cesium.Polyline.prototype.getMaterial = function() {};
 
 
 /**
