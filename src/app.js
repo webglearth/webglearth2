@@ -250,7 +250,9 @@ weapi.App.prototype.addPrimitive = function(object) {
   if (!composite) {
     composite = new Cesium.CompositePrimitive();
     this.composites.push(composite);
-    this.scene.getPrimitives().add(composite);
+    var primitives = this.scene.getPrimitives();
+    primitives.add(composite);
+    primitives.raiseToTop(this.polyIconCollection);
   }
 
   composite.add(object);

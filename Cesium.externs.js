@@ -730,6 +730,12 @@ Cesium.CompositePrimitive.prototype.add = function(poly) {};
 /**
  * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.CompositePrimitive} poly .
  */
+Cesium.CompositePrimitive.prototype.raiseToTop = function(poly) {};
+
+
+/**
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.CompositePrimitive} poly .
+ */
 Cesium.CompositePrimitive.prototype.remove = function(poly) {};
 
 
