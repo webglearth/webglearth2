@@ -75,6 +75,12 @@ weapi.PolyIcon.REFERENCE_DISTANCE = 1000;
 
 
 /**
+ * @define {number} Reference canvas height (in pixels).
+ */
+weapi.PolyIcon.REFERENCE_CANVAS_HEIGHT = 768;
+
+
+/**
  * @param {number} lat in radians.
  * @param {number} lng in radians.
  */
@@ -131,10 +137,23 @@ weapi.PolyIcon.prototype.setImage = function(src, height,
       var coords = this.app.polyIconAtlas.atlas.getTextureCoordinates()[index];
       var texture = this.app.polyIconAtlas.atlas.getTexture();
       var h = coords.height * texture.getHeight();
+      var canvasHeight = this.app.canvas.clientHeight;
 
-      //window['console']['log'](height);
-      this.height_ = height;
-      this.billboard.setScale(weapi.PolyIcon.REFERENCE_DISTANCE * height / h);
+      // calculate the positional correction factor (size of 1 pixel in meters)
+      var factor = this.app.camera.camera.frustum.getPixelSize(
+          new Cesium.Cartesian2(weapi.PolyIcon.REFERENCE_CANVAS_HEIGHT,
+                                weapi.PolyIcon.REFERENCE_CANVAS_HEIGHT),
+          weapi.PolyIcon.REFERENCE_DISTANCE);
+
+      this.height_ = height * factor.y / 2;
+
+      // shader does: f(x) = img_h * x / d;
+      // we need: g(x) = x * (ref_d / d) * (canvas_h / ref_h);
+      // result: h(x) = (f(x) / img_h) * ref_d * (canvas_h / ref_h) = g(x);
+      this.billboard.setScale((height / h) *
+          weapi.PolyIcon.REFERENCE_DISTANCE *
+          (canvasHeight / weapi.PolyIcon.REFERENCE_CANVAS_HEIGHT));
+
       this.setLatLng(this.lat_, this.lng_);
       this.app.sceneChanged = true;
     }, this));

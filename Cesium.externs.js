@@ -1194,6 +1194,14 @@ Cesium.PerspectiveFrustrum.prototype.near;
 Cesium.PerspectiveFrustrum.prototype.getProjectionMatrix = function() {};
 
 
+/**
+ * @param {!Cesium.Cartesian2} canvasDim .
+ * @param {number=} opt_dist .
+ * @return {!Cesium.Cartesian2}
+ */
+Cesium.PerspectiveFrustrum.prototype.getPixelSize = function(canvasDim, opt_dist) {};
+
+
 
 /**
  * @constructor
