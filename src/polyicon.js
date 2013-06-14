@@ -52,12 +52,6 @@ weapi.PolyIcon = function(lat, lng, app) {
    * @type {number}
    * @private
    */
-  this.height_ = 0;
-
-  /**
-   * @type {number}
-   * @private
-   */
   this.minHeight_ = 0;
 
   /**
@@ -90,7 +84,7 @@ weapi.PolyIcon.prototype.setLatLng = function(lat, lng) {
 
   if (this.billboard) {
     var position = Cesium.Ellipsoid.WGS84.cartographicToCartesian(
-        new Cesium.Cartographic(this.lng_, this.lat_, this.height_));
+        new Cesium.Cartographic(this.lng_, this.lat_));
 
     this.billboard.setPosition(position);
   }
@@ -139,14 +133,6 @@ weapi.PolyIcon.prototype.setImage = function(src, height,
       var h = coords.height * texture.getHeight();
       var canvasHeight = this.app.canvas.clientHeight;
 
-      // calculate the positional correction factor (size of 1 pixel in meters)
-      var factor = this.app.camera.camera.frustum.getPixelSize(
-          new Cesium.Cartesian2(weapi.PolyIcon.REFERENCE_CANVAS_HEIGHT,
-                                weapi.PolyIcon.REFERENCE_CANVAS_HEIGHT),
-          weapi.PolyIcon.REFERENCE_DISTANCE);
-
-      this.height_ = height * factor.y / 2;
-
       // shader does: f(x) = img_h * x / d;
       // we need: g(x) = x * (ref_d / d) * (canvas_h / ref_h);
       // result: h(x) = (f(x) / img_h) * ref_d * (canvas_h / ref_h) = g(x);
@@ -157,7 +143,7 @@ weapi.PolyIcon.prototype.setImage = function(src, height,
       this.setLatLng(this.lat_, this.lng_);
       this.app.sceneChanged = true;
     }, this));
-    //this.billboard.setVerticalOrigin(Cesium.VerticalOrigin.BOTTOM);
+    this.billboard.setVerticalOrigin(Cesium.VerticalOrigin.BOTTOM);
   } else {
     if (this.billboard) {
       this.app.polyIconCollection.remove(this.billboard);
