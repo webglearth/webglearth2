@@ -42,6 +42,11 @@ weapi.App = function(divid, opt_options) {
   /** @type {?Function} */
   this.afterFrameOnce = null;
 
+  if (options['sky'] === false) {
+    // preinit the context to have the right params in case of transparent bkg
+    var tmpCtx = new Cesium.Context(this.canvas, {'alpha': true});
+  }
+
   this.scene = new Cesium.Scene(this.canvas);
 
   /** @type {?weapi.MiniGlobe} */
@@ -75,7 +80,8 @@ weapi.App = function(divid, opt_options) {
 
   if (options['atmosphere'] !== false) {
     this.scene.skyAtmosphere = new Cesium.SkyAtmosphere();
-
+  }
+  if (options['sky'] !== false) {
     //TODO: solve resources
     var skyBoxBaseUrl = (goog.DEBUG ? '../deploy/' : '') + 'SkyBox/';
     this.scene.skyBox = new Cesium.SkyBox({
@@ -87,7 +93,7 @@ weapi.App = function(divid, opt_options) {
       'negativeZ' : skyBoxBaseUrl + 'mz.jpg'
     });
   } else {
-    //TODO: transparent color ?
+    this.scene.backgroundColor = new Cesium.Color(0, 0, 0, 0);
   }
 
   var primitives = this.scene.getPrimitives();

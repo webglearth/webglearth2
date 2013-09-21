@@ -742,8 +742,10 @@ Cesium.CompositePrimitive.prototype.remove = function(poly) {};
 
 /**
  * @constructor
+ * @param {HTMLCanvasElement|Element} canvas
+ * @param {Object} opt_opts
  */
-Cesium.Context = function() {};
+Cesium.Context = function(canvas, opt_opts) {};
 
 
 /**
