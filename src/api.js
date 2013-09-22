@@ -6,6 +6,10 @@
  */
 
 goog.provide('weapi');
+goog.provide('weapi.exports.App');
+goog.provide('weapi.exports.Map');
+goog.provide('weapi.exports.Maps');
+goog.provide('weapi.exports.Marker');
 goog.provide('weapi.exports.Polygon');
 
 goog.require('goog.math');
@@ -20,14 +24,34 @@ goog.require('weapi.MiniGlobe');
 //TODO: polygons -- new polyicons
 
 
-//Constructor
-goog.exportSymbol('WebGLEarth', weapi.App);
+/**
+ * @define {boolean} Generate exports?
+ */
+weapi.GENERATE_EXPORTS = true;
+
+var exportSymbol = function(symbol, obj) {
+  if (weapi.GENERATE_EXPORTS) goog.exportSymbol(symbol, obj);
+};
+
+
+
+/**
+ * @param {string} divid .
+ * @param {Object=} opt_options Application options.
+ * @constructor
+ */
+weapi.exports.App = weapi.App;
+exportSymbol('WebGLEarth', weapi.exports.App);
 
 
 ////////////////////////////////////////////////////////////////////////////////
 /* Camera manipulation */
 
-goog.exportSymbol('WebGLEarth.prototype.setAltitude', function(alt) {
+
+/**
+ * @param {number} alt
+ */
+weapi.exports.App.prototype.setAltitude = function(alt) {
   var cam = this.camera;
   cam.animator.cancel();
 
@@ -36,129 +60,213 @@ goog.exportSymbol('WebGLEarth.prototype.setAltitude', function(alt) {
 
   cam.setPos(undefined, undefined, alt);
   cam.setHeadingAndTilt(heading, tilt);
-});
+};
+exportSymbol('WebGLEarth.prototype.setAltitude',
+             weapi.exports.App.prototype.setAltitude);
 
-goog.exportSymbol('WebGLEarth.prototype.getAltitude', function() {
+
+/**
+ * @return {number}
+ */
+weapi.exports.App.prototype.getAltitude = function() {
   return this.camera.getPos()[2];
-});
+};
+exportSymbol('WebGLEarth.prototype.getAltitude',
+             weapi.exports.App.prototype.getAltitude);
 
-goog.exportSymbol('WebGLEarth.prototype.setZoom', function(zoom) {
+
+/**
+ * @param {number} zoom
+ */
+weapi.exports.App.prototype.setZoom = function(zoom) {
   var alt = weapi.Camera.calcAltitudeForZoom(this.canvas,
                                              this.camera.camera.frustum.fovy,
                                              zoom, this.camera.getPos()[0]);
   this['setAltitude'](alt);
-});
+};
+exportSymbol('WebGLEarth.prototype.setZoom',
+             weapi.exports.App.prototype.setZoom);
 
-goog.exportSymbol('WebGLEarth.prototype.getZoom', function() {
+
+/**
+ * @return {number}
+ */
+weapi.exports.App.prototype.getZoom = function() {
   var pos = this.camera.getPos();
   var zoom = weapi.Camera.calcZoomForAltitude(this.canvas,
                                               this.camera.camera.frustum.fovy,
                                               pos[2], pos[0]);
   return zoom;
-});
+};
+exportSymbol('WebGLEarth.prototype.getZoom',
+             weapi.exports.App.prototype.getZoom);
 
-goog.exportSymbol('WebGLEarth.prototype.setPosition', function(lat, lon,
+
+/**
+ * @param {number} lat
+ * @param {number} lon
+ * @param {number=} opt_zoom
+ * @param {number=} opt_altitude
+ * @param {number=} opt_heading
+ * @param {number=} opt_tilt
+ * @param {boolean=} opt_targetPosition
+ */
+weapi.exports.App.prototype.setPosition = function(lat, lon,
     opt_zoom, opt_altitude, opt_heading, opt_tilt, opt_targetPosition) {
-      var cam = this.camera;
-      cam.animator.cancel();
+  var cam = this.camera;
+  cam.animator.cancel();
 
-      lat = goog.math.toRadians(lat);
-      lon = goog.math.toRadians(lon);
+  lat = goog.math.toRadians(lat);
+  lon = goog.math.toRadians(lon);
 
-      if (goog.isDefAndNotNull(opt_zoom)) {
-        //window['console']['log']('Zoom is no longer supported.');
-        opt_altitude = weapi.Camera.calcAltitudeForZoom(this.canvas,
-                                                        cam.camera.frustum.fovy,
-                                                        opt_zoom, lat);
-      }
+  if (goog.isDefAndNotNull(opt_zoom)) {
+    //window['console']['log']('Zoom is no longer supported.');
+    opt_altitude = weapi.Camera.calcAltitudeForZoom(this.canvas,
+        cam.camera.frustum.fovy,
+        opt_zoom, lat);
+  }
 
-      var alt = opt_altitude || cam.getPos()[2];
-      var heading = goog.math.toRadians(opt_heading) || cam.getHeading();
-      var tilt = goog.math.toRadians(opt_tilt) || cam.getTilt();
+  var alt = goog.isDef(opt_altitude) ? opt_altitude : cam.getPos()[2];
+  var heading = goog.isDef(opt_heading) ?
+                goog.math.toRadians(opt_heading) : cam.getHeading();
+  var tilt = goog.isDef(opt_tilt) ?
+             goog.math.toRadians(opt_tilt) : cam.getTilt();
 
-      if (opt_targetPosition) {
-        var newPos = weapi.Camera.calculatePositionForGivenTarget(
-            lat, lon, alt,
-            heading, tilt);
+  if (opt_targetPosition) {
+    var newPos = weapi.Camera.calculatePositionForGivenTarget(
+        lat, lon, alt,
+        heading, tilt);
 
-        lat = newPos[0];
-        lon = newPos[1];
-        if (goog.isDefAndNotNull(opt_zoom)) {
-          // recalc altitude to better fit modified latitude
-          //window['console']['log']('Zoom is no longer supported.');
-          alt = weapi.Camera.calcAltitudeForZoom(this.canvas,
-                                                 cam.camera.frustum.fovy,
-                                                 opt_zoom, lat);
-        }
-      }
+    lat = newPos[0];
+    lon = newPos[1];
+    if (goog.isDefAndNotNull(opt_zoom)) {
+      // recalc altitude to better fit modified latitude
+      //window['console']['log']('Zoom is no longer supported.');
+      alt = weapi.Camera.calcAltitudeForZoom(this.canvas,
+          cam.camera.frustum.fovy,
+          opt_zoom, lat);
+    }
+  }
 
-      cam.setPosHeadingAndTilt(lat, lon, alt, heading, tilt);
-    });
+  cam.setPosHeadingAndTilt(lat, lon, alt, heading, tilt);
+};
+exportSymbol('WebGLEarth.prototype.setPosition',
+             weapi.exports.App.prototype.setPosition);
 
-goog.exportSymbol('WebGLEarth.prototype.getPosition', function() {
+
+/**
+ * @return {!Array.<!number>}
+ */
+weapi.exports.App.prototype.getPosition = function() {
   var pos = this.camera.getPos();
   return [goog.math.toDegrees(pos[0]), goog.math.toDegrees(pos[1])];
-});
+};
+exportSymbol('WebGLEarth.prototype.getPosition',
+             weapi.exports.App.prototype.getPosition);
 
-goog.exportSymbol('WebGLEarth.prototype.getHeading', function() {
+
+/**
+ * @return {number}
+ */
+weapi.exports.App.prototype.getHeading = function() {
   return goog.math.toDegrees(this.camera.getHeading());
-});
+};
+exportSymbol('WebGLEarth.prototype.getHeading',
+             weapi.exports.App.prototype.getHeading);
 
-goog.exportSymbol('WebGLEarth.prototype.getTilt', function() {
+
+/**
+ * @return {number}
+ */
+weapi.exports.App.prototype.getTilt = function() {
   return goog.math.toDegrees(this.camera.getTilt());
-});
+};
+exportSymbol('WebGLEarth.prototype.getTilt',
+             weapi.exports.App.prototype.getTilt);
 
-goog.exportSymbol('WebGLEarth.prototype.setHeading', function(heading) {
+
+/**
+ * @param {number} heading
+ */
+weapi.exports.App.prototype.setHeading = function(heading) {
   this.camera.animator.cancel();
   this.camera.setHeading(goog.math.toRadians(heading));
-});
+};
+exportSymbol('WebGLEarth.prototype.setHeading',
+             weapi.exports.App.prototype.setHeading);
 
-goog.exportSymbol('WebGLEarth.prototype.setTilt', function(tilt) {
+
+/**
+ * @param {number} tilt
+ */
+weapi.exports.App.prototype.setTilt = function(tilt) {
   this.camera.animator.cancel();
   this.camera.setTilt(goog.math.toRadians(tilt));
-});
+};
+exportSymbol('WebGLEarth.prototype.setTilt',
+             weapi.exports.App.prototype.setTilt);
 
-goog.exportSymbol('WebGLEarth.prototype.flyTo', function(latitude, longitude,
-                                                         opt_altitude,
-                                                         opt_heading,
-                                                         opt_tilt,
-                                                         opt_targetPosition) {
-      this.camera.animator.flyTo(goog.math.toRadians(latitude),
-          goog.math.toRadians(longitude),
-          opt_altitude,
-          goog.math.toRadians(opt_heading),
-          goog.math.toRadians(opt_tilt),
-          opt_targetPosition);
-    });
 
-goog.exportSymbol('WebGLEarth.prototype.flyToFitBounds', function(minlat,
-                                                                  maxlat,
-                                                                  minlon,
-                                                                  maxlon) {
-      minlat = goog.math.toRadians(minlat);
-      maxlat = goog.math.toRadians(maxlat);
-      minlon = goog.math.toRadians(minlon);
-      maxlon = goog.math.toRadians(maxlon);
+/**
+ * @param {number} latitude
+ * @param {number} longitude
+ * @param {number=} opt_altitude
+ * @param {number=} opt_heading
+ * @param {number=} opt_tilt
+ * @param {boolean=} opt_targetPosition
+ */
+weapi.exports.App.prototype.flyTo = function(latitude, longitude, opt_altitude,
+                                             opt_heading, opt_tilt,
+                                             opt_targetPosition) {
+  this.camera.animator.flyTo(goog.math.toRadians(latitude),
+      goog.math.toRadians(longitude),
+      opt_altitude,
+      goog.isDef(opt_heading) ? goog.math.toRadians(opt_heading) : undefined,
+      goog.isDef(opt_tilt) ? goog.math.toRadians(opt_tilt) : undefined,
+      opt_targetPosition);
+};
+exportSymbol('WebGLEarth.prototype.flyTo',
+             weapi.exports.App.prototype.flyTo);
 
-      var altitude = this.camera.calcDistanceToViewBounds(minlat, maxlat,
-                                                          minlon, maxlon);
 
-      minlon = goog.math.modulo(minlon, 2 * Math.PI);
-      maxlon = goog.math.modulo(maxlon, 2 * Math.PI);
+/**
+ * @param {number} minlat
+ * @param {number} maxlat
+ * @param {number} minlon
+ * @param {number} maxlon
+ */
+weapi.exports.App.prototype.flyToFitBounds = function(minlat, maxlat,
+                                                      minlon, maxlon) {
+  minlat = goog.math.toRadians(minlat);
+  maxlat = goog.math.toRadians(maxlat);
+  minlon = goog.math.toRadians(minlon);
+  maxlon = goog.math.toRadians(maxlon);
 
-      var lonDiff = minlon - maxlon;
-      if (lonDiff < -Math.PI) {
-        minlon += 2 * Math.PI;
-      } else if (lonDiff > Math.PI) {
-        maxlon += 2 * Math.PI;
-      }
+  var altitude = this.camera.calcDistanceToViewBounds(minlat, maxlat,
+      minlon, maxlon);
 
-      var center = [(minlat + maxlat) / 2, (minlon + maxlon) / 2];
+  minlon = goog.math.modulo(minlon, 2 * Math.PI);
+  maxlon = goog.math.modulo(maxlon, 2 * Math.PI);
 
-      this.camera.animator.flyTo(center[0], center[1], altitude);
-    });
+  var lonDiff = minlon - maxlon;
+  if (lonDiff < -Math.PI) {
+    minlon += 2 * Math.PI;
+  } else if (lonDiff > Math.PI) {
+    maxlon += 2 * Math.PI;
+  }
 
-goog.exportSymbol('WebGLEarth.prototype.getTarget', function() {
+  var center = [(minlat + maxlat) / 2, (minlon + maxlon) / 2];
+
+  this.camera.animator.flyTo(center[0], center[1], altitude);
+};
+exportSymbol('WebGLEarth.prototype.flyToFitBounds',
+             weapi.exports.App.prototype.flyToFitBounds);
+
+
+/**
+ * @return {Array.<!number>|undefined}
+ */
+weapi.exports.App.prototype.getTarget = function() {
   var center = new Cesium.Cartesian2(this.canvas.width / 2,
                                      this.canvas.height / 2);
   var position = this.camera.camera.controller.pickEllipsoid(center);
@@ -170,16 +278,23 @@ goog.exportSymbol('WebGLEarth.prototype.getTarget', function() {
   } else {
     return undefined;
   }
-});
+};
+exportSymbol('WebGLEarth.prototype.getTarget',
+             weapi.exports.App.prototype.getTarget);
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
 /* Various */
 
-goog.exportSymbol('WebGLEarth.prototype.handleResize',
-                  weapi.App.prototype.handleResize);
+exportSymbol('WebGLEarth.prototype.handleResize',
+             weapi.exports.App.prototype.handleResize);
 
-goog.exportSymbol('WebGLEarth.prototype.saveScreenshot', function(name) {
+
+/**
+ * @param {string} name
+ */
+weapi.exports.App.prototype.saveScreenshot = function(name) {
   this.afterFrameOnce = goog.bind(function() {
     var canvas_ = we.canvas2image.prepareCanvas(this.scene.getCanvas(),
                                                 this.markerManager,
@@ -187,9 +302,15 @@ goog.exportSymbol('WebGLEarth.prototype.saveScreenshot', function(name) {
     we.canvas2image.saveCanvasAsPNG(canvas_, name);
   }, this);
   this.sceneChanged = true;
-});
+};
+exportSymbol('WebGLEarth.prototype.saveScreenshot',
+             weapi.exports.App.prototype.saveScreenshot);
 
-goog.exportSymbol('WebGLEarth.prototype.getScreenshot', function(callback) {
+
+/**
+ * @param {!function(string)} callback
+ */
+weapi.exports.App.prototype.getScreenshot = function(callback) {
   this.afterFrameOnce = goog.bind(function() {
     var canvas_ = we.canvas2image.prepareCanvas(this.scene.getCanvas(),
                                                 this.markerManager,
@@ -197,9 +318,16 @@ goog.exportSymbol('WebGLEarth.prototype.getScreenshot', function(callback) {
     callback(we.canvas2image.getCanvasAsDataURL(canvas_));
   }, this);
   this.sceneChanged = true;
-});
+};
+exportSymbol('WebGLEarth.prototype.getScreenshot',
+             weapi.exports.App.prototype.getScreenshot);
 
-goog.exportSymbol('WebGLEarth.prototype.showMiniGlobe', function(src, size) {
+
+/**
+ * @param {string} src
+ * @param {number} size
+ */
+weapi.exports.App.prototype.showMiniGlobe = function(src, size) {
   if (goog.isDefAndNotNull(src)) {
     this.miniglobe = new weapi.MiniGlobe(this, 32, 32, src);
     this.miniglobe.setSize(size);
@@ -208,80 +336,148 @@ goog.exportSymbol('WebGLEarth.prototype.showMiniGlobe', function(src, size) {
   }
 
   this.sceneChanged = true;
-});
+};
+exportSymbol('WebGLEarth.prototype.showMiniGlobe',
+             weapi.exports.App.prototype.showMiniGlobe);
 
-goog.exportSymbol('WebGLEarth.prototype.pauseRendering', function() {
+
+/** */
+weapi.exports.App.prototype.pauseRendering = function() {
   this.forcedPause = true;
-});
+};
+exportSymbol('WebGLEarth.prototype.pauseRendering',
+             weapi.exports.App.prototype.pauseRendering);
 
-goog.exportSymbol('WebGLEarth.prototype.resumeRendering', function() {
+
+/** */
+weapi.exports.App.prototype.resumeRendering = function() {
   this.forcedPause = false;
-});
+};
+exportSymbol('WebGLEarth.prototype.resumeRendering',
+             weapi.exports.App.prototype.resumeRendering);
 
-goog.exportSymbol('WebGLEarth.prototype.getBestAvailablePixelColor',
-    function(lat, lng) {
-      return this.getBestAvailablePixelColorFromLayer(
-          lat / 180 * Math.PI, lng / 180 * Math.PI);
-    });
+
+/**
+ * @param {number} lat
+ * @param {number} lng
+ * @return {Array.<number>|null}
+ */
+weapi.exports.App.prototype.getBestAvailablePixelColor = function(lat, lng) {
+  return this.getBestAvailablePixelColorFromLayer(
+      lat / 180 * Math.PI, lng / 180 * Math.PI);
+};
+exportSymbol('WebGLEarth.prototype.getBestAvailablePixelColor',
+             weapi.exports.App.prototype.getBestAvailablePixelColor);
+
 
 ////////////////////////////////////////////////////////////////////////////////
 /* Maps */
 
-goog.exportSymbol('WebGLEarth.Maps', weapi.maps.MapType);
-goog.exportSymbol('WebGLEarth.prototype.initMap', function(type, opts) {
-  return weapi.maps.initMap(this, type, opts);
-});
-goog.exportSymbol('WebGLEarth.prototype.setBaseMap',
-                  weapi.App.prototype.setBaseMap);
-goog.exportSymbol('WebGLEarth.prototype.setOverlayMap',
-                  weapi.App.prototype.setOverlayMap);
 
-goog.exportSymbol('WebGLEarth.Map', weapi.Map);
-goog.exportSymbol('WebGLEarth.Map.prototype.setBoundingBox',
-                  weapi.Map.prototype.setBoundingBox);
-goog.exportSymbol('WebGLEarth.Map.prototype.setOpacity',
-                  weapi.Map.prototype.setOpacity);
-goog.exportSymbol('WebGLEarth.Map.prototype.getOpacity',
-                  weapi.Map.prototype.getOpacity);
+
+/** @constructor */
+weapi.exports.Maps = weapi.maps.MapType;
+exportSymbol('WebGLEarth.Maps', weapi.exports.Maps);
+
+
+/**
+ * @param {!weapi.maps.MapType} type
+ * @param {!Object.<string, Object>|!Array.<Object>} opts
+ * @return {weapi.Map}
+ */
+weapi.exports.App.prototype.initMap = function(type, opts) {
+  return weapi.maps.initMap(this, type, opts);
+};
+exportSymbol('WebGLEarth.prototype.initMap',
+             weapi.exports.App.prototype.initMap);
+exportSymbol('WebGLEarth.prototype.setBaseMap',
+             weapi.exports.App.prototype.setBaseMap);
+exportSymbol('WebGLEarth.prototype.setOverlayMap',
+             weapi.exports.App.prototype.setOverlayMap);
+
+
+
+/** @constructor */
+weapi.exports.Map = weapi.Map;
+exportSymbol('WebGLEarth.Map', weapi.exports.Map);
+exportSymbol('WebGLEarth.Map.prototype.setBoundingBox',
+             weapi.exports.Map.prototype.setBoundingBox);
+exportSymbol('WebGLEarth.Map.prototype.setOpacity',
+             weapi.exports.Map.prototype.setOpacity);
+exportSymbol('WebGLEarth.Map.prototype.getOpacity',
+             weapi.exports.Map.prototype.getOpacity);
 
 
 ////////////////////////////////////////////////////////////////////////////////
 /* Markers */
 
-goog.exportSymbol('WebGLEarth.Marker', weapi.markers.PrettyMarker);
-goog.exportSymbol('WebGLEarth.Marker.prototype.setPosition', function(lat,
-                                                                      lon) {
-      this.lat = goog.math.toRadians(lat);
-      this.lon = goog.math.toRadians(lon);
-    });
 
-goog.exportSymbol('WebGLEarth.Marker.prototype.bindPopup', function(content,
-                                                                    maxWidth,
-                                                                    closeBtn) {
-      this.attachPopup(new weapi.markers.Popup(content, maxWidth, closeBtn));
-      return this;
-    });
 
-goog.exportSymbol('WebGLEarth.Marker.prototype.openPopup', function() {
+/** @constructor */
+weapi.exports.Marker = weapi.markers.PrettyMarker;
+exportSymbol('WebGLEarth.Marker', weapi.exports.Marker);
+
+
+/**
+ * @param {number} lat
+ * @param {number} lon
+ */
+weapi.exports.Marker.prototype.setPosition = function(lat, lon) {
+  this.lat = goog.math.toRadians(lat);
+  this.lon = goog.math.toRadians(lon);
+};
+exportSymbol('WebGLEarth.Marker.prototype.setPosition',
+             weapi.exports.Marker.prototype.setPosition);
+
+
+/**
+ * @param {string} content
+ * @param {number} maxWidth
+ * @param {boolean} closeBtn
+ * @return {!weapi.exports.Marker}
+ */
+weapi.exports.Marker.prototype.bindPopup = function(content, maxWidth,
+                                                    closeBtn) {
+  this.attachPopup(new weapi.markers.Popup(content, maxWidth, closeBtn));
+  return this;
+};
+exportSymbol('WebGLEarth.Marker.prototype.bindPopup',
+             weapi.exports.Marker.prototype.bindPopup);
+
+
+/** */
+weapi.exports.Marker.prototype.openPopup = function() {
   this.showPopup(true);
-});
+};
+exportSymbol('WebGLEarth.Marker.prototype.openPopup',
+             weapi.exports.Marker.prototype.openPopup);
 
-goog.exportSymbol('WebGLEarth.Marker.prototype.closePopup', function() {
+
+/** */
+weapi.exports.Marker.prototype.closePopup = function() {
   this.showPopup(false);
-});
+};
+exportSymbol('WebGLEarth.Marker.prototype.closePopup',
+             weapi.exports.Marker.prototype.closePopup);
 
-goog.exportSymbol('WebGLEarth.prototype.initMarker',
-                  weapi.App.prototype.initMarker);
-goog.exportSymbol('WebGLEarth.prototype.removeMarker',
-                  weapi.App.prototype.removeMarker);
+exportSymbol('WebGLEarth.prototype.initMarker',
+             weapi.exports.App.prototype.initMarker);
+exportSymbol('WebGLEarth.prototype.removeMarker',
+             weapi.exports.App.prototype.removeMarker);
 
-goog.exportSymbol('WebGLEarth.Marker.prototype.on', function(type, listener) {
+
+/**
+ * @param {string} type
+ * @param {!function(Event)} listener
+ * @return {number}
+ */
+weapi.exports.Marker.prototype.on = function(type, listener) {
   /**
    * Wraps the listener function with a wrapper function
    * that adds some extended event info.
    * @param {!weapi.markers.AbstractMarker} marker .
    * @param {function(Event)} listener Original listener function.
-   * @return {function(Event)} Wrapper listener.
+   * @return {!function(Event)} Wrapper listener.
    */
   var wrap = function(marker, listener) {
     return function(e) {
@@ -295,20 +491,35 @@ goog.exportSymbol('WebGLEarth.Marker.prototype.on', function(type, listener) {
   var key = goog.events.listen(this.element, type, wrap(this, listener));
   listener[goog.getUid(this) + '___eventKey_' + type] = key;
 
-  return key;
-});
-goog.exportSymbol('WebGLEarth.Marker.prototype.off', weapi.App.prototype.off);
-goog.exportSymbol('WebGLEarth.Marker.prototype.offAll', function(type) {
+  return /** @type {number} */(key);
+};
+exportSymbol('WebGLEarth.Marker.prototype.on',
+             weapi.exports.Marker.prototype.on);
+
+
+/**
+ */
+weapi.exports.Marker.prototype.off = weapi.App.prototype.off;
+exportSymbol('WebGLEarth.Marker.prototype.off',
+             weapi.exports.Marker.prototype.off);
+
+
+/**
+ * @param {string} type
+ */
+weapi.exports.Marker.prototype.offAll = function(type) {
   goog.events.removeAll(this.element, type);
-});
+};
+exportSymbol('WebGLEarth.Marker.prototype.offAll',
+             weapi.exports.Marker.prototype.offAll);
 
 
 ////////////////////////////////////////////////////////////////////////////////
 /* Events */
 
-goog.exportSymbol('WebGLEarth.prototype.on', weapi.App.prototype.on);
-goog.exportSymbol('WebGLEarth.prototype.off', weapi.App.prototype.off);
-goog.exportSymbol('WebGLEarth.prototype.offAll', weapi.App.prototype.offAll);
+exportSymbol('WebGLEarth.prototype.on', weapi.exports.App.prototype.on);
+exportSymbol('WebGLEarth.prototype.off', weapi.exports.App.prototype.off);
+exportSymbol('WebGLEarth.prototype.offAll', weapi.exports.App.prototype.offAll);
 
 ////////////////////////////////////////////////////////////////////////////////
 /* Polygons */
@@ -325,71 +536,72 @@ weapi.exports.Polygon = function(app) {
 };
 goog.inherits(weapi.exports.Polygon, weapi.EditablePolygon);
 
-goog.exportSymbol('WebGLEarth.Polygon', weapi.exports.Polygon);
+exportSymbol('WebGLEarth.Polygon', weapi.exports.Polygon);
 
-goog.exportSymbol('WebGLEarth.Polygon.prototype.destroy',
-                  weapi.exports.Polygon.prototype.destroy);
+exportSymbol('WebGLEarth.Polygon.prototype.destroy',
+             weapi.exports.Polygon.prototype.destroy);
 
-goog.exportSymbol('WebGLEarth.Polygon.prototype.enableClickToAdd',
-                  weapi.exports.Polygon.prototype.enableClickToAdd);
-goog.exportSymbol('WebGLEarth.Polygon.prototype.disableClickToAdd',
-                  weapi.exports.Polygon.prototype.disableClickToAdd);
+exportSymbol('WebGLEarth.Polygon.prototype.enableClickToAdd',
+             weapi.exports.Polygon.prototype.enableClickToAdd);
+exportSymbol('WebGLEarth.Polygon.prototype.disableClickToAdd',
+             weapi.exports.Polygon.prototype.disableClickToAdd);
 
-goog.exportSymbol('WebGLEarth.Polygon.prototype.setFillColor',
-                  weapi.exports.Polygon.prototype.setFillColor);
-goog.exportSymbol('WebGLEarth.Polygon.prototype.setStrokeColor',
-                  weapi.exports.Polygon.prototype.setStrokeColor);
+exportSymbol('WebGLEarth.Polygon.prototype.setFillColor',
+             weapi.exports.Polygon.prototype.setFillColor);
+exportSymbol('WebGLEarth.Polygon.prototype.setStrokeColor',
+             weapi.exports.Polygon.prototype.setStrokeColor);
 
-goog.exportSymbol('WebGLEarth.Polygon.prototype.setOnChange',
-                  weapi.exports.Polygon.prototype.setOnChange);
-goog.exportSymbol('WebGLEarth.Polygon.prototype.isValid',
-                  weapi.exports.Polygon.prototype.isValid);
-goog.exportSymbol('WebGLEarth.Polygon.prototype.getRoughArea',
-                  weapi.exports.Polygon.prototype.getRoughArea);
-goog.exportSymbol('WebGLEarth.Polygon.prototype.intersects',
-                  weapi.exports.Polygon.prototype.intersects);
+exportSymbol('WebGLEarth.Polygon.prototype.setOnChange',
+             weapi.exports.Polygon.prototype.setOnChange);
+exportSymbol('WebGLEarth.Polygon.prototype.isValid',
+             weapi.exports.Polygon.prototype.isValid);
+exportSymbol('WebGLEarth.Polygon.prototype.getRoughArea',
+             weapi.exports.Polygon.prototype.getRoughArea);
+exportSymbol('WebGLEarth.Polygon.prototype.intersects',
+             weapi.exports.Polygon.prototype.intersects);
 
-goog.exportSymbol('WebGLEarth.Polygon.prototype.setIcon',
-                  weapi.exports.Polygon.prototype.setIcon);
-goog.exportSymbol('WebGLEarth.Polygon.prototype.showDraggers',
-                  weapi.exports.Polygon.prototype.showDraggers);
+exportSymbol('WebGLEarth.Polygon.prototype.setIcon',
+             weapi.exports.Polygon.prototype.setIcon);
+exportSymbol('WebGLEarth.Polygon.prototype.showDraggers',
+             weapi.exports.Polygon.prototype.showDraggers);
 
-goog.exportSymbol('WebGLEarth.Polygon.prototype.addPoint',
-                  weapi.exports.Polygon.prototype.addPoint);
-goog.exportSymbol('WebGLEarth.Polygon.prototype.movePoint',
-                  weapi.exports.Polygon.prototype.movePoint);
-goog.exportSymbol('WebGLEarth.Polygon.prototype.removePoint',
-                  weapi.exports.Polygon.prototype.removePoint);
+exportSymbol('WebGLEarth.Polygon.prototype.addPoint',
+             weapi.exports.Polygon.prototype.addPoint);
+exportSymbol('WebGLEarth.Polygon.prototype.movePoint',
+             weapi.exports.Polygon.prototype.movePoint);
+exportSymbol('WebGLEarth.Polygon.prototype.removePoint',
+             weapi.exports.Polygon.prototype.removePoint);
 
-goog.exportSymbol('WebGLEarth.Polygon.prototype.getPoints',
-                  weapi.exports.Polygon.prototype.getPoints);
-goog.exportSymbol('WebGLEarth.Polygon.prototype.getCentroid',
-                  weapi.exports.Polygon.prototype.getCentroid);
+exportSymbol('WebGLEarth.Polygon.prototype.getPoints',
+             weapi.exports.Polygon.prototype.getPoints);
+exportSymbol('WebGLEarth.Polygon.prototype.getCentroid',
+             weapi.exports.Polygon.prototype.getCentroid);
 
-goog.exportSymbol('WebGLEarth.Polygon.prototype.onClick',
-                  function(callback) {
-                    goog.events.listen(this.app.canvas,
-                        goog.events.EventType.CLICK, function(e) {
-                      var cartesian = this.app.camera.camera.controller.
-                          pickEllipsoid(
-                          new Cesium.Cartesian2(e.offsetX, e.offsetY));
-                      if (goog.isDefAndNotNull(cartesian)) {
-                        var carto = Cesium.Ellipsoid.WGS84.
-                            cartesianToCartographic(cartesian);
-                        if (this.isPointIn(
-                            goog.math.toDegrees(carto.latitude),
-                            goog.math.toDegrees(carto.longitude)) ||
-                                this.icon_.isPointIn(e.offsetX, e.offsetY)) {
-                          callback(this);
-                        }
-                      }
-                    }, false, this);
-                  });
+
+/**
+ * @param {!function(!weapi.exports.Polygon)} callback
+ */
+weapi.exports.Polygon.prototype.onClick = function(callback) {
+  goog.events.listen(this.app.canvas, goog.events.EventType.CLICK, function(e) {
+    var cartesian = this.app.camera.camera.controller.pickEllipsoid(
+        new Cesium.Cartesian2(e.offsetX, e.offsetY));
+    if (goog.isDefAndNotNull(cartesian)) {
+      var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
+      if (this.isPointIn(goog.math.toDegrees(carto.latitude),
+                         goog.math.toDegrees(carto.longitude)) ||
+          this.icon_.isPointIn(e.offsetX, e.offsetY)) {
+        callback(this);
+      }
+    }
+  }, false, this);
+};
+exportSymbol('WebGLEarth.Polygon.prototype.onClick',
+             weapi.exports.Polygon.prototype.onClick);
 
 
 ////////////////////////////////////////////////////////////////////////////////
 /* DEPRECATED */
-goog.exportSymbol('WebGLEarth.prototype.setCenter', function(coords) {
+exportSymbol('WebGLEarth.prototype.setCenter', function(coords) {
   var cam = this.camera;
   cam.animator.cancel();
 
@@ -398,7 +610,7 @@ goog.exportSymbol('WebGLEarth.prototype.setCenter', function(coords) {
                            cam.getPos()[2], cam.getHeading(), 0);
 });
 
-goog.exportSymbol('WebGLEarth.prototype.getCenter', function() {
+exportSymbol('WebGLEarth.prototype.getCenter', function() {
   var pos = this.camera.getPos();
   return [goog.math.toDegrees(pos[0]), goog.math.toDegrees(pos[1])];
 });
