@@ -1,0 +1,14 @@
+{
+  "id": "app-debug",
+  "inherits": "app.json",
+
+  "define": {
+    "goog.DEBUG": true,
+    "weapi.GENERATE_EXPORTS": false
+  },
+
+  "mode": "SIMPLE",
+
+  "pretty-print": true,
+  "debug": true
+}

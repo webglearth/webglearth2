@@ -1,0 +1,40 @@
+{
+  "id": "app",
+
+  "inputs": ['src-app/main.js'],
+  "paths": ['src', 'src-app'],
+
+  "externs": [
+    "Cesium.externs.js"
+  ],
+
+  "define": {
+    // "goog.dom.ASSUME_STANDARDS_MODE": true,
+    "goog.DEBUG": false,
+    "weapi.GENERATE_EXPORTS": false
+  },
+
+  "mode": "ADVANCED",
+  "level": "VERBOSE",
+  
+  // "pretty-print": true,
+  // "debug": true,
+  
+  "checks": {
+    // Unfortunately, the Closure Library violates these in many places.
+    // "accessControls": "ERROR",
+    // "visibility": "ERROR"
+
+    "checkTypes": "ERROR",
+    "checkRegExp": "ERROR",
+    "checkVars": "ERROR",
+    "deprecated": "ERROR",
+    "fileoverviewTags": "ERROR",
+    "invalidCasts": "ERROR",
+    "missingProperties": "ERROR",
+    "nonStandardJsDocs": "OFF",
+    "undefinedVars": "ERROR"
+  },
+
+  "jsdoc-html-output-path": "."
+}

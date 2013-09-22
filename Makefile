@@ -3,12 +3,15 @@ PLOVR=../plovr-eba786b34df9.jar
 .PHONY: cesium
 
 serve:
-	java -jar $(PLOVR) serve -p 9810 api.json api-debug.json
+	java -jar $(PLOVR) serve -p 9810 api.json api-debug.json app.json app-debug.json
 build:
-	java -jar $(PLOVR) build api.json > deploy/api.js
+	java -jar $(PLOVR) build api.json > deploy/api_nocesium.js
+	java -jar $(PLOVR) build app.json > deploy/index_nocesium.js
 lint:
 	fixjsstyle --strict -r ./src
+	fixjsstyle --strict -r ./src-app
 	gjslint --strict -r ./src
+	gjslint --strict -r ./src-app
 soyweb:
 	java -jar $(PLOVR) soyweb -p 9820 --dir .
 cesium:
