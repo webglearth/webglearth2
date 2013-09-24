@@ -382,11 +382,11 @@ exportSymbol('WebGLEarth.Maps', weapi.exports.Maps);
 
 /**
  * @param {!weapi.maps.MapType} type
- * @param {!Object.<string, Object>|!Array.<Object>} opts
+ * @param {!Object.<string, Object>|!Array.<Object>=} opt_opts
  * @return {weapi.Map}
  */
-weapi.exports.App.prototype.initMap = function(type, opts) {
-  return weapi.maps.initMap(this, type, opts);
+weapi.exports.App.prototype.initMap = function(type, opt_opts) {
+  return weapi.maps.initMap(this, type, opt_opts);
 };
 exportSymbol('WebGLEarth.prototype.initMap',
              weapi.exports.App.prototype.initMap);

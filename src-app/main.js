@@ -67,7 +67,66 @@ weapp.App = function() {
   goog.events.listen(form, 'submit', geocoder_search);
   goog.events.listen(geocoderElement,
                      ['webkitspeechchange', 'speechchange'], geocoder_search);
+
+  var initedMaps = {}; //cache
+  var maptypeElement = /** @type {!HTMLSelectElement} */
+                       (goog.dom.getElement('maptype'));
+  goog.events.listen(maptypeElement, goog.events.EventType.CHANGE, function(e) {
+    var key = maptypeElement.options[maptypeElement.selectedIndex].value;
+    switch (key) {
+      case 'bing_aerial':
+        if (!goog.isDefAndNotNull(initedMaps[key])) {
+          initedMaps[key] = this.app_.initMap(weapi.maps.MapType.BING,
+              ['Aerial', weapp.App.BING_KEY]);
+        }
+        this.app_.setBaseMap(initedMaps[key]);
+        break;
+      case 'bing_roads':
+        if (!goog.isDefAndNotNull(initedMaps[key])) {
+          initedMaps[key] = this.app_.initMap(weapi.maps.MapType.BING,
+              ['Road', weapp.App.BING_KEY]);
+        }
+        this.app_.setBaseMap(initedMaps[key]);
+        break;
+      case 'bing_aerialwl':
+        if (!goog.isDefAndNotNull(initedMaps[key])) {
+          initedMaps[key] = this.app_.initMap(weapi.maps.MapType.BING,
+              ['AerialWithLabels', weapp.App.BING_KEY]);
+        }
+        this.app_.setBaseMap(initedMaps[key]);
+        break;
+      case 'mapquest':
+        if (!goog.isDefAndNotNull(initedMaps[key])) {
+          initedMaps[key] = this.app_.initMap(weapi.maps.MapType.MAPQUEST);
+        }
+        this.app_.setBaseMap(initedMaps[key]);
+        break;
+      case 'osm':
+        if (!goog.isDefAndNotNull(initedMaps[key])) {
+          initedMaps[key] = this.app_.initMap(weapi.maps.MapType.OSM);
+        }
+        this.app_.setBaseMap(initedMaps[key]);
+        break;
+      default:
+        break;
+    }
+  }, false, this);
+
+  /*
+     <option value="bing_aerialwl">Bing Maps – Aerial with labels</option>
+     <option value="bing_roads">Bing Maps – Roads</option>
+     <option value="bing_aerial">Bing Maps – Aerial</option>
+     <option value="mapquest">MapQuest OSM</option>
+     <option value="osm">OpenStreetMap</option>
+     */
 };
+
+
+/**
+ * @define {string} bing key.
+ */
+weapp.App.BING_KEY =
+    'AsLurrtJotbxkJmnsefUYbatUuBkeBTzTL930TvcOekeG8SaQPY9Z5LDKtiuzAOu';
 
 
 /**
