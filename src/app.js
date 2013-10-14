@@ -74,7 +74,8 @@ weapi.App = function(divid, opt_options) {
   /* type {{getURL: function(string) : string}} */
   this.mapProxyObject = {
     'getURL': function(url) {
-      return proxyHost + encodeURIComponent(url);
+      return goog.isDefAndNotNull(proxyHost) ?
+             proxyHost + encodeURIComponent(url) : url;
     }
   };
 
