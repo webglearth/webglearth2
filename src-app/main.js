@@ -29,7 +29,7 @@ weapp.App = function() {
     atmosphere: true,
     sky: false,
     position: [0, 0],
-    altitude: 7000000,
+    altitude: weapp.App.DEFAULT_ALT,
     panning: true,
     tilting: true,
     zooming: true,
@@ -112,13 +112,62 @@ weapp.App = function() {
     }
   }, false, this);
 
-  /*
-     <option value="bing_aerialwl">Bing Maps – Aerial with labels</option>
-     <option value="bing_roads">Bing Maps – Roads</option>
-     <option value="bing_aerial">Bing Maps – Aerial</option>
-     <option value="mapquest">MapQuest OSM</option>
-     <option value="osm">OpenStreetMap</option>
-     */
+  /* HASH UPDATING & PARSING */
+
+  var updateHash = function() {
+    var pos = this.app_.getPosition();
+    var newhash = '#ll=' + pos[0].toFixed(5) + ',' + pos[1].toFixed(5) +
+        ';alt=' + this.app_.getAltitude().toFixed(0);
+    var head = this.app_.getHeading(), tilt = this.app_.getTilt();
+    if (Math.abs(head) > 0.001) newhash += ';h=' + head.toFixed(3);
+    if (Math.abs(tilt) > 0.001) newhash += ';t=' + tilt.toFixed(3);
+    if (window.location.hash.toString() != newhash) {
+      window.location.hash = newhash;
+    }
+  };
+
+  var parseHash = goog.bind(function() {
+    var params = window.location.hash.substr(1).split(';');
+    var getValue = function(name) {
+      name += '=';
+      var pair = goog.array.find(params, function(el, i, a) {
+        return el.indexOf(name) === 0;});
+
+      if (goog.isDefAndNotNull(pair)) {
+        var value = pair.substr(name.length);
+        if (value.length > 0)
+          return value;
+      }
+      return undefined;
+    };
+
+    var ll = getValue('ll'), altitude = getValue('alt');
+    var heading = getValue('h'), tilt = getValue('t');
+    if (goog.isDefAndNotNull(ll)) {
+      var llsplit = ll.split(',');
+      if (llsplit.length > 1 && !isNaN(llsplit[0]) && !isNaN(llsplit[1])) {
+        if (!altitude || isNaN(altitude)) altitude = weapp.App.DEFAULT_ALT;
+        if (!tilt || isNaN(tilt)) tilt = 0;
+        if (!heading || isNaN(heading)) heading = 0;
+        this.app_.setPosition(parseFloat(llsplit[0]), parseFloat(llsplit[1]),
+                              undefined, parseFloat(altitude),
+                              parseFloat(heading), parseFloat(tilt));
+      }
+    }
+  }, this);
+
+  /**
+   * @type {!goog.Timer}
+   */
+  this.hashUpdateTimer = new goog.Timer(2000);
+  goog.events.listen(this.hashUpdateTimer, goog.Timer.TICK,
+                     updateHash, false, this);
+  this.hashUpdateTimer.start();
+
+  goog.events.listen(window, goog.events.EventType.HASHCHANGE,
+                     parseHash, false, this);
+
+  parseHash();
 };
 
 
@@ -127,6 +176,12 @@ weapp.App = function() {
  */
 weapp.App.BING_KEY =
     'AsLurrtJotbxkJmnsefUYbatUuBkeBTzTL930TvcOekeG8SaQPY9Z5LDKtiuzAOu';
+
+
+/**
+ * @define {number} default altitude in meters.
+ */
+weapp.App.DEFAULT_ALT = 7000000;
 
 
 /**
