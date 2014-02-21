@@ -99,19 +99,21 @@ weapi.App = function(divid, opt_options) {
 
   var primitives = this.scene.getPrimitives();
 
-  // Bing Maps
-  var bing = new Cesium.BingMapsImageryProvider({
-    'url' : 'http://dev.virtualearth.net',
-    'mapStyle' : Cesium.BingMapsStyle.AERIAL_WITH_LABELS
-  });
-
   var ellipsoid = Cesium.Ellipsoid.WGS84;
   this.centralBody = new Cesium.CentralBody(ellipsoid);
-  this.centralBody.getImageryLayers().addImageryProvider(bing);
 
   this.camera = new weapi.Camera(this.scene.getCamera(), ellipsoid);
 
   primitives.setCentralBody(this.centralBody);
+
+  if (options['empty'] !== true) {
+    // default layer -- Bing Maps
+    var bing = new Cesium.BingMapsImageryProvider({
+      'url' : 'http://dev.virtualearth.net',
+      'mapStyle' : Cesium.BingMapsStyle.AERIAL_WITH_LABELS
+    });
+    this.centralBody.getImageryLayers().addImageryProvider(bing);
+  }
 
   /**
    * @type {!weapi.markers.MarkerManager}
@@ -179,7 +181,7 @@ weapi.App = function(divid, opt_options) {
   handler.setInputAction(stopAnim, Cesium.ScreenSpaceEventType.WHEEL);
   handler.setInputAction(stopAnim, Cesium.ScreenSpaceEventType.PINCH_START);
 
-  window.addEventListener('resize', this.handleResize, false);
+  goog.events.listen(window, 'resize', this.handleResize, false, this);
   this.handleResize();
 
 
@@ -204,9 +206,12 @@ weapi.App = function(divid, opt_options) {
 
   var sscc = this.scene.getScreenSpaceCameraController();
 
-  if (options['panning'] === false) sscc.enableRotate = false;
-  if (options['tilting'] === false) sscc.enableTilt = false; //TODO: fix axis
-  if (options['zooming'] === false) sscc.enableZoom = false;
+  if (options['panning'] === false || options['dragging'] === false)
+    sscc.enableRotate = false;
+  if (options['tilting'] === false)
+    sscc.enableTilt = false; //TODO: fix axis
+  if (options['zooming'] === false || options['scrollWheelZoom'] === false)
+    sscc.enableZoom = false;
 
   sscc['_rotateHandler'] = new weapi.DoubleEventAggr(sscc['_rotateHandler'],
                                                      sscc['_lookHandler'],
@@ -352,9 +357,13 @@ weapi.App.prototype.on = function(type, listener) {
       if (goog.isDefAndNotNull(cartesian)) {
         var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
 
-        e['latitude'] = goog.math.toDegrees(carto.latitude);
-        e['longitude'] = goog.math.toDegrees(carto.longitude);
+        var lat = goog.math.toDegrees(carto.latitude),
+            lng = goog.math.toDegrees(carto.longitude);
+        e['latlng'] = {'lat': lat, 'lng': lng};
+        e['latitude'] = lat;
+        e['longitude'] = lng;
         e['altitude'] = carto.height;
+        e['originalEvent'] = e;
       }
 
       listener(e);

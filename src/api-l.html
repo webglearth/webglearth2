@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="robots" content="index, all" />
+  <title>WebGL Earth API - Basic Leaflet compatibility</title>
+
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+
+  <script src="../Cesium/Build/Cesium/Cesium.js"></script>
+  <script src="http://localhost:9810/compile?id=api-debug"></script>
+
+  <script>
+    var m = {};
+    function start() {
+      start_(L, 'L');
+      start_(WE, 'WE');
+    }
+    function start_(API, suffix) {
+      var mapDiv = 'map' + suffix, coordsDiv = 'coords' + suffix, infoDiv = 'info' + suffix;
+      var map = API.map(mapDiv, {
+        center: [51.505, -0.09],
+        zoom: 5,
+        dragging: true, //panning
+        scrollWheelZoom: true, //zooming
+        proxyHost: 'http://srtm.webglearth.com/cgi-bin/corsproxy.fcgi?url='
+      });
+      m[suffix] = map;
+
+      API.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
+        subdomains: '1234',
+        attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">',
+        maxZoom: 18
+      }).addTo(map);
+
+      API.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg', {
+        subdomains: '1234',
+        attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">',
+        maxZoom: 18
+      }).addTo(map).setOpacity(0.5);
+
+      //Print coordinates of the mouse
+      map.on('mousemove', function(e) {
+        document.getElementById(coordsDiv).innerHTML = e.latlng.lat + ', ' + e.latlng.lng;
+      });
+
+      //Show coordinates on click, then unregister the listener
+      var listenKey;
+      var alertCoords = function(e) {
+        document.getElementById(infoDiv).innerHTML = e.latlng.lat + ', ' + e.latlng.lng;
+        map.off('click', alertCoords);
+      };
+      listenKey = map.on('click', alertCoords);
+    }
+    /*
+    function addSomeMarkers() {
+      var londonM = app.initMarker(51.507222, -0.1275);
+      var denverM = app.initMarker(39.739167, -104.984722);
+      var cairoM = app.initMarker(30.058056, 31.228889);
+      
+      londonM.bindPopup('<h2>London</h2>This marker is already opened.', 250).openPopup();
+      denverM.bindPopup('<h2>Denver</h2>You can\'t see this marker without rotating the Earth.');
+
+      cairoM.bindPopup('<h2>Cairo</h2>Click on me to close London\'s marker.').openPopup();
+
+      var closeLondon = function(e) {
+        alert(e.latitude + ', ' + e.longitude);
+        londonM.closePopup();
+      };
+      cairoM.on('click', closeLondon);
+      
+      document.getElementById("addmarkers").disabled = true;
+    }
+    */
+  </script>
+  <style>
+    .plovr-error-report {z-index:1000000;position:absolute;}
+    #mapL, #mapWE {position:absolute !important;width:50%;height:400px;top:0;}
+    #infoL, #infoWE {position:absolute !important;width:50%;height:20px;top:400px;}
+    #coordsL, #coordsWE {position:absolute !important;width:50%;height:20px;top:420px;}
+    #buttons {position:absolute; top:440px;}
+    .L {left:0;}
+    .WE {right:0;}
+  </style>
+ </head>
+ <body onload="javascript:start()">
+   <div id="mapL" class="L"></div>
+   <div id="mapWE" class="WE"></div>
+   <div id="infoL" class="L"></div>
+   <div id="infoWE" class="WE"></div>
+   <div id="coordsL" class="L"></div>
+   <div id="coordsWE" class="WE"></div>
+   <div id="buttons">
+     <input type="button" value="Zoom to level 9" onclick="javascript:m['L'].setZoom(9);m['WE'].setZoom(9);" />
+     <input type="button" value="What's current zoom level?" onclick="javascript:alert(m['L'].getZoom() + ' ; ' + m['WE'].getZoom());" />
+     <br />
+     <input type="button" value="Set position to Mount Everest" onclick="javascript:m['L'].setView([27.988056, 86.925278]);m['WE'].setView([27.988056, 86.925278]);" />
+     <input type="button" value="What's current position?" onclick="javascript:alert(m['L'].getCenter() + ' ; ' + m['WE'].getCenter());" />
+     <br />
+     <input type="button" value="Switch to MapQuest" onclick="javascript:app.setBaseMap(mapM)" disabled />
+     <input type="button" value="Switch to Bing" onclick="javascript:app.setBaseMap(mapB)" disabled />
+     <input type="button" value="Switch to Custom TMS" onclick="javascript:app.setBaseMap(customTMS)" disabled />
+     <input type="button" value="Switch to WMS" onclick="javascript:app.setBaseMap(wms)" disabled />
+     <input type="button" value="Switch Overlay to MapQuest" onclick="javascript:app.setOverlayMap(mapMo)" disabled />
+     <input type="button" value="Switch Overlay to Bing" onclick="javascript:app.setOverlayMap(mapBo)" disabled />
+     <input type="button" value="Disable overlay" onclick="javascript:app.setOverlayMap(null)" disabled />
+     <br />
+     <input type="button" value="Fly to Japan bounds" onclick="javascript:m['L'].fitBounds([[22,122],[48,154]]); m['WE'].fitBounds([[22,122],[48,154]]);" />
+     <input type="button" value="Fly to Iceland" onclick="javascript:m['L'].panTo([65,-19]);m['WE'].panTo([65,-19]);" />
+     <br />
+     <input type="button" value="Add some markers" id="addmarkers" onclick="javascript:addSomeMarkers()" disabled />
+   </div>
+ </body>
+</html>

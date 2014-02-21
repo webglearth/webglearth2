@@ -36,7 +36,7 @@ weapi.maps.mapMap = new goog.structs.Map();
 
 /**
  * TODO: cleanup
- * @param {!weapi.App} app .
+ * @param {?weapi.App} app .
  * @param {!weapi.maps.MapType} type Type of the map.
  * @param {!Object.<string, Object>|!Array.<Object>=} opt_opts Map options.
  * @return {weapi.Map} Initialized TileProvider.
@@ -118,7 +118,7 @@ weapi.maps.initMap = function(app, type, opt_opts) {
         }
         // ignore minzoom aropts[8];
         mapopts['maximumLevel'] = aropts[9];
-        mapopts['proxy'] = app.mapProxyObject;
+        if (app) mapopts['proxy'] = app.mapProxyObject;
       }
       tileProvider = new Cesium.WebMapServiceImageryProvider(mapopts);
       break;
@@ -131,7 +131,7 @@ weapi.maps.initMap = function(app, type, opt_opts) {
         mapopts['flipY'] = aropts[5];
         mapopts['subdomains'] = aropts[6];
         mapopts['copyright'] = aropts[7];
-        mapopts['proxy'] = app.mapProxyObject;
+        if (app) mapopts['proxy'] = app.mapProxyObject;
       }
       tileProvider = new weapi.CustomMap(mapopts);
       break;

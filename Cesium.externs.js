@@ -8,6 +8,16 @@ var Cesium = {};
 
 /**
  * @constructor
+ * @param {string} text
+ * @param {Object=} opt_description
+ * @return {HTMLCanvasElement}
+ */
+Cesium.prototype.writeTextToCanvas = function(text, opt_description) {};
+
+
+
+/**
+ * @constructor
  */
 Cesium.Billboard = function() {};
 

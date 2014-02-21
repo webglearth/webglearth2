@@ -25,7 +25,7 @@ weapi.CustomMap = function(opts) {
 
   this.subdomains = /** @type {Array.<string>} */(opts['subdomains'] || []);
 
-  this.copyright = /** @type {number} */(opts['copyright'] || '');
+  this.credit = Cesium.writeTextToCanvas((opts['copyright'] || '').toString());
 
   this.proxy = opts['proxy'] || null;
 
@@ -35,6 +35,15 @@ weapi.CustomMap = function(opts) {
   goog.base(this, forward);
 };
 goog.inherits(weapi.CustomMap, Cesium.TileMapServiceImageryProvider);
+
+
+/**
+ * @return {HTMLCanvasElement} .
+ * @this {weapi.CustomMap}
+ */
+weapi.CustomMap.prototype['getLogo'] = function() {
+  return this.credit;
+};
 
 
 /**
