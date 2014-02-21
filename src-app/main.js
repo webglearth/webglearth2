@@ -26,14 +26,14 @@ weapp.App = function() {
    * @private
    */
   this.app_ = new weapi.exports.App('webglearthdiv', {
-    atmosphere: true,
-    sky: false,
-    position: [0, 0],
-    altitude: weapp.App.DEFAULT_ALT,
-    panning: true,
-    tilting: true,
-    zooming: true,
-    proxyHost: 'http://srtm.webglearth.com/cgi-bin/corsproxy.fcgi?url='
+    'atmosphere': true,
+    'sky': false,
+    'position': [0, 0],
+    'altitude': weapp.App.DEFAULT_ALT,
+    'panning': true,
+    'tilting': true,
+    'zooming': true,
+    'proxyHost': 'http://srtm.webglearth.com/cgi-bin/corsproxy.fcgi?url='
   });
 
   /**
@@ -114,7 +114,13 @@ weapp.App = function() {
 
   /* HASH UPDATING & PARSING */
 
-  var updateHash = function() {
+  /**
+   * @type {string}
+   * @private
+   */
+  this.lastCreatedHash_ = '';
+
+  var updateHash = goog.bind(function() {
     var pos = this.app_.getPosition();
     var newhash = '#ll=' + pos[0].toFixed(5) + ',' + pos[1].toFixed(5) +
         ';alt=' + this.app_.getAltitude().toFixed(0);
@@ -122,11 +128,13 @@ weapp.App = function() {
     if (Math.abs(head) > 0.001) newhash += ';h=' + head.toFixed(3);
     if (Math.abs(tilt) > 0.001) newhash += ';t=' + tilt.toFixed(3);
     if (window.location.hash.toString() != newhash) {
+      this.lastCreatedHash_ = newhash;
       window.location.hash = newhash;
     }
-  };
+  }, this);
 
   var parseHash = goog.bind(function() {
+    if (window.location.hash == this.lastCreatedHash_) return;
     var params = window.location.hash.substr(1).split(';');
     var getValue = function(name) {
       name += '=';
@@ -160,12 +168,10 @@ weapp.App = function() {
    * @type {!goog.Timer}
    */
   this.hashUpdateTimer = new goog.Timer(2000);
-  goog.events.listen(this.hashUpdateTimer, goog.Timer.TICK,
-                     updateHash, false, this);
+  goog.events.listen(this.hashUpdateTimer, goog.Timer.TICK, updateHash);
   this.hashUpdateTimer.start();
 
-  goog.events.listen(window, goog.events.EventType.HASHCHANGE,
-                     parseHash, false, this);
+  goog.events.listen(window, goog.events.EventType.HASHCHANGE, parseHash);
 
   parseHash();
 };
