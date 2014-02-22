@@ -35,11 +35,16 @@
         maxZoom: 18
       }).addTo(map);
 
-      API.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg', {
+      var overlay = API.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg', {
         subdomains: '1234',
         attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">',
         maxZoom: 18
-      }).addTo(map).setOpacity(0.5);
+      }).addTo(map);
+
+      overlay.setOpacity(0.5);
+      document.getElementById('opacity').addEventListener('change', function(e) {
+        overlay.setOpacity(e.target.value);
+      });
 
       //Print coordinates of the mouse
       map.on('mousemove', function(e) {
@@ -95,9 +100,11 @@
    <div id="buttons">
      <input type="button" value="Zoom to level 9" onclick="javascript:m['L'].setZoom(9);m['WE'].setZoom(9);" />
      <input type="button" value="What's current zoom level?" onclick="javascript:alert(m['L'].getZoom() + ' ; ' + m['WE'].getZoom());" />
-     <br />
+     &nbsp;&nbsp;&nbsp;
      <input type="button" value="Set position to Mount Everest" onclick="javascript:m['L'].setView([27.988056, 86.925278]);m['WE'].setView([27.988056, 86.925278]);" />
      <input type="button" value="What's current position?" onclick="javascript:alert(m['L'].getCenter() + ' ; ' + m['WE'].getCenter());" />
+     <br />
+     Second layer opacity: 0<input type="range" id="opacity" min="0" max="1" step="0.01" value="0.5">1
      <br />
      <input type="button" value="Switch to MapQuest" onclick="javascript:app.setBaseMap(mapM)" disabled />
      <input type="button" value="Switch to Bing" onclick="javascript:app.setBaseMap(mapB)" disabled />

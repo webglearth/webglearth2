@@ -18,6 +18,11 @@ weapi.Map = function(layer) {
    * @type {!Cesium.ImageryLayer}
    */
   this.layer = layer;
+
+  /**
+   * @type {?weapi.App}
+   */
+  this.app = null;
 };
 
 
@@ -34,6 +39,7 @@ weapi.Map.prototype.setBoundingBox = function(minLat, maxLat,
   extent.north = maxLat;
   extent.west = minLon;
   extent.east = maxLon;
+  if (this.app) this.app.sceneChanged = true;
 };
 
 
@@ -42,6 +48,7 @@ weapi.Map.prototype.setBoundingBox = function(minLat, maxLat,
  */
 weapi.Map.prototype.setOpacity = function(opacity) {
   this.layer.alpha = opacity;
+  if (this.app) this.app.sceneChanged = true;
 };
 
 

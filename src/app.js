@@ -309,6 +309,7 @@ weapi.App.prototype.setBaseMap = function(map) {
   //this.centralBody.getImageryLayers().get(0) = map.layer;
   layers.remove(layers.get(0), false);
   layers.add(map.layer, 0);
+  map.app = this;
 
   this.sceneChanged = true;
 };
@@ -325,6 +326,7 @@ weapi.App.prototype.setOverlayMap = function(map) {
   }
   if (goog.isDefAndNotNull(map)) {
     layers.add(map.layer);
+    map.app = this;
   }
 
   this.sceneChanged = true;

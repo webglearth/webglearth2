@@ -90,6 +90,7 @@ exportSymbolL('WebGLEarth.Map.prototype.addTo', function(app) {
   var layers = app.centralBody.getImageryLayers();
   layers.add(this.layer);
 
+  this.app = app;
   app.sceneChanged = true;
 
   return this;
