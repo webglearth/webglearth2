@@ -124,3 +124,32 @@ exportSymbolL('weapi.exports.Marker.prototype.bindPopup',
       }
       return this;
     });
+
+
+exportSymbolL('weapi.exports.Marker.prototype.setLatLng', function(pos) {
+  if (!goog.isArray(pos)) pos = [pos['lat'], pos['lng']];
+  this.setPosition(pos[0], pos[1]);
+});
+
+
+exportSymbolL('WE.polygon', function(points, opts) {
+  // our design is not prepared for polygons not assigned to any app -> hack
+  return {
+    'addTo': function(app) {
+      //WARNING: addTo returns something different than WE.polygon !
+      var poly = new weapi.exports.Polygon(app);
+      goog.array.forEachRight(points, function(el, i, arr) {
+        if (!goog.isArray(el)) el = [el['lat'], el['lng']];
+        poly.addPoint(el[0], el[1]);
+      });
+      opts = opts || {};
+      poly.showDraggers(opts['editable'] == true);
+      poly.setStrokeColor(opts['color'] || '#03f',
+                          opts['opacity'] || 0.5);
+      poly.setFillColor(opts['fillColor'] || '#03f',
+                        opts['fillOpacity'] || 0.2);
+      poly.polygon_.primitiveLine.setWidth(opts['weight'] || 5); //TODO: cleaner
+      return poly;
+    }
+  };
+});
