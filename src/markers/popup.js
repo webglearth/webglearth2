@@ -47,7 +47,7 @@ weapi.markers.Popup = function(contentHTML, opt_maxWidth, opt_closeButton) {
   goog.dom.appendChild(this.popup_, contentwrap);
   goog.dom.appendChild(this.popup_, tipcontainer);
 
-  var width = (opt_maxWidth || 300);
+  var width = (opt_maxWidth || 300) + 2 * 20; // compensation for margin+border
   this.popup_.style.width = width.toFixed(0) + 'px';
   this.popup_.style.left = (-width / 2).toFixed(0) + 'px';
 
@@ -74,9 +74,11 @@ weapi.markers.Popup.prototype.adjust = function(markerHeight) {
 
 /**
  * Shows or hides the popup.
- * @param {boolean} visible Visible?
+ * @param {boolean=} opt_visible Visible? If not given, toggle.
  */
-weapi.markers.Popup.prototype.show = function(visible) {
+weapi.markers.Popup.prototype.show = function(opt_visible) {
+  var visible = goog.isDefAndNotNull(opt_visible) ?
+                    opt_visible : parseFloat(this.popup_.style.opacity) !== 1;
   if (visible) {
     this.popup_.style.opacity = 1.0;
     this.popup_.style.visibility = 'visible';
@@ -92,7 +94,7 @@ weapi.markers.Popup.prototype.show = function(visible) {
 
 goog.style.installStyles(
     '.we-pp-content p{margin:18px 0;text-align:justify;}' +
-    '.we-pp-wrapper{padding:1px;text-align:left;border-radius:20px;}' +
+    '.we-pp-wrapper{padding:1px;text-align:left;border-radius:12px;}' +
     '.we-pp{z-index:100;-webkit-transition:opacity 0.2s linear;' +
     '-moz-transition:opacity 0.2s linear;-o-transition:opacity 0.2s linear;' +
     'transition:opacity 0.2s linear;position:absolute;}' +
@@ -107,7 +109,7 @@ goog.style.installStyles(
     '7hh0ehl0W21IwZgNR44nTNVZribmC1WXqzVstmpIALu9Gg5HOJ1VNV64arjd1YKy8sEz+nrD' +
     '51tD0//xB/w6CnrIHetcAAAAAElFTkSuQmCC);position:absolute;top:9px;' +
     'right:9px;width:10px;height:10px;overflow:hidden;}' +
-    '.we-pp-content{display:inline-block;margin:19px;' +
+    '.we-pp-content{display:inline-block;margin:13px 19px;' +
     'font:12px/1.4 "Helvetica Neue",Arial,Helvetica,sans-serif;}' +
     '.we-pp-tip-cont{margin:0 auto;width:40px;height:16px;position:relative;' +
     'overflow:hidden;}' +

@@ -59,9 +59,21 @@
       };
       listenKey = map.on('click', alertCoords);
     }
-    /*
+
     function addSomeMarkers() {
-      var londonM = app.initMarker(51.507222, -0.1275);
+      addSomeMarkers_(L, 'L');
+      addSomeMarkers_(WE, 'WE');
+
+      document.getElementById("addmarkers").disabled = true;
+    }
+    
+    function addSomeMarkers_(API, suffix) {
+      var marker = API.marker([51.5, -0.09]).addTo(m[suffix]);
+      marker.bindPopup("<b>Hello world!</b><br>I am a popup.<br /><span style='font-size:10px;color:#999'>Tip: Another popup is hidden in Cairo..</span>", {maxWidth: 150, closeButton: true}).openPopup();
+      
+      var marker2 = API.marker([30.058056, 31.228889]).addTo(m[suffix]);
+      marker2.bindPopup("<b>Cairo</b>", {maxWidth: 100, closeButton: false});
+      /*var londonM = app.initMarker(51.507222, -0.1275);
       var denverM = app.initMarker(39.739167, -104.984722);
       var cairoM = app.initMarker(30.058056, 31.228889);
       
@@ -75,10 +87,8 @@
         londonM.closePopup();
       };
       cairoM.on('click', closeLondon);
-      
-      document.getElementById("addmarkers").disabled = true;
+      */
     }
-    */
   </script>
   <style>
     .plovr-error-report {z-index:1000000;position:absolute;}
@@ -117,7 +127,7 @@
      <input type="button" value="Fly to Japan bounds" onclick="javascript:m['L'].fitBounds([[22,122],[48,154]]); m['WE'].fitBounds([[22,122],[48,154]]);" />
      <input type="button" value="Fly to Iceland" onclick="javascript:m['L'].panTo([65,-19]);m['WE'].panTo([65,-19]);" />
      <br />
-     <input type="button" value="Add some markers" id="addmarkers" onclick="javascript:addSomeMarkers()" disabled />
+     <input type="button" value="Add some markers" id="addmarkers" onclick="javascript:addSomeMarkers()" />
    </div>
  </body>
 </html>

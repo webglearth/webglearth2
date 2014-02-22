@@ -95,3 +95,32 @@ exportSymbolL('WebGLEarth.Map.prototype.addTo', function(app) {
 
   return this;
 });
+
+
+exportSymbolL('WE.marker', function(pos) {
+  if (!goog.isArray(pos)) pos = [pos['lat'], pos['lng']];
+  var mark = new weapi.markers.PrettyMarker(goog.math.toRadians(pos[0]),
+                                            goog.math.toRadians(pos[1]));
+  return mark;
+});
+
+
+exportSymbolL('weapi.exports.Marker.prototype.addTo', function(app) {
+  app.markerManager.addMarker(null, this);
+  app.sceneChanged = true;
+  return this;
+});
+
+
+exportSymbolL('weapi.exports.Marker.prototype.bindPopup',
+    function(content, maxWOrOpts, closeBtn) {
+      if (!goog.isDefAndNotNull(maxWOrOpts) || goog.isNumber(maxWOrOpts)) {
+        this.attachPopup(new weapi.markers.Popup(content,
+            maxWOrOpts, closeBtn));
+      } else {
+        var maxWidth = maxWOrOpts['maxWidth'];
+        closeBtn = maxWOrOpts['closeButton'];
+        this.attachPopup(new weapi.markers.Popup(content, maxWidth, closeBtn));
+      }
+      return this;
+    });

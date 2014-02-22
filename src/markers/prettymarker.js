@@ -56,7 +56,7 @@ weapi.markers.PrettyMarker = function(lat, lon,
   this.show(false);
   this.showPopup(false);
 
-  marker.onclick = goog.bind(this.showPopup, this, true);
+  marker.onclick = goog.bind(this.showPopup, this, undefined);
 
 };
 goog.inherits(weapi.markers.PrettyMarker, weapi.markers.AbstractMarker);
@@ -77,16 +77,16 @@ weapi.markers.PrettyMarker.prototype.attachPopup = function(popup) {
 
 /**
  * Shows or hides the popup.
- * @param {boolean} visible Visible?
+ * @param {boolean=} opt_visible Visible? If not given, toggle.
  */
-weapi.markers.PrettyMarker.prototype.showPopup = function(visible) {
+weapi.markers.PrettyMarker.prototype.showPopup = function(opt_visible) {
   if (this.popup_) {
     //var popup = this.popup_.getElement();
     //center the popup
     //popup.style.left = -Math.round((popup.offsetWidth -
     //    this.element.offsetWidth) / 2) + 'px';
 
-    this.popup_.show(visible);
+    this.popup_.show(opt_visible);
   }
 };
 
