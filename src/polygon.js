@@ -112,9 +112,10 @@ weapi.Polygon.prototype.getRoughArea = function() {
  * @param {number} lat in degrees.
  * @param {number} lng in degrees.
  * @param {number=} opt_parent Defaults to the last point.
+ * @param {boolean=} opt_more More points coming?
  * @return {number} Fixed ID of the new point.
  */
-weapi.Polygon.prototype.addPoint = function(lat, lng, opt_parent) {
+weapi.Polygon.prototype.addPoint = function(lat, lng, opt_parent, opt_more) {
   var vert = new weapi.Polygon.Node(lat, lng);
 
   if (this.numVertices_ == 0) {
@@ -138,8 +139,10 @@ weapi.Polygon.prototype.addPoint = function(lat, lng, opt_parent) {
   vert.fixedId = this.vertices_.length - 1;
   this.numVertices_++;
 
-  this.rebufferPoints_();
-  this.solveTriangles_();
+  if (opt_more !== true) {
+    this.rebufferPoints_();
+    this.solveTriangles_();
+  }
 
   return vert.fixedId;
 };

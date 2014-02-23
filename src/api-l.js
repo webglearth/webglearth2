@@ -138,10 +138,12 @@ exportSymbolL('WE.polygon', function(points, opts) {
     'addTo': function(app) {
       //WARNING: addTo returns something different than WE.polygon !
       var poly = new weapi.exports.Polygon(app);
+      var points_ = [];
       goog.array.forEachRight(points, function(el, i, arr) {
         if (!goog.isArray(el)) el = [el['lat'], el['lng']];
-        poly.addPoint(el[0], el[1]);
+        points_.push([el[0], el[1]]);
       });
+      poly.addPoints(points_);
       opts = opts || {};
       poly.showDraggers(opts['editable'] == true);
       poly.setStrokeColor(opts['color'] || '#03f',

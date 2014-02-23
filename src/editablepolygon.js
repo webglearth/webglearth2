@@ -331,15 +331,29 @@ weapi.EditablePolygon.prototype.checkPointOrientationChange_ = function() {
 
 
 /**
+ * @param {!Array.<number>} coords
+ */
+weapi.EditablePolygon.prototype.addPoints = function(coords) {
+  var l = coords.length;
+  for (var i = 0; i < l - 1; i++) {
+    this.addPoint(coords[i][0], coords[i][1], undefined, undefined, true);
+  }
+  this.addPoint(coords[i][0], coords[i][1]);
+};
+
+
+/**
  * @param {number} lat in degrees.
  * @param {number} lng in degrees.
  * @param {number=} opt_parent .
  * @param {boolean=} opt_fromMid .
+ * @param {boolean=} opt_more More points coming?
  * @return {number} fixedId.
  */
 weapi.EditablePolygon.prototype.addPoint = function(lat, lng,
-                                                    opt_parent, opt_fromMid) {
-  var fixedId = this.polygon_.addPoint(lat, lng, opt_parent);
+                                                    opt_parent, opt_fromMid,
+                                                    opt_more) {
+  var fixedId = this.polygon_.addPoint(lat, lng, opt_parent, opt_more);
 
   if (opt_fromMid && goog.isDefAndNotNull(opt_parent)) {
     this.draggers_[fixedId] = this.midDraggers_[opt_parent];

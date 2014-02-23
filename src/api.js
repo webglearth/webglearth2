@@ -567,6 +567,8 @@ exportSymbol('WebGLEarth.Polygon.prototype.showDraggers',
 
 exportSymbol('WebGLEarth.Polygon.prototype.addPoint',
              weapi.exports.Polygon.prototype.addPoint);
+exportSymbol('WebGLEarth.Polygon.prototype.addPoints',
+             weapi.exports.Polygon.prototype.addPoints);
 exportSymbol('WebGLEarth.Polygon.prototype.movePoint',
              weapi.exports.Polygon.prototype.movePoint);
 exportSymbol('WebGLEarth.Polygon.prototype.removePoint',
