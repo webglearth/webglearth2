@@ -1006,6 +1006,10 @@ Cesium.Extent.prototype.east;
 /** @type {number} */
 Cesium.Extent.prototype.north;
 
+/** @type {!Cesium.Extent} */
+Cesium.Extent.MAX_VALUE;
+
+
 
 /**
  * @constructor

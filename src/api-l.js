@@ -75,18 +75,47 @@ exportSymbolL('WE.tileLayer', function(url, opt_opts) {
   if (goog.isString(subdoms)) subdoms = subdoms.split('');
   return weapi.maps.initMap(null, weapi.maps.MapType.CUSTOM, {
     'url': url,
-    'maximumLevel': opts['maxZoom'] || 0,
+    'minimumLevel': opts['minZoom'] || 0,
+    'maximumLevel': opts['maxZoom'] || 18,
     'tileSize': opts['tileSize'] || 256,
     'flipY': opts['tms'] || false,
     'subdomains': subdoms,
-    'copyright': (opts['attribution'] || '').replace(/<(?:.|\n)*?>/gm, ''),
-    'proxy': opts['proxy']
+    'copyright': (opts['attribution'] || '').replace(/<(?:.|\n)*?>/gm, '')
   });
 });
 
 
+exportSymbolL('WE.tileLayerJSON', function(data, opt_app) {
+  var url = data['tiles'][0];
+  var attribution = data['attribution'];
+  var minzoom = data['minzoom'];
+  var maxzoom = data['maxzoom'];
+  var bounds = data['bounds'];
+  var center = data['center'];
+
+  var map = weapi.maps.initMap(null, weapi.maps.MapType.CUSTOM, {
+    'url': url,
+    'minimumLevel': minzoom || 0,
+    'maximumLevel': maxzoom || 18,
+    'copyright': (attribution || '').replace(/<(?:.|\n)*?>/gm, ''),
+    'bounds': bounds
+  });
+
+  if (opt_app) {
+    map['addTo'](opt_app);
+    if (center && center.length && center.length > 1) {
+      opt_app.setPosition(center[1], center[0]);
+      if (center.length > 2) {
+        opt_app.setZoom(center[2]);
+      }
+    }
+  }
+  return map;
+});
+
+
 exportSymbolL('WebGLEarth.Map.prototype.addTo', function(app) {
-  this.proxy = app.mapProxyObject;
+  this.layer.getImageryProvider().proxy = app.mapProxyObject;
   var layers = app.centralBody.getImageryLayers();
   layers.add(this.layer);
 

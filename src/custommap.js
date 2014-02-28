@@ -17,9 +17,20 @@ goog.provide('weapi.CustomMap');
 weapi.CustomMap = function(opts) {
   this.url = /** @type {string} */(opts['url']);
 
+  this.minZoom = /** @type {number} */(opts['minimumLevel'] || 0);
   this.maxZoom = /** @type {number} */(opts['maximumLevel'] || 18);
 
   this.tileSize = /** @type {number} */(opts['tileSize'] || 256);
+
+  var b = opts['bounds'];
+  if (b && b.length && b.length > 3) {
+    this.extent = new Cesium.Extent(goog.math.toRadians(b[0]),
+                                    goog.math.toRadians(b[1]),
+                                    goog.math.toRadians(b[2]),
+                                    goog.math.toRadians(b[3]));
+  } else {
+    //this.extent = Cesium.Extent.MAX_VALUE;
+  }
 
   this.flipY = /** @type {boolean} */(opts['flipY'] || false);
 
@@ -29,7 +40,11 @@ weapi.CustomMap = function(opts) {
 
   this.proxy = opts['proxy'] || null;
 
-  var forward = {'url': this.buildTileURL(0, 0, 0)};
+  this.emptyTile = goog.dom.createElement('canvas');
+  this.emptyTile.width = this.tileSize;
+  this.emptyTile.height = this.tileSize;
+
+  var forward = {'url': this.buildTileURL(0, 0, 0), 'extent': this.extent};
   //if (this.proxy) forward['proxy'] = this.proxy;
 
   goog.base(this, forward);
@@ -43,6 +58,15 @@ goog.inherits(weapi.CustomMap, Cesium.TileMapServiceImageryProvider);
  */
 weapi.CustomMap.prototype['getLogo'] = function() {
   return this.credit;
+};
+
+
+/**
+ * @return {number} .
+ * @this {weapi.CustomMap}
+ */
+weapi.CustomMap.prototype['getMinimumLevel'] = function() {
+  return this.minZoom;
 };
 
 
@@ -109,6 +133,7 @@ weapi.CustomMap.prototype['getUrl'] = function() {
  * @this {weapi.CustomMap}
  */
 weapi.CustomMap.prototype['requestImage'] = function(x, y, level) {
+  if (level < this.minZoom || level > this.maxZoom) return this.emptyTile;
   var url = this.buildTileURL(level, x, y);
   return Cesium.ImageryProvider.loadImage(url);
 };

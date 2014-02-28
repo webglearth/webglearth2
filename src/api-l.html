@@ -46,6 +46,21 @@
         overlay.setOpacity(e.target.value);
       });
 
+      var json = {"profile":"mercator","name":"Grand Canyon USGS","format":"png","bounds":[-112.26379395,35.98245136,-112.10998535,36.13343831],"minzoom":10,"version":"1.0.0","maxzoom":16,"center":[-112.18688965,36.057944835,13],"type":"overlay","description":"","basename":"grandcanyon","tilejson":"2.0.0","sheme":"xyz","tiles":["http://tileserver.maptiler.com/grandcanyon/{z}/{x}/{y}.png"]};
+      if (API.tileLayerJSON) {
+        var overlay2 = API.tileLayerJSON(json, map);
+
+        overlay2.setOpacity(0.7);
+        document.getElementById('opacity2').addEventListener('change', function(e) {
+          overlay2.setOpacity(e.target.value);
+        });
+      } else {
+        // if not able to display the overlay, at least move to the same location
+        map.setView([json.center[1], json.center[0]], json.center[2]);
+      }
+      API.marker([json.center[1], json.center[0]]).addTo(map);
+
+
       //Print coordinates of the mouse
       map.on('mousemove', function(e) {
         document.getElementById(coordsDiv).innerHTML = e.latlng.lat + ', ' + e.latlng.lng;
@@ -68,6 +83,7 @@
     }
     
     function addSomeMarkers_(API, suffix) {
+      m[suffix].setView([51.505, 0], 5);
       var marker = API.marker([51.5, -0.09]).addTo(m[suffix]);
       marker.bindPopup("<b>Hello world!</b><br>I am a popup.<br /><span style='font-size:10px;color:#999'>Tip: Another popup is hidden in Cairo..</span>", {maxWidth: 150, closeButton: true}).openPopup();
       
@@ -137,6 +153,8 @@
      <input type="button" value="What's current position?" onclick="javascript:alert(m['L'].getCenter() + ' ; ' + m['WE'].getCenter());" />
      <br />
      Second layer opacity: 0<input type="range" id="opacity" min="0" max="1" step="0.01" value="0.5">1
+     &nbsp;&nbsp;&nbsp;
+     Grand Canyon overlay opacity: 0<input type="range" id="opacity2" min="0" max="1" step="0.01" value="0.7">1
      <br />
      <input type="button" value="Fly to Japan bounds" onclick="javascript:m['L'].fitBounds([[22,122],[48,154]]); m['WE'].fitBounds([[22,122],[48,154]]);" />
      <input type="button" value="Fly to Iceland" onclick="javascript:m['L'].panTo([65,-19]);m['WE'].panTo([65,-19]);" />
