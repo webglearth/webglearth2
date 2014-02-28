@@ -134,14 +134,14 @@ exportSymbolL('WE.marker', function(pos) {
 });
 
 
-exportSymbolL('weapi.exports.Marker.prototype.addTo', function(app) {
+exportSymbolL('WebGLEarth.Marker.prototype.addTo', function(app) {
   app.markerManager.addMarker(null, this);
   app.sceneChanged = true;
   return this;
 });
 
 
-exportSymbolL('weapi.exports.Marker.prototype.bindPopup',
+exportSymbolL('WebGLEarth.Marker.prototype.bindPopup',
     function(content, maxWOrOpts, closeBtn) {
       if (!goog.isDefAndNotNull(maxWOrOpts) || goog.isNumber(maxWOrOpts)) {
         this.attachPopup(new weapi.markers.Popup(content,
@@ -155,7 +155,7 @@ exportSymbolL('weapi.exports.Marker.prototype.bindPopup',
     });
 
 
-exportSymbolL('weapi.exports.Marker.prototype.setLatLng', function(pos) {
+exportSymbolL('WebGLEarth.Marker.prototype.setLatLng', function(pos) {
   if (!goog.isArray(pos)) pos = [pos['lat'], pos['lng']];
   this.setPosition(pos[0], pos[1]);
 });

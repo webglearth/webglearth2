@@ -5,7 +5,8 @@
   "paths": ['src'],
 
   "externs": [
-    "Cesium.externs.js"
+    "Cesium.externs.js",
+    "Leaflet.externs.js"
   ],
 
   "define": {
