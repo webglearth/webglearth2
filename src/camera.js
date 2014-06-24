@@ -48,9 +48,9 @@ weapi.Camera.prototype.setPos = function(latitude, longitude, altitude) {
       !goog.isDef(longitude) ||
       !goog.isDef(altitude)) {
     var oldPos = this.getPos();
-    latitude = latitude || oldPos[0];
-    longitude = longitude || oldPos[1];
-    altitude = altitude || oldPos[2];
+    latitude = !goog.isDefAndNotNull(latitude) ? latitude : oldPos[0];
+    longitude = !goog.isDefAndNotNull(longitude) ? longitude : oldPos[1];
+    altitude = altitude > 0 ? altitude : oldPos[2];
   }
   var carto = new Cesium.Cartographic(longitude, latitude, altitude);
 
