@@ -23,7 +23,7 @@ weapi.NoRepeatTextureAtlas = function(app) {
   /**
    * @type {!Cesium.TextureAtlas}
    */
-  this.atlas = this.app_.scene.getContext().createTextureAtlas({});
+  this.atlas = new Cesium.TextureAtlas({'scene': this.app_.scene});
 
   /**
    * @type {!Object.<!string, number>}

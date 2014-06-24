@@ -23,33 +23,33 @@ Cesium.Billboard = function() {};
 
 
 /**
- * @param {!Cesium.Cartesian3} pos .
+ * @type {!Cesium.Cartesian3}
  */
-Cesium.Billboard.prototype.setPosition = function(pos) {};
+Cesium.Billboard.prototype.position;
 
 
 /**
- * @param {boolean} show .
+ * @type {boolean}
  */
-Cesium.Billboard.prototype.setShow = function(show) {};
+Cesium.Billboard.prototype.show;
 
 
 /**
- * @param {number} scale .
+ * @type {number}
  */
-Cesium.Billboard.prototype.setScale = function(scale) {};
+Cesium.Billboard.prototype.scale;
 
 
 /**
- * @param {number} index .
+ * @type {number}
  */
-Cesium.Billboard.prototype.setImageIndex = function(index) {};
+Cesium.Billboard.prototype.imageIndex;
 
 
 /**
- * @param {!Cesium.VerticalOrigin} value .
+ * @type {!Cesium.VerticalOrigin}
  */
-Cesium.Billboard.prototype.setVerticalOrigin = function(value) {};
+Cesium.Billboard.prototype.verticalOrigin;
 
 
 /**
@@ -97,22 +97,23 @@ Cesium.BillboardCollection.prototype.remove = function(what) {};
 
 
 /**
- * @param {Cesium.TextureAtlas} what .
- */
-Cesium.BillboardCollection.prototype.setTextureAtlas = function(what) {};
-
-
-/**
  * @type {boolean} .
  */
 Cesium.BillboardCollection.prototype.sizeReal;
 
 
+/**
+ * @type {Cesium.TextureAtlas}
+ */
+Cesium.BillboardCollection.prototype.textureAtlas;
+
+
 
 /**
+ * @param {Object.<string, *>} opts
  * @constructor
  */
-Cesium.TextureAtlas = function() {};
+Cesium.TextureAtlas = function(opts) {};
 
 
 /**
@@ -122,15 +123,15 @@ Cesium.TextureAtlas.prototype.addImage = function(image) {};
 
 
 /**
- * @return {Array.<Cesium.BoundingRectangle>} .
+ * @type {Array.<Cesium.BoundingRectangle>} .
  */
-Cesium.TextureAtlas.prototype.getTextureCoordinates = function() {};
+Cesium.TextureAtlas.prototype.textureCoordinates;
 
 
 /**
- * @return {!Cesium.Texture} .
+ * @type {!Cesium.Texture} .
  */
-Cesium.TextureAtlas.prototype.getTexture = function() {};
+Cesium.TextureAtlas.prototype.texture;
 
 
 
@@ -141,15 +142,15 @@ Cesium.Texture = function() {};
 
 
 /**
- * @return {number} .
+ * @type {number} .
  */
-Cesium.Texture.prototype.getWidth = function() {};
+Cesium.Texture.prototype.width;
 
 
 /**
- * @return {number} .
+ * @type {number} .
  */
-Cesium.Texture.prototype.getHeight = function() {};
+Cesium.Texture.prototype.height;
 
 
 
@@ -201,11 +202,6 @@ Cesium.Camera.prototype.direction;
  */
 Cesium.Camera.prototype.frustum;
 
-/**
- * @type {Cesium.CameraController}
- */
-Cesium.Camera.prototype.controller;
-
 
 /**
  * @type {Cesium.Cartesian3}
@@ -232,9 +228,9 @@ Cesium.Camera.prototype.up;
 
 
 /**
- * @return {Cesium.Cartesian3} .
+ * @type {Cesium.Cartesian3} .
  */
-Cesium.Camera.prototype.getPositionWC = function() {};
+Cesium.Camera.prototype.positionWC;
 
 
 /**
@@ -246,9 +242,17 @@ Cesium.Camera.prototype.worldToCameraCoordinates = function(cartesian, opt_resul
 
 
 /**
- * @return {!Cesium.Matrix4}
+ * @param {Cesium.Cartesian3} cartesian .
+ * @param {Cesium.Cartesian3=} opt_result .
+ * @return {Cesium.Cartesian3} .
  */
-Cesium.Camera.prototype.getViewMatrix = function() {};
+Cesium.Camera.prototype.worldToCameraCoordinatesPoint = function(cartesian, opt_result) {};
+
+
+/**
+ * @type {!Cesium.Matrix4}
+ */
+Cesium.Camera.prototype.viewMatrix;
 
 
 
@@ -308,17 +312,10 @@ Cesium.CameraEventAggregator.prototype.isDestroyed = function() {}
 Cesium.CameraEventAggregator.prototype.destroy = function() {};
 
 
-
-/**
- * @constructor
- */
-Cesium.CameraController = function() {};
-
-
 /**
  * @param {Cesium.Cartographic} carto
  */
-Cesium.CameraController.prototype.setPositionCartographic = function(carto) {};
+Cesium.Camera.prototype.setPositionCartographic = function(carto) {};
 
 
 /**
@@ -326,44 +323,44 @@ Cesium.CameraController.prototype.setPositionCartographic = function(carto) {};
  * @param {Cesium.Cartesian3} target .
  * @param {Cesium.Cartesian3} up .
  */
-Cesium.CameraController.prototype.lookAt = function(eye, target, up) {};
+Cesium.Camera.prototype.lookAt = function(eye, target, up) {};
 
 
 /**
  * @param {number} amount .
  */
-Cesium.CameraController.prototype.twistLeft = function(amount) {};
+Cesium.Camera.prototype.twistLeft = function(amount) {};
 
 /**
  * @param {number} amount .
  */
-Cesium.CameraController.prototype.twistRight = function(amount) {};
+Cesium.Camera.prototype.twistRight = function(amount) {};
 
 /**
  * @param {number} amount .
  */
-Cesium.CameraController.prototype.lookLeft = function(amount) {};
+Cesium.Camera.prototype.lookLeft = function(amount) {};
 
 /**
  * @param {number} amount .
  */
-Cesium.CameraController.prototype.lookRight = function(amount) {};
+Cesium.Camera.prototype.lookRight = function(amount) {};
 
 /**
  * @param {number} amount .
  */
-Cesium.CameraController.prototype.lookUp = function(amount) {};
+Cesium.Camera.prototype.lookUp = function(amount) {};
 
 /**
  * @param {number} amount .
  */
-Cesium.CameraController.prototype.lookDown = function(amount) {};
+Cesium.Camera.prototype.lookDown = function(amount) {};
 
 /**
  * @param {!Cesium.Cartesian2} windowPos .
  * @return {!Cesium.Cartesian3} .
  */
-Cesium.CameraController.prototype.pickEllipsoid = function(windowPos) {};
+Cesium.Camera.prototype.pickEllipsoid = function(windowPos) {};
 
 
 /**
@@ -389,11 +386,11 @@ Cesium.Cartesian2.prototype.y;
 
 /**
  * @constructor
- * @param {number} x
- * @param {number} y
- * @param {number} z
+ * @param {number=} opt_x
+ * @param {number=} opt_y
+ * @param {number=} opt_z
  */
-Cesium.Cartesian3 = function(x, y, z) {};
+Cesium.Cartesian3 = function(opt_x, opt_y, opt_z) {};
 
 
 /**
@@ -439,25 +436,28 @@ Cesium.Cartesian3.prototype.z;
 
 
 /**
+ * @param {Cesium.Cartesian3} left
  * @return {number}
  */
-Cesium.Cartesian3.prototype.magnitude = function() {};
+Cesium.Cartesian3.magnitude = function(left) {};
 
 
 /**
+ * @param {Cesium.Cartesian3} left
  * @param {Cesium.Cartesian3} right
  * @param {Cesium.Cartesian3=} opt_result
  * @return {!Cesium.Cartesian3}
  */
-Cesium.Cartesian3.prototype.add = function(right, opt_result) {};
+Cesium.Cartesian3.add = function(left, right, opt_result) {};
 
 
 /**
+ * @param {Cesium.Cartesian3} left
  * @param {Cesium.Cartesian3} right
  * @param {Cesium.Cartesian3=} opt_result
  * @return {!Cesium.Cartesian3}
  */
-Cesium.Cartesian3.prototype.subtract = function(right, opt_result) {};
+Cesium.Cartesian3.subtract = function(left, right, opt_result) {};
 
 
 /**
@@ -469,25 +469,11 @@ Cesium.Cartesian3.normalize = function(cartesian, result) {};
 
 
 /**
- * @param {Cesium.Cartesian3=} opt_result
- * @return {!Cesium.Cartesian3}
- */
-Cesium.Cartesian3.prototype.normalize = function(opt_result) {};
-
-
-/**
  * @param {Cesium.Cartesian3} cartesian
  * @param {Cesium.Cartesian3} result
  * @return {!Cesium.Cartesian3}
  */
 Cesium.Cartesian3.negate = function(cartesian, result) {};
-
-
-/**
- * @param {Cesium.Cartesian3=} opt_result
- * @return {!Cesium.Cartesian3}
- */
-Cesium.Cartesian3.prototype.negate = function(opt_result) {};
 
 
 /**
@@ -500,27 +486,11 @@ Cesium.Cartesian3.cross = function(left, right, opt_result) {};
 
 
 /**
- * @param {Cesium.Cartesian3} right
- * @param {Cesium.Cartesian3=} opt_result
- * @return {!Cesium.Cartesian3}
- */
-Cesium.Cartesian3.prototype.cross = function(right, opt_result) {};
-
-
-/**
  * @param {Cesium.Cartesian3} left
  * @param {Cesium.Cartesian3} right
  * @return {number}
  */
 Cesium.Cartesian3.dot = function(left, right) {};
-
-
-/**
- * @param {Cesium.Cartesian3} right
- * @param {Cesium.Cartesian3=} opt_result
- * @return {number}
- */
-Cesium.Cartesian3.prototype.dot = function(right, opt_result) {};
 
 
 /**
@@ -531,23 +501,15 @@ Cesium.Cartesian3.prototype.dot = function(right, opt_result) {};
 Cesium.Cartesian3.angleBetween = function(left, right) {};
 
 
-/**
- * @param {Cesium.Cartesian3} right
- * @param {Cesium.Cartesian3=} opt_result
- * @return {number}
- */
-Cesium.Cartesian3.prototype.angleBetween = function(right, opt_result) {};
-
-
 
 /**
  * @constructor
- * @param {number} x
- * @param {number} y
- * @param {number} z
- * @param {number} w
+ * @param {number=} opt_x
+ * @param {number=} opt_y
+ * @param {number=} opt_z
+ * @param {number=} opt_w
  */
-Cesium.Cartesian4 = function(x, y, z, w) {};
+Cesium.Cartesian4 = function(opt_x, opt_y, opt_z, opt_w) {};
 
 
 /**
@@ -614,32 +576,27 @@ Cesium.Cartographic.fromDegrees = function(lat, lng) {};
  * @constructor
  * @param {Cesium.Ellipsoid} ellipsoid
  */
-Cesium.CentralBody = function(ellipsoid) {};
+Cesium.Globe = function(ellipsoid) {};
 
 
 /**
- * @return {Cesium.ImageryLayerCollection}
+ * @type {Cesium.Ellipsoid}
  */
-Cesium.CentralBody.prototype.getImageryLayers = function() {};
-
-
-/**
- * @return {Cesium.Ellipsoid}
- */
-Cesium.CentralBody.prototype.getEllipsoid = function() {};
+Cesium.Globe.prototype.ellipsoid;
 
 
 
 /**
+ * @param {Object.<string, *>=} opt_opts
  * @constructor
  */
-Cesium.Polygon = function() {};
+Cesium.Polygon = function(opt_opts) {};
 
 
 /**
- * @param {!Array.<!Cesium.Cartesian3>} positions .
+ * @type {!Array.<!Cesium.Cartesian3>}
  */
-Cesium.Polygon.prototype.setPositions = function(positions) {};
+Cesium.Polygon.prototype.positions;
 
 
 /**
@@ -652,6 +609,11 @@ Cesium.Polygon.prototype.material;
  * @type {boolean} .
  */
 Cesium.Polygon.prototype.show;
+
+
+/**
+ */
+Cesium.Polygon.prototype.update = function() {};
 
 
 
@@ -689,79 +651,52 @@ Cesium.Polyline = function() {};
 
 
 /**
- * @param {!Array.<!Cesium.Cartesian3>} positions .
+ * @type {!Array.<!Cesium.Cartesian3>}
  */
-Cesium.Polyline.prototype.setPositions = function(positions) {};
+Cesium.Polyline.prototype.positions;
 
 
 /**
- * @param {!Cesium.Material} material .
+ * @type {!Cesium.Material}
  */
-Cesium.Polyline.prototype.setMaterial = function(material) {};
+Cesium.Polyline.prototype.material;
 
 
 /**
- * @return {!Cesium.Material} material .
+ * @type {number}
  */
-Cesium.Polyline.prototype.getMaterial = function() {};
-
-
-/**
- * @param {number} width .
- */
-Cesium.Polyline.prototype.setWidth = function(width) {};
+Cesium.Polyline.prototype.width;
 
 
 
 /**
  * @constructor
  */
-Cesium.CompositePrimitive = function() {};
+Cesium.PrimitiveCollection = function() {};
 
 
 /**
- * @return {Cesium.CentralBody}
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection} poly .
  */
-Cesium.CompositePrimitive.prototype.getCentralBody = function() {};
+Cesium.PrimitiveCollection.prototype.add = function(poly) {};
 
 
 /**
- * @param {Cesium.CentralBody} centralBody
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection} poly .
  */
-Cesium.CompositePrimitive.prototype.setCentralBody = function(centralBody) {};
+Cesium.PrimitiveCollection.prototype.raiseToTop = function(poly) {};
 
 
 /**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.CompositePrimitive} poly .
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection} poly .
  */
-Cesium.CompositePrimitive.prototype.add = function(poly) {};
+Cesium.PrimitiveCollection.prototype.remove = function(poly) {};
 
 
 /**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.CompositePrimitive} poly .
+ * @type {number}
  */
-Cesium.CompositePrimitive.prototype.raiseToTop = function(poly) {};
-
-
-/**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.CompositePrimitive} poly .
- */
-Cesium.CompositePrimitive.prototype.remove = function(poly) {};
-
-
-
-/**
- * @constructor
- * @param {HTMLCanvasElement|Element} canvas
- * @param {Object} opt_opts
- */
-Cesium.Context = function(canvas, opt_opts) {};
-
-
-/**
- * @return {!Cesium.TextureAtlas}
- */
-Cesium.Context.prototype.createTextureAtlas = function() {};
+Cesium.PrimitiveCollection.prototype.length;
 
 
 
@@ -782,14 +717,24 @@ Cesium.Event = function() {};
 
 /**
  * @constructor
+ * @param {string=} opt_text
+ * @param {string=} opt_imageUrl
+ * @param {string=} opt_link
+ */
+Cesium.Credit = function(opt_text, opt_imageUrl, opt_link) {};
+
+
+
+/**
+ * @constructor
  */
 Cesium.GeographicTilingScheme = function() {};
 
 
 /**
- * @return {Cesium.Extent}
+ * @type {Cesium.Rectangle}
  */
-Cesium.GeographicTilingScheme.prototype.getExtent = function() {};
+Cesium.GeographicTilingScheme.prototype.rectangle;
 
 
 
@@ -800,9 +745,9 @@ Cesium.GeographicTilingScheme.prototype.getExtent = function() {};
 Cesium.ImageryLayer = function(imageryProvider) {};
 
 /**
- * @return {Cesium.ImageryProvider} provider
+ * @type {Cesium.ImageryProvider}
  */
-Cesium.ImageryLayer.prototype.getImageryProvider = function() {};
+Cesium.ImageryLayer.prototype.imageryProvider;
 
 
 /**
@@ -826,9 +771,9 @@ Cesium.ImageryLayerCollection.prototype.addImageryProvider = function(provider) 
 
 
 /**
- * @return {number} length
+ * @type {number}
  */
-Cesium.ImageryLayerCollection.prototype.getLength = function() {};
+Cesium.ImageryLayerCollection.prototype.length;
 
 
 /**
@@ -866,56 +811,68 @@ Cesium.ImageryProvider.prototype.isReady = function() {};
 
 
 /**
- * @return {Cesium.Extent}
+ * @type {Cesium.Rectangle}
  */
-Cesium.ImageryProvider.prototype.getExtent = function() {};
+Cesium.ImageryProvider.prototype.rectangle;
 
 
 /**
- * @return {number}
+ * @type {number}
  */
-Cesium.ImageryProvider.prototype.getTileWidth = function() {};
+Cesium.ImageryProvider.prototype.tileWidth;
 
 
 /**
- * @return {number}
+ * @type {number}
  */
-Cesium.ImageryProvider.prototype.getTileHeight = function() {};
+Cesium.ImageryProvider.prototype.tileHeight;
 
 
 /**
- * @return {number}
+ * @type {number}
  */
-Cesium.ImageryProvider.prototype.getMaximumLevel = function() {};
+Cesium.ImageryProvider.prototype.minimumLevel;
+
+
+/**
+ * @type {number}
+ */
+Cesium.ImageryProvider.prototype.maximumLevel;
+
+
+/**
+ * @type {string}
+ */
+Cesium.ImageryProvider.prototype.url;
 
 
 /**
  *  //@return {TilingScheme} The tiling scheme.
  *  // TODO
  *  //@return {Cesium.GeographicTilingScheme}
- *  @return {Cesium.WebMercatorTilingScheme}
+ *  @type {Cesium.WebMercatorTilingScheme}
  */
-Cesium.ImageryProvider.prototype.getTilingScheme = function() {};
+Cesium.ImageryProvider.prototype.tilingScheme;
 
 
 /**
  * //@returns {TileDiscardPolicy} The discard policy.
  * // TODO
- * @return {undefined}
+ * @type {undefined}
  */
-Cesium.ImageryProvider.prototype.getTileDiscardPolicy = function() {};
+Cesium.ImageryProvider.prototype.tileDiscardPolicy;
 
 
 /**
- * @return {Cesium.Event} The event.
+ * @type {Cesium.Event} The event.
  */
-Cesium.ImageryProvider.prototype.getErrorEvent = function() {};
+Cesium.ImageryProvider.prototype.errorEvent;
 
 
 /**
- * @return {HTMLImageElement|HTMLCanvasElement|undefined} A canvas or image containing the log to display, or undefined if there is no logo.
+ * @return {Cesium.Credit}
  */
-Cesium.ImageryProvider.prototype.getLogo = function() {};
+Cesium.ImageryProvider.prototype.credit;
 
 
 /**
@@ -928,10 +885,11 @@ Cesium.ImageryProvider.prototype.requestImage = function(x, y, level) {};
 
 
 /**
+ * @param {Cesium.ImageryProvider} imageryProvider
  * @param {string} url
  * @return {Object}
  */
-Cesium.ImageryProvider.loadImage = function(url) {};
+Cesium.ImageryProvider.loadImage = function(imageryProvider, url) {};
 
 
 /**
@@ -992,22 +950,22 @@ Cesium.Ellipsoid.prototype.transformPositionToScaledSpace = function(position, o
  * @param {number} east
  * @param {number} north
  */
-Cesium.Extent = function(west, south, east, north) {};
+Cesium.Rectangle = function(west, south, east, north) {};
 
 /** @type {number} */
-Cesium.Extent.prototype.west;
+Cesium.Rectangle.prototype.west;
 
 /** @type {number} */
-Cesium.Extent.prototype.south;
+Cesium.Rectangle.prototype.south;
 
 /** @type {number} */
-Cesium.Extent.prototype.east;
+Cesium.Rectangle.prototype.east;
 
 /** @type {number} */
-Cesium.Extent.prototype.north;
+Cesium.Rectangle.prototype.north;
 
-/** @type {!Cesium.Extent} */
-Cesium.Extent.MAX_VALUE;
+/** @type {!Cesium.Rectangle} */
+Cesium.Rectangle.MAX_VALUE;
 
 
 
@@ -1108,11 +1066,12 @@ Cesium.Matrix4.fromTranslation = function(translation, opt_result) {};
 
 
 /**
- * @param {Cesium.Matrix4} matrix .
+ * @param {Cesium.Matrix4} left .
+ * @param {Cesium.Matrix4} right .
  * @param {Cesium.Matrix4=} opt_result .
  * @return {Cesium.Matrix4} .
  */
-Cesium.Matrix4.prototype.multiply = function(matrix, opt_result) {};
+Cesium.Matrix4.multiply = function(left, right, opt_result) {};
 
 
 /**
@@ -1123,25 +1082,28 @@ Cesium.Matrix4.prototype.equals = function(matrix) {};
 
 
 /**
+ * @param {Cesium.Matrix4} matrix .
  * @param {Cesium.Cartesian3} point .
- * @param {Cesium.Cartesian4=} opt_result .
- * @return {Cesium.Cartesian4} .
+ * @param {Cesium.Cartesian3=} opt_result .
+ * @return {Cesium.Cartesian3} .
  */
-Cesium.Matrix4.prototype.multiplyByPoint = function(point, opt_result) {};
+Cesium.Matrix4.multiplyByPoint = function(matrix, point, opt_result) {};
 
 
 /**
+ * @param {Cesium.Matrix4} matrix .
  * @param {Cesium.Cartesian4} point .
  * @param {Cesium.Cartesian4=} opt_result .
  * @return {Cesium.Cartesian4} .
  */
-Cesium.Matrix4.prototype.multiplyByVector = function(point, opt_result) {};
+Cesium.Matrix4.multiplyByVector = function(matrix, point, opt_result) {};
 
 
 /**
+ * @param {Cesium.Matrix4} matrix .
  * @return {Array.<number>} .
  */
-Cesium.Matrix4.prototype.toArray = function() {};
+Cesium.Matrix4.toArray = function(matrix) {};
 
 
 
@@ -1205,9 +1167,9 @@ Cesium.PerspectiveFrustrum.prototype.near;
 
 
 /**
- * @return {!Cesium.Matrix4}
+ * @type {!Cesium.Matrix4}
  */
-Cesium.PerspectiveFrustrum.prototype.getProjectionMatrix = function() {};
+Cesium.PerspectiveFrustrum.prototype.projectionMatrix;
 
 
 /**
@@ -1235,45 +1197,21 @@ Cesium.Quaternion.fromAxisAngle = function(axis, angle) {};
 
 /**
  * @constructor
- * @param {HTMLCanvasElement|Element} canvas
+ * @param {Object.<string, Object>} canvas
  */
 Cesium.Scene = function(canvas) {};
 
 
 /**
- * @return {!Cesium.Camera}
+ * @type {HTMLCanvasElement}
  */
-Cesium.Scene.prototype.getCamera = function() {};
+Cesium.Scene.prototype.canvas;
 
 
 /**
- * @return {HTMLCanvasElement}
+ * @type {!{uniformState: !Cesium.UniformState}}
  */
-Cesium.Scene.prototype.getCanvas = function() {};
-
-
-/**
- * @return {Cesium.Context}
- */
-Cesium.Scene.prototype.getContext = function() {};
-
-
-/**
- * @return {Cesium.CompositePrimitive}
- */
-Cesium.Scene.prototype.getPrimitives = function() {};
-
-
-/**
- * @return {Cesium.ScreenSpaceCameraController}
- */
-Cesium.Scene.prototype.getScreenSpaceCameraController = function() {};
-
-
-/**
- * @return {!Cesium.UniformState}
- */
-Cesium.Scene.prototype.getUniformState = function() {};
+Cesium.Scene.prototype.context;
 
 
 /**
@@ -1287,14 +1225,44 @@ Cesium.Scene.prototype.render = function() {};
 
 
 /**
+ * @type {Cesium.ScreenSpaceCameraController}
+ */
+Cesium.Scene.prototype.screenSpaceCameraController;
+
+
+/**
  */
 Cesium.Scene.prototype.destroy = function() {};
+
+
+/**
+ * @type {!Cesium.Camera}
+ */
+Cesium.Scene.prototype.camera;
+
+
+/**
+ * @type {Cesium.Globe}
+ */
+Cesium.Scene.prototype.globe;
+
+
+/**
+ * @type {Cesium.ImageryLayerCollection}
+ */
+Cesium.Scene.prototype.imageryLayers;
 
 
 /**
  * @type {Cesium.SceneMode}
  */
 Cesium.Scene.prototype.mode;
+
+
+/**
+ * @type {Cesium.PrimitiveCollection}
+ */
+Cesium.Scene.prototype.primitives;
 
 
 /**
@@ -1354,9 +1322,9 @@ Cesium.UniformState = function() {};
 
 
 /**
- * @return {!Cesium.Matrix4}
+ * @type {!Cesium.Matrix4}
  */
-Cesium.UniformState.prototype.getModelViewProjection = function() {};
+Cesium.UniformState.prototype.modelViewProjection;
 
 
 
@@ -1532,9 +1500,9 @@ Cesium.WebMercatorTilingScheme = function() {};
 
 
 /**
- * @return {Cesium.Extent}
+ * @type {Cesium.Rectangle}
  */
-Cesium.WebMercatorTilingScheme.prototype.getExtent = function() {};
+//Cesium.WebMercatorTilingScheme.prototype.rectangle;
 
 
 /** @constructor */

@@ -269,7 +269,7 @@ exportSymbol('WebGLEarth.prototype.flyToFitBounds',
 weapi.exports.App.prototype.getTarget = function() {
   var center = new Cesium.Cartesian2(this.canvas.width / 2,
                                      this.canvas.height / 2);
-  var position = this.camera.camera.controller.pickEllipsoid(center);
+  var position = this.camera.camera.pickEllipsoid(center);
 
   if (goog.isDefAndNotNull(position)) {
     var carto = this.camera.ellipsoid.cartesianToCartographic(position);
@@ -296,7 +296,7 @@ exportSymbol('WebGLEarth.prototype.handleResize',
  */
 weapi.exports.App.prototype.saveScreenshot = function(name) {
   this.afterFrameOnce = goog.bind(function() {
-    var canvas_ = we.canvas2image.prepareCanvas(this.scene.getCanvas(),
+    var canvas_ = we.canvas2image.prepareCanvas(this.scene.canvas,
                                                 this.markerManager,
                                                 this.miniglobe);
     we.canvas2image.saveCanvasAsPNG(canvas_, name);
@@ -312,7 +312,7 @@ exportSymbol('WebGLEarth.prototype.saveScreenshot',
  */
 weapi.exports.App.prototype.getScreenshot = function(callback) {
   this.afterFrameOnce = goog.bind(function() {
-    var canvas_ = we.canvas2image.prepareCanvas(this.scene.getCanvas(),
+    var canvas_ = we.canvas2image.prepareCanvas(this.scene.canvas,
                                                 this.markerManager,
                                                 this.miniglobe);
     callback(we.canvas2image.getCanvasAsDataURL(canvas_));
@@ -585,7 +585,7 @@ exportSymbol('WebGLEarth.Polygon.prototype.getCentroid',
  */
 weapi.exports.Polygon.prototype.onClick = function(callback) {
   goog.events.listen(this.app.canvas, goog.events.EventType.CLICK, function(e) {
-    var cartesian = this.app.camera.camera.controller.pickEllipsoid(
+    var cartesian = this.app.camera.camera.pickEllipsoid(
         new Cesium.Cartesian2(e.offsetX, e.offsetY));
     if (goog.isDefAndNotNull(cartesian)) {
       var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);

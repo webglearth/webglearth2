@@ -115,8 +115,8 @@ exportSymbolL('WE.tileLayerJSON', function(data, opt_app) {
 
 
 exportSymbolL('WebGLEarth.Map.prototype.addTo', function(app) {
-  this.layer.getImageryProvider().proxy = app.mapProxyObject;
-  var layers = app.centralBody.getImageryLayers();
+  this.layer.imageryProvider.proxy = app.mapProxyObject;
+  var layers = app.scene.imageryLayers;
   layers.add(this.layer);
 
   this.app = app;
@@ -179,7 +179,7 @@ exportSymbolL('WE.polygon', function(points, opts) {
                           opts['opacity'] || 0.5);
       poly.setFillColor(opts['fillColor'] || '#03f',
                         opts['fillOpacity'] || 0.2);
-      poly.polygon_.primitiveLine.setWidth(opts['weight'] || 5); //TODO: cleaner
+      poly.polygon_.primitiveLine.width = opts['weight'] || 5; //TODO: cleaner
       return poly;
     }
   };

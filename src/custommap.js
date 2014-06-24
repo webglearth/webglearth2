@@ -15,86 +15,40 @@ goog.provide('weapi.CustomMap');
  * @constructor
  */
 weapi.CustomMap = function(opts) {
-  this.url = /** @type {string} */(opts['url']);
+  this['_url'] = /** @type {string} */(opts['url']);
 
-  this.minZoom = /** @type {number} */(opts['minimumLevel'] || 0);
-  this.maxZoom = /** @type {number} */(opts['maximumLevel'] || 18);
+  this['_minimumLevel'] = /** @type {number} */(opts['minimumLevel'] || 0);
+  this['_maximumLevel'] = /** @type {number} */(opts['maximumLevel'] || 18);
 
   this.tileSize = /** @type {number} */(opts['tileSize'] || 256);
+  this['_tileWidth'] = this['_tileHeight'] = this.tileSize;
 
-  var b = opts['bounds'];
+  var b = opts['bounds'], rectangle = null;
   if (b && b.length && b.length > 3) {
-    this.extent = new Cesium.Extent(goog.math.toRadians(b[0]),
-                                    goog.math.toRadians(b[1]),
-                                    goog.math.toRadians(b[2]),
-                                    goog.math.toRadians(b[3]));
-  } else {
-    //this.extent = Cesium.Extent.MAX_VALUE;
+    rectangle = new Cesium.Rectangle(goog.math.toRadians(b[0]),
+                                     goog.math.toRadians(b[1]),
+                                     goog.math.toRadians(b[2]),
+                                     goog.math.toRadians(b[3]));
   }
 
   this.flipY = /** @type {boolean} */(opts['flipY'] || false);
 
   this.subdomains = /** @type {Array.<string>} */(opts['subdomains'] || []);
 
-  this.credit = Cesium.writeTextToCanvas((opts['copyright'] || '').toString());
+  this['_credit'] = new Cesium.Credit((opts['copyright'] || '').toString());
 
-  this.proxy = opts['proxy'] || null;
+  this['_proxy'] = opts['proxy'] || undefined;
 
   this.emptyTile = goog.dom.createElement('canvas');
   this.emptyTile.width = this.tileSize;
   this.emptyTile.height = this.tileSize;
 
-  var forward = {'url': this.buildTileURL(0, 0, 0), 'extent': this.extent};
-  //if (this.proxy) forward['proxy'] = this.proxy;
-
-  goog.base(this, forward);
+  this['_errorEvent'] = new Cesium.Event();
+  this['_tilingScheme'] = new Cesium.WebMercatorTilingScheme();
+  this['_rectangle'] = rectangle || this['_tilingScheme']['rectangle'];
+  this['_ready'] = true;
 };
 goog.inherits(weapi.CustomMap, Cesium.TileMapServiceImageryProvider);
-
-
-/**
- * @return {HTMLCanvasElement} .
- * @this {weapi.CustomMap}
- */
-weapi.CustomMap.prototype['getLogo'] = function() {
-  return this.credit;
-};
-
-
-/**
- * @return {number} .
- * @this {weapi.CustomMap}
- */
-weapi.CustomMap.prototype['getMinimumLevel'] = function() {
-  return this.minZoom;
-};
-
-
-/**
- * @return {number} .
- * @this {weapi.CustomMap}
- */
-weapi.CustomMap.prototype['getMaximumLevel'] = function() {
-  return this.maxZoom;
-};
-
-
-/**
- * @return {number} .
- * @this {weapi.CustomMap}
- */
-weapi.CustomMap.prototype['getTileHeight'] = function() {
-  return this.tileSize;
-};
-
-
-/**
- * @return {number} .
- * @this {weapi.CustomMap}
- */
-weapi.CustomMap.prototype['getTileWidth'] = function() {
-  return this.tileSize;
-};
 
 
 /**
@@ -117,15 +71,6 @@ weapi.CustomMap.prototype.buildTileURL = function(zoom, x, y) {
 
 
 /**
- * @return {string} .
- * @this {weapi.CustomMap}
- */
-weapi.CustomMap.prototype['getUrl'] = function() {
-  return this.buildTileURL(0, 0, 0);
-};
-
-
-/**
  * @param {number} x .
  * @param {number} y .
  * @param {number} level .
@@ -133,7 +78,8 @@ weapi.CustomMap.prototype['getUrl'] = function() {
  * @this {weapi.CustomMap}
  */
 weapi.CustomMap.prototype['requestImage'] = function(x, y, level) {
-  if (level < this.minZoom || level > this.maxZoom) return this.emptyTile;
+  if (level < this.minimumLevel ||
+      level > this.maximumLevel) return this.emptyTile;
   var url = this.buildTileURL(level, x, y);
-  return Cesium.ImageryProvider.loadImage(url);
+  return Cesium.ImageryProvider.loadImage(this, url);
 };

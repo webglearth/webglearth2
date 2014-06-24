@@ -54,7 +54,7 @@ weapi.Camera.prototype.setPos = function(latitude, longitude, altitude) {
   }
   var carto = new Cesium.Cartographic(longitude, latitude, altitude);
 
-  this.camera.controller.setPositionCartographic(carto);
+  this.camera.setPositionCartographic(carto);
 };
 
 
@@ -63,13 +63,14 @@ weapi.Camera.prototype.setPos = function(latitude, longitude, altitude) {
  */
 weapi.Camera.prototype.getHeading = function() {
   var camera = this.camera;
-  var pos = camera.getPositionWC(); //this forces the update
+  var pos = camera.positionWC; //this forces the update
 
   var normal = new Cesium.Cartesian3(-pos.y, pos.x, 0);
   // = Cesium.Cartesian3.UNIT_Z.cross(pos).normalize();
-  var angle = (camera.right.angleBetween(normal.normalize()));
-
-  var orientation = Cesium.Cartesian3.cross(pos, camera.up).z;
+  //var angle = (camera.right.angleBetween(normal.normalize()));
+  var angle = Cesium.Cartesian3.angleBetween(camera.right, normal);
+  var orientation = Cesium.Cartesian3.cross(pos, camera.up,
+                                            new Cesium.Cartesian3()).z;
 
   return (orientation < 0 ? angle : -angle);
 };
@@ -80,9 +81,10 @@ weapi.Camera.prototype.getHeading = function() {
  */
 weapi.Camera.prototype.getTilt = function() {
   var camera = this.camera;
-  var pos = camera.getPositionWC(); //this forces the update
+  var pos = camera.positionWC; //this forces the update
 
-  var angle = Math.acos(camera.up.dot(pos.normalize()));
+  var angle = Math.acos(Cesium.Cartesian3.dot(camera.up,
+      Cesium.Cartesian3.normalize(pos, new Cesium.Cartesian3())));
 
   return -angle + Math.PI / 2;
 };
@@ -95,9 +97,9 @@ weapi.Camera.prototype.setHeading = function(heading) {
   var heading_, tilt_ = this.getTilt();
 
   heading_ = heading - this.getHeading();
-  this.camera.controller.lookDown(tilt_);
-  this.camera.controller.twistLeft(heading_);
-  this.camera.controller.lookUp(tilt_);
+  this.camera.lookDown(tilt_);
+  this.camera.twistLeft(heading_);
+  this.camera.lookUp(tilt_);
 };
 
 
@@ -108,7 +110,7 @@ weapi.Camera.prototype.setTilt = function(tilt) {
   var tilt_ = tilt - this.getTilt();
 
   var heading_ = this.getHeading();
-  this.camera.controller.lookUp(tilt_);
+  this.camera.lookUp(tilt_);
   this.setHeading(heading_); //re-set the heading
 };
 
@@ -121,9 +123,9 @@ weapi.Camera.prototype.setHeadingAndTilt = function(heading, tilt) {
   var heading_, tilt_ = this.getTilt();
 
   heading_ = heading - this.getHeading();
-  this.camera.controller.lookDown(tilt_);
-  this.camera.controller.twistLeft(heading_);
-  this.camera.controller.lookUp(tilt);
+  this.camera.lookDown(tilt_);
+  this.camera.twistLeft(heading_);
+  this.camera.lookUp(tilt);
 };
 
 
@@ -139,9 +141,9 @@ weapi.Camera.prototype.setPosHeadingAndTilt = function(lat, lng, alt,
                                                        heading, tilt) {
   var carto = new Cesium.Cartographic(lng, lat, alt);
 
-  this.camera.controller.setPositionCartographic(carto);
-  this.camera.controller.twistLeft(heading);
-  this.camera.controller.lookUp(tilt);
+  this.camera.setPositionCartographic(carto);
+  this.camera.twistLeft(heading);
+  this.camera.lookUp(tilt);
 };
 
 

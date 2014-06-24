@@ -253,7 +253,7 @@ weapi.MiniGlobe.prototype.draw = function() {
   var rotate100 = function(what, angle) {
     var c = Math.cos(angle), s = Math.sin(angle);
 
-    what.multiply(new Cesium.Matrix4(
+    Cesium.Matrix4.multiply(what, new Cesium.Matrix4(
         1, 0, 0, 0,
         0, c, -s, 0,
         0, s, c, 0,
@@ -264,7 +264,7 @@ weapi.MiniGlobe.prototype.draw = function() {
   var rotate010 = function(what, angle) {
     var c = Math.cos(angle), s = Math.sin(angle);
 
-    what.multiply(new Cesium.Matrix4(
+    Cesium.Matrix4.multiply(what, new Cesium.Matrix4(
         c, 0, s, 0,
         0, 1, 0, 0,
         -s, 0, c, 0,
@@ -282,10 +282,10 @@ weapi.MiniGlobe.prototype.draw = function() {
 
 
   var pm = new Float32Array(goog.array.flatten(
-      frustum.getProjectionMatrix().toArray()));
+      Cesium.Matrix4.toArray(frustum.projectionMatrix)));
 
   gl.uniformMatrix4fv(this.mvMatrixUniform, false, new Float32Array(
-      goog.array.flatten(mvm.toArray())));
+      goog.array.flatten(Cesium.Matrix4.toArray(mvm))));
   gl.uniformMatrix4fv(this.pMatrixUniform, false, pm);
   gl.uniform1f(this.aspectUniform, frustum.aspectRatio);
 

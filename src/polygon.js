@@ -20,7 +20,7 @@ weapi.Polygon = function() {
   /**
    * @type {!Cesium.Polygon}
    */
-  this.primitive = new Cesium.Polygon();
+  this.primitive = new Cesium.Polygon({'asynchronous': false});
 
   /**
    * @type {!Cesium.PolylineCollection}
@@ -52,9 +52,9 @@ weapi.Polygon = function() {
 
   this.primitive.material.uniforms['color'] = new Cesium.Color(1, 0, 0, .8);
 
-  this.primitiveLine.getMaterial().uniforms['color'] =
+  this.primitiveLine.material.uniforms['color'] =
       new Cesium.Color(0, 0, 0, 1);
-  this.primitiveLine.setWidth(2);
+  this.primitiveLine.width = 2;
 
   /**
    * @type {number}
@@ -388,9 +388,10 @@ weapi.Polygon.prototype.rebufferPoints_ = function() {
 
   var carteArray =
       Cesium.Ellipsoid.WGS84.cartographicArrayToCartesianArray(cartoArray);
-  this.primitive.setPositions(carteArray);
+  this.primitive.positions = carteArray;
+  //this.primitive.update();
   carteArray.push(carteArray[0]);
-  this.primitiveLine.setPositions(carteArray);
+  this.primitiveLine.positions = carteArray;
 };
 
 

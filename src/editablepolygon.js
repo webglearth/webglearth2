@@ -120,8 +120,7 @@ weapi.EditablePolygon.prototype.enableClickToAdd = function() {
               if (e_.button == 0 && !goog.isNull(this.clickListenKey_)) {
                 if (Math.max(Math.abs(e.offsetX - e_.offsetX),
                     Math.abs(e.offsetY - e_.offsetY)) <= 3) {
-                  var cartesian = this.app.camera.camera.controller.
-                      pickEllipsoid(
+                  var cartesian = this.app.camera.camera.pickEllipsoid(
                       new Cesium.Cartesian2(e_.offsetX, e_.offsetY));
                   if (goog.isDefAndNotNull(cartesian)) {
                     var carto = Cesium.Ellipsoid.WGS84.
@@ -173,7 +172,7 @@ weapi.EditablePolygon.prototype.setStrokeColor = function(hexColor, opt_a) {
   var g = parseInt(hexColor.substr(3, 2), 16) / 255;
   var b = parseInt(hexColor.substr(5, 2), 16) / 255;
 
-  this.polygon_.primitiveLine.getMaterial().uniforms['color'] =
+  this.polygon_.primitiveLine.material.uniforms['color'] =
       new Cesium.Color(r, g, b, opt_a);
 
   this.app.sceneChanged = true;

@@ -44,10 +44,12 @@ weapi.utils.getXYForLatLng = function(app, lat, lng, opt_alt) {
   var cam = app.camera.camera;
   var pos = new Cesium.Cartographic(lng, lat, opt_alt || 0);
   var cartes3 = Cesium.Ellipsoid.WGS84.cartographicToCartesian(pos);
+  var cartes4 = new Cesium.Cartesian4(cartes3.x, cartes3.y, cartes3.z, 1);
 
-  var mvp = app.scene.getUniformState().getModelViewProjection();
+  var mvp = app.scene.context.uniformState.modelViewProjection;
 
-  var proj = mvp.multiplyByPoint(cartes3);
+  var proj = Cesium.Matrix4.multiplyByVector(mvp, cartes4,
+                                             new Cesium.Cartesian4());
 
   if (!goog.isDefAndNotNull(proj)) return null;
 
@@ -60,11 +62,13 @@ weapi.utils.getXYForLatLng = function(app, lat, lng, opt_alt) {
       y < -0.1 || y > 1.1) {
     visibility = 0;
   } else {
-    var direction = cartes3.subtract(cam.position);
-    var distance = cartes3.subtract(cam.position).magnitude();
+    var direction = Cesium.Cartesian3.subtract(cartes3, cam.position, cartes3);
+    var distance = Cesium.Cartesian3.magnitude(direction);
 
-    var ldotc = -direction.normalize().dot(cam.position);
-    var cdotc = cam.position.dot(cam.position);
+    var ldotc = -Cesium.Cartesian3.dot(
+        Cesium.Cartesian3.normalize(direction, new Cesium.Cartesian3()),
+        cam.position);
+    var cdotc = Cesium.Cartesian3.dot(cam.position, cam.position);
 
     var r = weapi.utils.EARTH_RADIUS;
     var val = ldotc * ldotc - cdotc + r * r;

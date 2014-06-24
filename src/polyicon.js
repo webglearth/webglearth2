@@ -86,7 +86,7 @@ weapi.PolyIcon.prototype.setLatLng = function(lat, lng) {
     var position = Cesium.Ellipsoid.WGS84.cartographicToCartesian(
         new Cesium.Cartographic(this.lng_, this.lat_));
 
-    this.billboard.setPosition(position);
+    this.billboard.position = position;
   }
 };
 
@@ -96,7 +96,7 @@ weapi.PolyIcon.prototype.setLatLng = function(lat, lng) {
  */
 weapi.PolyIcon.prototype.enable = function(enable) {
   if (this.billboard) {
-    this.billboard.setShow(enable);
+    this.billboard.show = enable;
   }
 };
 
@@ -127,23 +127,23 @@ weapi.PolyIcon.prototype.setImage = function(src, height,
       this.setLatLng(this.lat_, this.lng_);
     }
     this.app.polyIconAtlas.getImageIndex(src, goog.bind(function(index) {
-      this.billboard.setImageIndex(index);
-      var coords = this.app.polyIconAtlas.atlas.getTextureCoordinates()[index];
-      var texture = this.app.polyIconAtlas.atlas.getTexture();
-      var h = coords.height * texture.getHeight();
+      this.billboard.imageIndex = index;
+      var coords = this.app.polyIconAtlas.atlas.textureCoordinates[index];
+      var texture = this.app.polyIconAtlas.atlas.texture;
+      var h = coords.height * texture.height;
       var canvasHeight = this.app.canvas.clientHeight;
 
       // shader does: f(x) = img_h * x / d;
       // we need: g(x) = x * (ref_d / d) * (canvas_h / ref_h);
       // result: h(x) = (f(x) / img_h) * ref_d * (canvas_h / ref_h) = g(x);
-      this.billboard.setScale((height / h) *
+      this.billboard.scale = (height / h) *
           weapi.PolyIcon.REFERENCE_DISTANCE *
-          (canvasHeight / weapi.PolyIcon.REFERENCE_CANVAS_HEIGHT));
+          (canvasHeight / weapi.PolyIcon.REFERENCE_CANVAS_HEIGHT);
 
       this.setLatLng(this.lat_, this.lng_);
       this.app.sceneChanged = true;
     }, this));
-    this.billboard.setVerticalOrigin(Cesium.VerticalOrigin.BOTTOM);
+    this.billboard.verticalOrigin = Cesium.VerticalOrigin.BOTTOM;
   } else {
     if (this.billboard) {
       this.app.polyIconCollection.remove(this.billboard);

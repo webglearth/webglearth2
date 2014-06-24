@@ -34,7 +34,7 @@ weapi.Map = function(layer) {
  */
 weapi.Map.prototype.setBoundingBox = function(minLon, maxLon,
                                               minLat, maxLat) {
-  var extent = this.layer.getImageryProvider().getExtent();
+  var extent = this.layer.imageryProvider.rectangle;
   extent.west = goog.math.toRadians(minLon);
   extent.south = goog.math.toRadians(minLat);
   extent.east = goog.math.toRadians(maxLon);

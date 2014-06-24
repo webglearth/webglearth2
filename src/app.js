@@ -42,12 +42,10 @@ weapi.App = function(divid, opt_options) {
   /** @type {?Function} */
   this.afterFrameOnce = null;
 
-  if (options['sky'] === false) {
-    // preinit the context to have the right params in case of transparent bkg
-    var tmpCtx = new Cesium.Context(this.canvas, {'alpha': true});
-  }
-
-  this.scene = new Cesium.Scene(this.canvas);
+  this.scene = new Cesium.Scene({
+    'canvas': this.canvas,
+    'contextOptions': {'webgl': {'alpha': options['sky'] === false}}
+  });
 
   /** @type {?weapi.MiniGlobe} */
   this.miniglobe = null;
@@ -65,8 +63,8 @@ weapi.App = function(divid, opt_options) {
   //                           'rendered %:', stats[0] / (stats[0] + stats[1]));
   //}, 2000);
 
-  /** @type {?Cesium.Matrix4} */
-  this.lastViewMatrix = null;
+  /** @type {!Cesium.Matrix4} */
+  this.lastViewMatrix = new Cesium.Matrix4();
 
   /** @type {?string} */
   var proxyHost = opt_options['proxyHost'] || null;
@@ -97,22 +95,23 @@ weapi.App = function(divid, opt_options) {
     this.scene.backgroundColor = new Cesium.Color(0, 0, 0, 0);
   }
 
-  var primitives = this.scene.getPrimitives();
+  var primitives = this.scene.primitives;
 
   var ellipsoid = Cesium.Ellipsoid.WGS84;
-  this.centralBody = new Cesium.CentralBody(ellipsoid);
+  this.globe = new Cesium.Globe(ellipsoid);
 
-  this.camera = new weapi.Camera(this.scene.getCamera(), ellipsoid);
+  this.camera = new weapi.Camera(this.scene.camera, ellipsoid);
 
-  primitives.setCentralBody(this.centralBody);
+  this.scene.globe = this.globe;
 
   if (options['empty'] !== true) {
     // default layer -- Bing Maps
     var bing = new Cesium.BingMapsImageryProvider({
       'url' : 'http://dev.virtualearth.net',
-      'mapStyle' : Cesium.BingMapsStyle.AERIAL_WITH_LABELS
+      'mapStyle' : Cesium.BingMapsStyle.AERIAL_WITH_LABELS,
+      'key': 'AsLurrtJotbxkJmnsefUYbatUuBkeBTzTL930TvcOekeG8SaQPY9Z5LDKtiuzAOu'
     });
-    this.centralBody.getImageryLayers().addImageryProvider(bing);
+    this.scene.imageryLayers.addImageryProvider(bing);
   }
 
   /**
@@ -121,7 +120,7 @@ weapi.App = function(divid, opt_options) {
   this.markerManager = new weapi.markers.MarkerManager(this, container);
 
   /**
-   * @type {!Array.<!Cesium.CompositePrimitive>}
+   * @type {!Array.<!Cesium.PrimitiveCollection>}
    */
   this.composites = [];
 
@@ -134,7 +133,7 @@ weapi.App = function(divid, opt_options) {
    * @type {!Cesium.BillboardCollection}
    */
   this.polyIconCollection = new Cesium.BillboardCollection();
-  this.polyIconCollection.setTextureAtlas(this.polyIconAtlas.atlas);
+  this.polyIconCollection.textureAtlas = this.polyIconAtlas.atlas;
   this.polyIconCollection.sizeReal = true;
   primitives.add(this.polyIconCollection);
 
@@ -146,9 +145,9 @@ weapi.App = function(divid, opt_options) {
       this.sceneChanged = false;
       if (!renderNeeded) {
         // extended sceneChanged detection
-        var viewMatrix = this.camera.camera.getViewMatrix();
+        var viewMatrix = this.camera.camera.viewMatrix;
         if (!this.lastViewMatrix || !this.lastViewMatrix.equals(viewMatrix)) {
-          this.lastViewMatrix = viewMatrix;
+          viewMatrix.clone(this.lastViewMatrix);
           renderNeeded = true;
         }
       }
@@ -204,7 +203,7 @@ weapi.App = function(divid, opt_options) {
   var alt = options['altitude'];
   if (goog.isDefAndNotNull(alt)) this.camera.setPos(undefined, undefined, alt);
 
-  var sscc = this.scene.getScreenSpaceCameraController();
+  var sscc = this.scene.screenSpaceCameraController;
 
   if (options['panning'] === false || options['dragging'] === false)
     sscc.enableRotate = false;
@@ -251,18 +250,18 @@ weapi.App.PRIMITIVE_GROUPING_SIZE = 10;
 
 
 /**
- * @param {!Cesium.BillboardCollection|!Cesium.CompositePrimitive|
+ * @param {!Cesium.BillboardCollection|!Cesium.PrimitiveCollection|
  *         !Cesium.Polygon|!Cesium.PolylineCollection} object .
  */
 weapi.App.prototype.addPrimitive = function(object) {
   var composite = goog.array.findRight(this.composites, function(el, i, arr) {
-    return el['getLength']() < weapi.App.PRIMITIVE_GROUPING_SIZE;
+    return el.length < weapi.App.PRIMITIVE_GROUPING_SIZE;
   });
 
   if (!composite) {
-    composite = new Cesium.CompositePrimitive();
+    composite = new Cesium.PrimitiveCollection();
     this.composites.push(composite);
-    var primitives = this.scene.getPrimitives();
+    var primitives = this.scene.primitives;
     primitives.add(composite);
     primitives.raiseToTop(this.polyIconCollection);
   }
@@ -272,7 +271,7 @@ weapi.App.prototype.addPrimitive = function(object) {
 
 
 /**
- * @param {!Cesium.BillboardCollection|!Cesium.CompositePrimitive|
+ * @param {!Cesium.BillboardCollection|!Cesium.PrimitiveCollection|
  *         !Cesium.Polygon|!Cesium.PolylineCollection} object .
  */
 weapi.App.prototype.removePrimitive = function(object) {
@@ -295,7 +294,7 @@ weapi.App.prototype.handleResize = function() {
 
   this.canvas.width = width;
   this.canvas.height = height;
-  this.scene.getCamera().frustum.aspectRatio = width / height;
+  this.scene.camera.frustum.aspectRatio = width / height;
 
   this.sceneChanged = true;
 };
@@ -305,8 +304,8 @@ weapi.App.prototype.handleResize = function() {
  * @param {!weapi.Map} map Map.
  */
 weapi.App.prototype.setBaseMap = function(map) {
-  var layers = this.centralBody.getImageryLayers();
-  //this.centralBody.getImageryLayers().get(0) = map.layer;
+  var layers = this.scene.imageryLayers;
+  //this.scene.imageryLayers.get(0) = map.layer;
   layers.remove(layers.get(0), false);
   layers.add(map.layer, 0);
   map.app = this;
@@ -319,8 +318,8 @@ weapi.App.prototype.setBaseMap = function(map) {
  * @param {weapi.Map} map Map.
  */
 weapi.App.prototype.setOverlayMap = function(map) {
-  var length = this.centralBody.getImageryLayers().getLength();
-  var layers = this.centralBody.getImageryLayers();
+  var length = this.scene.imageryLayers.length;
+  var layers = this.scene.imageryLayers;
   if (length > 1) {
     layers.remove(layers.get(1), false);
   }
@@ -354,7 +353,7 @@ weapi.App.prototype.on = function(type, listener) {
       e['latitude'] = null;
       e['longitude'] = null;
 
-      var cartesian = app.camera.camera.controller.
+      var cartesian = app.camera.camera.
           pickEllipsoid(new Cesium.Cartesian2(e.offsetX, e.offsetY));
       if (goog.isDefAndNotNull(cartesian)) {
         var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
@@ -442,13 +441,13 @@ weapi.App.prototype.removeMarker = function(marker) {
  *                          [r 0-255, g 0-255, b 0-255, a 0-1, zoomLevel].
  */
 weapi.App.prototype.getBestAvailablePixelColorFromLayer = function(lat, lng) {
-  var layer = this.centralBody.getImageryLayers().get(0);
-  var provider = layer.getImageryProvider();
-  var scheme = provider.getTilingScheme();
+  var layer = this.scene.imageryLayers.get(0);
+  var provider = layer.imageryProvider;
+  var scheme = provider.tilingScheme;
   var position = new Cesium.Cartographic(lng, lat);
 
   var result = null;
-  var zoom = provider.getMaximumLevel();
+  var zoom = provider.maximumLevel;
 
   while (zoom >= 0) {
     var tileXY = scheme['positionToTileXY'](position, zoom);
@@ -456,9 +455,9 @@ weapi.App.prototype.getBestAvailablePixelColorFromLayer = function(lat, lng) {
                                                zoom, undefined);
     if (imagery['__image__']) {
       var pixelX = Math.floor((tileXY.x - Math.floor(tileXY.x)) *
-                   provider.getTileWidth());
+                   provider.tileWidth);
       var pixelY = Math.floor((tileXY.y - Math.floor(tileXY.y)) *
-                   provider.getTileHeight());
+                   provider.tileHeight);
 
       var canvas = goog.dom.createElement('canvas');
       canvas.width = 1;

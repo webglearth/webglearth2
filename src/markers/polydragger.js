@@ -39,7 +39,7 @@ weapi.markers.PolyDragger = function(lat, lon, app, fixedId,
     if (e_.button == 0) {
       goog.events.listen(app.canvas,
           goog.events.EventType.MOUSEMOVE, function(e) {
-            var carte = app.camera.camera.controller.
+            var carte = app.camera.camera.
                 pickEllipsoid(new Cesium.Cartesian2(e.offsetX, e.offsetY));
             if (goog.isDefAndNotNull(carte)) {
               var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(carte);
