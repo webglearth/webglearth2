@@ -1083,6 +1083,12 @@ Cesium.Matrix4.prototype.equals = function(matrix) {};
 
 /**
  * @param {Cesium.Matrix4} matrix .
+ */
+Cesium.Matrix4.prototype.clone = function(matrix) {};
+
+
+/**
+ * @param {Cesium.Matrix4} matrix .
  * @param {Cesium.Cartesian3} point .
  * @param {Cesium.Cartesian3=} opt_result .
  * @return {Cesium.Cartesian3} .
