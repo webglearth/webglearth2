@@ -36,6 +36,18 @@ weapp.App = function() {
     'proxyHost': 'http://srtm.webglearth.com/cgi-bin/corsproxy.fcgi?url='
   });
 
+  if (window.location.hash.length < 4) {
+    new goog.net.Jsonp('http://freegeoip.net/json/').send(
+        undefined, goog.bind(function(data) {
+          if (data) {
+            var lat = data['latitude'], lng = data['longitude'];
+            if (!isNaN(lat) && !isNaN(lng)) {
+              this.app_.setPosition(lat, lng);
+            }
+          }
+        }, this));
+  }
+
   /**
    * @type {!goog.dom.ViewportSizeMonitor}
    * @private
