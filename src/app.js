@@ -167,7 +167,7 @@ weapi.App = function(divid, opt_options) {
     }
     Cesium.requestAnimationFrame(tick);
   }, this);
-  tick();
+  Cesium.requestAnimationFrame(tick);
 
   var handler = new Cesium.ScreenSpaceEventHandler(this.canvas);
 
