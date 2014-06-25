@@ -258,47 +258,63 @@ Cesium.Camera.prototype.viewMatrix;
 
 /**
  * @param {Object} canvas .
- * @param {Object} type .
- * @param {Object} mod .
  * @constructor
  */
-Cesium.CameraEventAggregator = function(canvas, type, mod) {};
+Cesium.CameraEventAggregator = function(canvas) {};
+
+
+/**
+ * @param {Object} type
+ * @param {Object=} opt_mod
+ * @return {boolean} .
+ */
+Cesium.CameraEventAggregator.prototype.isMoving = function(type, opt_mod) {};
+
+
+/**
+ * @param {Object} type
+ * @param {Object=} opt_mod
+ * @return {Object} .
+ */
+Cesium.CameraEventAggregator.prototype.getMovement = function(type, opt_mod) {};
+
+
+/**
+ * @param {Object} type
+ * @param {Object=} opt_mod
+ * @return {Object} .
+ */
+Cesium.CameraEventAggregator.prototype.getLastMovement = function(type, opt_mod) {};
+
+
+/**
+ * @param {Object} type
+ * @param {Object=} opt_mod
+ * @return {boolean} .
+ */
+Cesium.CameraEventAggregator.prototype.isButtonDown = function(type, opt_mod) {};
 
 
 /**
  * @return {boolean} .
  */
-Cesium.CameraEventAggregator.prototype.isMoving = function() {};
+Cesium.CameraEventAggregator.prototype.anyButtonDown = function() {};
 
 
 /**
- * @return {Object} .
- */
-Cesium.CameraEventAggregator.prototype.getMovement = function() {};
-
-
-/**
- * @return {Object} .
- */
-Cesium.CameraEventAggregator.prototype.getLastMovement = function() {};
-
-
-/**
- * @return {boolean} .
- */
-Cesium.CameraEventAggregator.prototype.isButtonDown = function() {};
-
-
-/**
+ * @param {Object} type
+ * @param {Object=} opt_mod
  * @return {number} .
  */
-Cesium.CameraEventAggregator.prototype.getButtonPressTime = function() {};
+Cesium.CameraEventAggregator.prototype.getButtonPressTime = function(type, opt_mod) {};
 
 
 /**
+ * @param {Object} type
+ * @param {Object=} opt_mod
  * @return {number} .
  */
-Cesium.CameraEventAggregator.prototype.getButtonReleaseTime = function() {};
+Cesium.CameraEventAggregator.prototype.getButtonReleaseTime = function(type, opt_mod) {};
 
 
 /**
@@ -1354,6 +1370,11 @@ Cesium.ScreenSpaceCameraController.prototype.enableLook;
  * @type {boolean}
  */
 Cesium.ScreenSpaceCameraController.prototype.enableTilt;
+
+/**
+ * @type {boolean}
+ */
+Cesium.ScreenSpaceCameraController.prototype.enableZoom;
 
 
 

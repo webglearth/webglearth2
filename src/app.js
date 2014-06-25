@@ -10,7 +10,6 @@ goog.provide('weapi.App');
 goog.require('goog.dom');
 
 goog.require('weapi.Camera');
-goog.require('weapi.DoubleEventAggr');
 goog.require('weapi.NoRepeatTextureAtlas');
 goog.require('weapi.maps');
 goog.require('weapi.markers.MarkerManager');
@@ -205,6 +204,9 @@ weapi.App = function(divid, opt_options) {
 
   var sscc = this.scene.screenSpaceCameraController;
 
+  this.scene.camera.constrainedAxis = Cesium.Cartesian3.UNIT_Z;
+
+  //sscc.enableLook = false;
   if (options['panning'] === false || options['dragging'] === false)
     sscc.enableRotate = false;
   if (options['tilting'] === false)
@@ -212,15 +214,15 @@ weapi.App = function(divid, opt_options) {
   if (options['zooming'] === false || options['scrollWheelZoom'] === false)
     sscc.enableZoom = false;
 
-  sscc['_rotateHandler'] = new weapi.DoubleEventAggr(sscc['_rotateHandler'],
-                                                     sscc['_lookHandler'],
-                                                     true, true);
-  sscc['_lookHandler'] = new Cesium.CameraEventAggregator(this.canvas,
-      Cesium['CameraEventType']['LEFT_DRAG'],
-      Cesium['KeyboardEventModifier']['ALT']);
+  sscc['tiltEventTypes'].push({
+    'eventType': Cesium['CameraEventType']['LEFT_DRAG'],
+    'modifier': Cesium['KeyboardEventModifier']['SHIFT']
+  });
 
-  //sscc['_cameraController']['lookUp'] =
-  //    function(a) {sscc['_cameraController']['lookDown'](a);};
+  sscc['lookEventTypes'] = {
+    'eventType': Cesium['CameraEventType']['LEFT_DRAG'],
+    'modifier': Cesium['KeyboardEventModifier']['ALT']
+  };
 
   //HACK for color picking:
   // when Cesium creates texture from image, it discards original image.
