@@ -228,6 +228,12 @@ Cesium.Camera.prototype.up;
 
 
 /**
+ * @type {Cesium.Cartesian3}
+ */
+Cesium.Camera.prototype.constrainedAxis;
+
+
+/**
  * @type {Cesium.Cartesian3} .
  */
 Cesium.Camera.prototype.positionWC;
