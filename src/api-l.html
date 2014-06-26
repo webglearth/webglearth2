@@ -38,10 +38,11 @@
       var overlay = API.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg', {
         subdomains: '1234',
         attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">',
-        maxZoom: 18
+        maxZoom: 18,
+        opacity: 0.5
       }).addTo(map);
 
-      overlay.setOpacity(0.5);
+      //overlay.setOpacity(0.5);
       document.getElementById('opacity').addEventListener('change', function(e) {
         overlay.setOpacity(e.target.value);
       });

@@ -144,6 +144,10 @@ weapi.maps.initMap = function(app, type, opt_opts) {
   var map = new weapi.Map(new Cesium.ImageryLayer(
       /** @type {!Cesium.ImageryProvider} */(tileProvider)));
 
+  if (mapopts && mapopts['opacity']) {
+    map.setOpacity(parseFloat(mapopts['opacity']));
+  }
+
   weapi.maps.mapMap.set(key, map);
 
   return map;

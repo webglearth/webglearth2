@@ -80,7 +80,8 @@ exportSymbolL('WE.tileLayer', function(url, opt_opts) {
     'tileSize': opts['tileSize'] || 256,
     'flipY': opts['tms'] || false,
     'subdomains': subdoms,
-    'copyright': (opts['attribution'] || '').replace(/<(?:.|\n)*?>/gm, '')
+    'copyright': (opts['attribution'] || '').replace(/<(?:.|\n)*?>/gm, ''),
+    'opacity': opts['opacity']
   });
 });
 
