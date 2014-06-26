@@ -2,7 +2,7 @@
  *
  * @author petr.sloup@klokantech.com (Petr Sloup)
  *
- * Copyright 2013 Klokan Technologies Gmbh (www.klokantech.com)
+ * Copyright 2014 Klokan Technologies Gmbh (www.klokantech.com)
  */
 
 goog.provide('weapi');
@@ -283,6 +283,53 @@ exportSymbol('WebGLEarth.prototype.getTarget',
              weapi.exports.App.prototype.getTarget);
 
 
+/**
+ * Calculates (very roughly) the visible extent.
+ * @param {number=} opt_scale Factor to use to scale the result.
+ * @param {number=} opt_prec Precision factor (default 4).
+ * @return {?Array.<number>} [minlat, maxlat, minlon, maxlon] or null.
+ */
+weapi.exports.App.prototype.getVisibleExtent = function(opt_scale, opt_prec) {
+  opt_prec = opt_prec || 4;
+  var result = [90, -90, 180, -180], valid = 0;
+
+  var stepX = this.canvas.width / (opt_prec - 1),
+      stepY = this.canvas.height / (opt_prec - 1);
+  for (var x = 0; x < opt_prec; x++) {
+    for (var y = 0; y < opt_prec; y++) {
+      var center = new Cesium.Cartesian2(x * stepX, y * stepY);
+      var position = this.camera.camera.pickEllipsoid(center);
+
+      if (goog.isDefAndNotNull(position)) {
+        var carto = this.camera.ellipsoid.cartesianToCartographic(position);
+        result[0] = Math.min(result[0], carto.latitude);
+        result[1] = Math.max(result[1], carto.latitude);
+        result[2] = Math.min(result[2], carto.longitude);
+        result[3] = Math.max(result[3], carto.longitude);
+        valid++;
+      }
+    }
+  }
+
+  if (valid > 2) {
+    if (goog.isDefAndNotNull(opt_scale)) {
+      var deltaY = ((result[1] - result[0]) / 2) * (opt_scale - 1);
+      var deltaX = ((result[3] - result[2]) / 2) * (opt_scale - 1);
+      result[0] -= deltaY;
+      result[1] += deltaY;
+      result[2] -= deltaX;
+      result[3] += deltaX;
+    }
+    return [goog.math.toDegrees(result[0]), goog.math.toDegrees(result[1]),
+            goog.math.toDegrees(result[2]), goog.math.toDegrees(result[3])];
+  } else {
+    return null;
+  }
+};
+exportSymbol('WebGLEarth.prototype.getVisibleExtent',
+             weapi.exports.App.prototype.getVisibleExtent);
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 /* Various */
@@ -516,6 +563,8 @@ exportSymbol('WebGLEarth.Marker.prototype.offAll',
 
 ////////////////////////////////////////////////////////////////////////////////
 /* Custom marker */
+
+
 
 /** @constructor */
 weapi.exports.CustomMarker = weapi.markers.AbstractMarker;
