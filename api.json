@@ -16,7 +16,9 @@
 
   "mode": "ADVANCED",
   "level": "VERBOSE",
-  
+
+  "output-wrapper": "(function() {%output%})();",
+
   // "pretty-print": true,
   // "debug": true,
   
