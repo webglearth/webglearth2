@@ -405,18 +405,23 @@ weapi.App.prototype.offAll = function(type) {
 
 
 /**
- * @param {number} lat Latitude.
+ * @param {number|!weapi.markers.AbstractMarker} latOrMark Latitude or marker.
  * @param {number} lon Longitude.
  * @param {string=} opt_iconUrl URL of the icon to use instead of the default.
  * @param {number=} opt_width Width of the icon.
  * @param {number=} opt_height Height of the icon.
- * @return {!weapi.markers.PrettyMarker} New marker.
+ * @return {!weapi.markers.AbstractMarker} New marker.
  */
-weapi.App.prototype.initMarker = function(lat, lon,
+weapi.App.prototype.initMarker = function(latOrMark, lon,
                                           opt_iconUrl, opt_width, opt_height) {
-  var mark = new weapi.markers.PrettyMarker(goog.math.toRadians(lat),
-                                            goog.math.toRadians(lon),
-                                            opt_iconUrl, opt_width, opt_height);
+  var mark;
+  if (goog.isNumber(latOrMark)) {
+    mark = new weapi.markers.PrettyMarker(goog.math.toRadians(latOrMark),
+                                          goog.math.toRadians(lon),
+                                          opt_iconUrl, opt_width, opt_height);
+  } else {
+    mark = latOrMark;
+  }
 
   this.markerManager.addMarker(null, mark);
 
@@ -427,7 +432,7 @@ weapi.App.prototype.initMarker = function(lat, lon,
 
 
 /**
- * @param {!weapi.markers.PrettyMarker} marker .
+ * @param {!weapi.markers.AbstractMarker} marker .
  */
 weapi.App.prototype.removeMarker = function(marker) {
   this.markerManager.removeMarkerEx(marker);

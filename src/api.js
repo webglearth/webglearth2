@@ -515,6 +515,25 @@ exportSymbol('WebGLEarth.Marker.prototype.offAll',
 
 
 ////////////////////////////////////////////////////////////////////////////////
+/* Custom marker */
+
+/** @constructor */
+weapi.exports.CustomMarker = weapi.markers.AbstractMarker;
+exportSymbol('WebGLEarth.CustomMarker', weapi.exports.CustomMarker);
+
+exportSymbol('WebGLEarth.CustomMarker.prototype.setPosition',
+             weapi.exports.Marker.prototype.setPosition);
+
+exportSymbol('WebGLEarth.CustomMarker.prototype.on',
+             weapi.exports.Marker.prototype.on);
+
+exportSymbol('WebGLEarth.CustomMarker.prototype.off',
+             weapi.exports.Marker.prototype.off);
+
+exportSymbol('WebGLEarth.CustomMarker.prototype.offAll',
+             weapi.exports.Marker.prototype.offAll);
+
+////////////////////////////////////////////////////////////////////////////////
 /* Events */
 
 exportSymbol('WebGLEarth.prototype.on', weapi.exports.App.prototype.on);
