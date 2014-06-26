@@ -1223,6 +1223,20 @@ Cesium.Quaternion.fromAxisAngle = function(axis, angle) {};
 
 
 
+
+/**
+ * @constructor
+ */
+Cesium.Context = function() {};
+
+
+/**
+ * @type {!Cesium.UniformState}
+ */
+Cesium.Context.prototype.uniformState;
+
+
+
 /**
  * @constructor
  * @param {Object.<string, Object>} canvas
@@ -1237,7 +1251,7 @@ Cesium.Scene.prototype.canvas;
 
 
 /**
- * @type {!{uniformState: !Cesium.UniformState}}
+ * @type {!Cesium.Context}
  */
 Cesium.Scene.prototype.context;
 

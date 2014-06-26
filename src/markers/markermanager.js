@@ -115,7 +115,7 @@ weapi.markers.MarkerManager.prototype.updateMarker = function(key) {
     var pos = weapi.utils.getXYForLatLng(this.app_,
                                          marker.lat, marker.lon);
     //window['console']['log'](pos);
-    window.title = pos;
+    //window.title = pos;
     if (goog.isDefAndNotNull(pos)) {
       marker.setXY(pos[0], pos[1]);
       marker.show(pos[2] > 0);
