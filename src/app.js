@@ -38,6 +38,10 @@ weapi.App = function(divid, opt_options) {
     return;
   }
 
+  goog.style.installStyles('.cesium-credit-textContainer:before{' +
+                           'content:\'WebGL Earth \\2022\\20\';' +
+                           'font-weight:bold;}');
+
   weapi.maps.initStatics(this);
 
   container.style.position = 'relative';
