@@ -21,6 +21,10 @@ goog.require('weapi.exports.App');
  * @constructor
  */
 weapp.App = function() {
+  if (!weapi.exports.App.detectWebGLSupport()) {
+    window.location = 'http://www.webglearth.com/webgl-error.html';
+  }
+
   /**
    * @type {!weapi.exports.App}
    * @private

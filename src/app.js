@@ -25,10 +25,21 @@ goog.require('weapi.markers.PrettyMarker');
  */
 weapi.App = function(divid, opt_options) {
   var options = opt_options || {};
+  var container = goog.dom.getElement(divid);
+
+  if (!weapi.App.detectWebGLSupport()) {
+    var ifr = goog.dom.createDom('iframe', {
+      'src': 'http://www.webglearth.com/webgl-error.html'
+    });
+    ifr.style.width = '100%';
+    ifr.style.height = '100%';
+    ifr.style.border = 'none';
+    container.appendChild(ifr);
+    return;
+  }
 
   weapi.maps.initStatics(this);
 
-  var container = goog.dom.getElement(divid);
   container.style.position = 'relative';
   container.style.overflow = 'hidden';
   this.canvas = /** @type {!HTMLCanvasElement} */
@@ -249,6 +260,28 @@ weapi.App = function(divid, opt_options) {
  * @define {number} Maximum size of the group of primitives;.
  */
 weapi.App.PRIMITIVE_GROUPING_SIZE = 10;
+
+
+/**
+ * @param {HTMLCanvasElement=} opt_canvas
+ * @param {Object=} opt_contextOpts
+ * @return {?WebGLRenderingContext}
+ */
+weapi.App.detectWebGLSupport = function(opt_canvas, opt_contextOpts) {
+  if (!!window['WebGLRenderingContext']) {
+    var canvas = opt_canvas || goog.dom.createElement('canvas'),
+        names = ['webgl', 'experimental-webgl']; //'moz-webgl', 'webkit-3d'
+    for (var i = 0; i < names.length; i++) {
+      try {
+        var ctx = /** @type {?WebGLRenderingContext} */
+            (canvas.getContext(names[i], opt_contextOpts));
+        if (ctx && goog.isFunction(ctx['getParameter'])) return ctx;
+      } catch (e) {}
+    }
+    return null; // supported but disabled
+  }
+  return null; //not supported
+};
 
 
 /**
