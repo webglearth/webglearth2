@@ -73,6 +73,9 @@ exportSymbolL('WE.tileLayer', function(url, opt_opts) {
   url = url.replace('{s}', '{sub}');
   var subdoms = opts['subdomains'] || 'abc';
   if (goog.isString(subdoms)) subdoms = subdoms.split('');
+  var bnds = opts['bounds'];
+  if (bnds && goog.isArray(bnds[0]))
+    bnds = [bnds[0][0], bnds[1][0], bnds[0][1], bnds[1][1]];
   return weapi.maps.initMap(null, weapi.maps.MapType.CUSTOM, {
     'url': url,
     'minimumLevel': opts['minZoom'] || 0,
@@ -81,7 +84,8 @@ exportSymbolL('WE.tileLayer', function(url, opt_opts) {
     'flipY': opts['tms'] || false,
     'subdomains': subdoms,
     'copyright': (opts['attribution'] || '').replace(/<(?:.|\n)*?>/gm, ''),
-    'opacity': opts['opacity']
+    'opacity': opts['opacity'],
+    'bounds': bnds
   });
 });
 
@@ -91,7 +95,7 @@ exportSymbolL('WE.tileLayerJSON', function(data, opt_app) {
   var attribution = data['attribution'];
   var minzoom = data['minzoom'];
   var maxzoom = data['maxzoom'];
-  var bounds = data['bounds'];
+  var bnds = data['bounds'];
   var center = data['center'];
 
   var map = weapi.maps.initMap(null, weapi.maps.MapType.CUSTOM, {
@@ -99,7 +103,7 @@ exportSymbolL('WE.tileLayerJSON', function(data, opt_app) {
     'minimumLevel': minzoom || 0,
     'maximumLevel': maxzoom || 18,
     'copyright': (attribution || '').replace(/<(?:.|\n)*?>/gm, ''),
-    'bounds': bounds
+    'bounds': bnds ? [bnds[1], bnds[3], bnds[0], bnds[2]] : undefined
   });
 
   if (opt_app) {

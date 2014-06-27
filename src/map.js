@@ -27,14 +27,14 @@ weapi.Map = function(layer) {
 
 
 /**
- * @param {number} minLon Minimal longitude in degrees.
- * @param {number} maxLon Maximal longitude in degrees.
  * @param {number} minLat Minimal latitude in degrees.
  * @param {number} maxLat Maximal latitude in degrees.
+ * @param {number} minLon Minimal longitude in degrees.
+ * @param {number} maxLon Maximal longitude in degrees.
  */
-weapi.Map.prototype.setBoundingBox = function(minLon, maxLon,
-                                              minLat, maxLat) {
-  var extent = this.layer.imageryProvider.rectangle;
+weapi.Map.prototype.setBoundingBox = function(minLat, maxLat,
+                                              minLon, maxLon) {
+  var extent = this.layer.imageryProvider['_rectangle'];
   extent.west = goog.math.toRadians(minLon);
   extent.south = goog.math.toRadians(minLat);
   extent.east = goog.math.toRadians(maxLon);

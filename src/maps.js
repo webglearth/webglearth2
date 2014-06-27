@@ -147,6 +147,10 @@ weapi.maps.initMap = function(app, type, opt_opts) {
   if (mapopts && mapopts['opacity']) {
     map.setOpacity(parseFloat(mapopts['opacity']));
   }
+  if (mapopts && mapopts['bounds']) {
+    var b = mapopts['bounds'];
+    map.setBoundingBox(b[0], b[1], b[2], b[3]);
+  }
 
   weapi.maps.mapMap.set(key, map);
 
