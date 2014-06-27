@@ -289,7 +289,7 @@ exportSymbol('WebGLEarth.prototype.getTarget',
  * @param {number=} opt_prec Precision factor (default 4).
  * @return {?Array.<number>} [minlat, maxlat, minlon, maxlon] or null.
  */
-weapi.exports.App.prototype.getVisibleExtent = function(opt_scale, opt_prec) {
+weapi.exports.App.prototype.getBounds = function(opt_scale, opt_prec) {
   opt_prec = opt_prec || 4;
   var result = [90, -90, 180, -180], valid = 0;
 
@@ -326,8 +326,8 @@ weapi.exports.App.prototype.getVisibleExtent = function(opt_scale, opt_prec) {
     return null;
   }
 };
-exportSymbol('WebGLEarth.prototype.getVisibleExtent',
-             weapi.exports.App.prototype.getVisibleExtent);
+exportSymbol('WebGLEarth.prototype.getBounds',
+             weapi.exports.App.prototype.getBounds);
 
 
 
