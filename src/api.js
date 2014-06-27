@@ -43,7 +43,7 @@ var exportSymbol = function(symbol, obj) {
 weapi.exports.App = weapi.App;
 exportSymbol('WebGLEarth', weapi.exports.App);
 
-exportSymbol('WebGLEarth.isSupported', weapi.App.detectWebGLSupport);
+exportSymbol('WebGLEarth.isSupported', weapi.exports.App.detectWebGLSupport);
 
 
 ////////////////////////////////////////////////////////////////////////////////
