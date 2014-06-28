@@ -1,5 +1,15 @@
 # WebGL Earth 2.0
 
+Open-source virtual planet web application running in any web browser with support for WebGL HTML5 standard. Mobile devices such as iPhone, iPad or Android based mobile phones are going to be supported too. It is a free software and a community driven project.
+
+There is an extremely easy to use JavaScript API - fully mimicking LeafletJS.
+
+See: http://examples.webglearth.org/ for demos.
+
+## Contracted development and support
+
+Contact: info@klokantech.com
+
 ## Install
 * Cesium is added as submodule (should download automatically) -- use `make cesium` to create the required build.
 
