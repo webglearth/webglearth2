@@ -16,6 +16,18 @@ goog.require('weapi.markers.MarkerManager');
 goog.require('weapi.markers.PrettyMarker');
 
 
+/**
+ * @define {number} API version.
+ */
+weapi.VERSION = 2;
+
+
+/**
+ * @define {string} .
+ */
+weapi.UA = 'UA-20846306-1';
+
+
 
 /**
  *
@@ -27,7 +39,27 @@ weapi.App = function(divid, opt_options) {
   var options = opt_options || {};
   var container = goog.dom.getElement(divid);
 
-  if (!weapi.App.detectWebGLSupport()) {
+  var webGLSupported = weapi.App.detectWebGLSupport();
+
+  if (weapi.UA && weapi.UA.length > 0) {
+    var trackerVar = '__WE_ga'; //global variable
+    (function(i, s, o, g, r) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function() {(i[r]['q'] = i[r]['q'] || []).push(arguments)};
+      i[r]['l'] = 1 * new Date();
+      var a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m);
+    })(window, document, 'script',
+       '//www.google-analytics.com/analytics.js', trackerVar);
+    window[trackerVar]('create', weapi.UA, {'name': 'we0'});
+    window[trackerVar]('we0.send', 'event', weapi.VERSION.toString(),
+                       window.location.host, window.location.href,
+                       webGLSupported ? 1 : 0);
+  }
+
+  if (!webGLSupported) {
     var ifr = goog.dom.createDom('iframe', {
       'src': 'http://www.webglearth.com/webgl-error.html'
     });
