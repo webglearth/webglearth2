@@ -123,10 +123,10 @@ weapi.App = function(divid, opt_options) {
     }
   };
 
-  if (options['atmosphere'] !== false) {
+  if (options['atmosphere']) {
     this.scene.skyAtmosphere = new Cesium.SkyAtmosphere();
   }
-  if (options['sky'] === true) {
+  if (options['sky']) {
     //TODO: solve resources
     var skyBoxBaseUrl = (goog.DEBUG ? '../deploy/' : '') + 'SkyBox/';
     this.scene.skyBox = new Cesium.SkyBox({
