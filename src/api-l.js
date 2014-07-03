@@ -50,12 +50,49 @@ exportSymbolL('WebGLEarth.prototype.zoomOut', function(opt_delta) {
 });
 
 
-exportSymbolL('WebGLEarth.prototype.fitBounds', function(bnds) {
+exportSymbolL('WebGLEarth.prototype.panInsideBounds', function(bnds, opt_opts) {
   if (!goog.isArray(bnds))
     bnds = [bnds.getSouth(), bnds.getNorth(), bnds.getWest(), bnds.getEast()];
   if (goog.isArray(bnds[0]))
     bnds = [bnds[0][0], bnds[1][0], bnds[0][1], bnds[1][1]];
-  this.flyToFitBounds(bnds[0], bnds[1], bnds[2], bnds[3]);
+  opt_opts = opt_opts || {};
+  this.flyToFitBounds(bnds[0], bnds[1], bnds[2], bnds[3],
+                      opt_opts['heading'], opt_opts['tilt']);
+});
+
+
+exportSymbolL('WebGLEarth.prototype.fitBounds', function(bnds, opt_opts) {
+  if (!goog.isArray(bnds))
+    bnds = [bnds.getSouth(), bnds.getNorth(), bnds.getWest(), bnds.getEast()];
+  if (goog.isArray(bnds[0]))
+    bnds = [bnds[0][0], bnds[1][0], bnds[0][1], bnds[1][1]];
+  opt_opts = opt_opts || {};
+
+  var minlat = goog.math.toRadians(bnds[0]);
+  var maxlat = goog.math.toRadians(bnds[1]);
+  var minlon = goog.math.toRadians(bnds[2]);
+  var maxlon = goog.math.toRadians(bnds[3]);
+  var opt_heading = opt_opts['heading'], opt_tilt = opt_opts['tilt'];
+
+  var altitude = this.camera.calcDistanceToViewBounds(minlat, maxlat,
+      minlon, maxlon);
+
+  minlon = goog.math.modulo(minlon, 2 * Math.PI);
+  maxlon = goog.math.modulo(maxlon, 2 * Math.PI);
+
+  var lonDiff = minlon - maxlon;
+  if (lonDiff < -Math.PI) {
+    minlon += 2 * Math.PI;
+  } else if (lonDiff > Math.PI) {
+    maxlon += 2 * Math.PI;
+  }
+
+  var center = [(minlat + maxlat) / 2, (minlon + maxlon) / 2];
+
+  this.setPosition(
+      goog.math.toDegrees(center[0]), goog.math.toDegrees(center[1]),
+      undefined, altitude,
+      opt_heading, opt_tilt, goog.isDef(opt_heading) || goog.isDef(opt_tilt));
 });
 
 

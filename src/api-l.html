@@ -157,7 +157,7 @@
      &nbsp;&nbsp;&nbsp;
      Grand Canyon overlay opacity: 0<input type="range" id="opacity2" min="0" max="1" step="0.01" value="0.7">1
      <br />
-     <input type="button" value="Fly to Japan bounds" onclick="javascript:m['L'].fitBounds([[22,122],[48,154]]); m['WE'].fitBounds([[22,122],[48,154]]);" />
+     <input type="button" value="Fly to Japan bounds" onclick="javascript:m['L'].fitBounds([[22,122],[48,154]]); m['WE'].panInsideBounds([[22,122],[48,154]], {heading:90, tilt:25});" />
      <input type="button" value="Fly to Iceland" onclick="javascript:m['L'].panTo([65,-19]);m['WE'].panTo([65,-19]);" />
      <br />
      <input type="button" value="Add some markers & polygons" id="addmarkers" onclick="javascript:addSomeMarkers()" />
