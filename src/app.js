@@ -90,7 +90,7 @@ weapi.App = function(divid, opt_options) {
 
   this.scene = new Cesium.Scene({
     'canvas': this.canvas,
-    'contextOptions': {'webgl': {'alpha': options['sky'] === false}}
+    'contextOptions': {'webgl': {'alpha': options['sky'] !== true}}
   });
 
   /** @type {?weapi.MiniGlobe} */
@@ -126,7 +126,7 @@ weapi.App = function(divid, opt_options) {
   if (options['atmosphere'] !== false) {
     this.scene.skyAtmosphere = new Cesium.SkyAtmosphere();
   }
-  if (options['sky'] !== false) {
+  if (options['sky'] === true) {
     //TODO: solve resources
     var skyBoxBaseUrl = (goog.DEBUG ? '../deploy/' : '') + 'SkyBox/';
     this.scene.skyBox = new Cesium.SkyBox({
