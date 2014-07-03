@@ -130,12 +130,14 @@ weapi.App = function(divid, opt_options) {
     //TODO: solve resources
     var skyBoxBaseUrl = (goog.DEBUG ? '../deploy/' : '') + 'SkyBox/';
     this.scene.skyBox = new Cesium.SkyBox({
-      'positiveX' : skyBoxBaseUrl + 'px.jpg',
-      'negativeX' : skyBoxBaseUrl + 'mx.jpg',
-      'positiveY' : skyBoxBaseUrl + 'py.jpg',
-      'negativeY' : skyBoxBaseUrl + 'my.jpg',
-      'positiveZ' : skyBoxBaseUrl + 'pz.jpg',
-      'negativeZ' : skyBoxBaseUrl + 'mz.jpg'
+      'sources': {
+        'positiveX' : skyBoxBaseUrl + 'px.jpg',
+        'negativeX' : skyBoxBaseUrl + 'mx.jpg',
+        'positiveY' : skyBoxBaseUrl + 'py.jpg',
+        'negativeY' : skyBoxBaseUrl + 'my.jpg',
+        'positiveZ' : skyBoxBaseUrl + 'pz.jpg',
+        'negativeZ' : skyBoxBaseUrl + 'mz.jpg'
+      }
     });
   } else {
     this.scene.backgroundColor = new Cesium.Color(0, 0, 0, 0);

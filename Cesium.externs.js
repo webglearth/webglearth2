@@ -1464,9 +1464,9 @@ Cesium.SkyAtmosphere = function() {};
 
 /**
  * @constructor
- * @param {{positiveX: string, negativeX: string,
+ * @param {{sources: {positiveX: string, negativeX: string,
  *          positiveY: string, negativeY: string,
- *          positiveZ: string, negativeZ: string}} options
+ *          positiveZ: string, negativeZ: string}}} options
  */
 Cesium.SkyBox = function(options) {};
 
