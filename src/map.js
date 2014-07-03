@@ -36,9 +36,9 @@ weapi.Map.prototype.setBoundingBox = function(minLat, maxLat,
                                               minLon, maxLon) {
   var extent = this.layer.imageryProvider['_rectangle'];
   extent.west = goog.math.toRadians(minLon);
-  extent.south = goog.math.toRadians(minLat);
+  extent.south = goog.math.toRadians(goog.math.clamp(minLat, -85.051, 85.051));
   extent.east = goog.math.toRadians(maxLon);
-  extent.north = goog.math.toRadians(maxLat);
+  extent.north = goog.math.toRadians(goog.math.clamp(maxLat, -85.051, 85.051));
   if (this.app) this.app.sceneChanged = true;
 };
 
