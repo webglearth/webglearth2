@@ -216,16 +216,17 @@ exportSymbol('WebGLEarth.prototype.setTilt',
  * @param {number=} opt_heading
  * @param {number=} opt_tilt
  * @param {boolean=} opt_targetPosition
+ * @param {number=} opt_duration In seconds.
  */
 weapi.exports.App.prototype.flyTo = function(latitude, longitude, opt_altitude,
                                              opt_heading, opt_tilt,
-                                             opt_targetPosition) {
+                                             opt_targetPosition, opt_duration) {
   this.camera.animator.flyTo(goog.math.toRadians(latitude),
       goog.math.toRadians(longitude),
       opt_altitude,
       goog.isDef(opt_heading) ? goog.math.toRadians(opt_heading) : undefined,
       goog.isDef(opt_tilt) ? goog.math.toRadians(opt_tilt) : undefined,
-      opt_targetPosition);
+      opt_targetPosition, opt_duration);
 };
 exportSymbol('WebGLEarth.prototype.flyTo',
              weapi.exports.App.prototype.flyTo);
@@ -238,10 +239,12 @@ exportSymbol('WebGLEarth.prototype.flyTo',
  * @param {number} maxlon
  * @param {number=} opt_heading
  * @param {number=} opt_tilt
+ * @param {number=} opt_duration In seconds.
  */
 weapi.exports.App.prototype.flyToFitBounds = function(minlat, maxlat,
                                                       minlon, maxlon,
-                                                      opt_heading, opt_tilt) {
+                                                      opt_heading, opt_tilt,
+                                                      opt_duration) {
   minlat = goog.math.toRadians(minlat);
   maxlat = goog.math.toRadians(maxlat);
   minlon = goog.math.toRadians(minlon);
@@ -265,7 +268,7 @@ weapi.exports.App.prototype.flyToFitBounds = function(minlat, maxlat,
   this.camera.animator.flyTo(center[0], center[1], altitude,
       goog.isDef(opt_heading) ? goog.math.toRadians(opt_heading) : undefined,
       goog.isDef(opt_tilt) ? goog.math.toRadians(opt_tilt) : undefined,
-      goog.isDef(opt_heading) || goog.isDef(opt_tilt));
+      goog.isDef(opt_heading) || goog.isDef(opt_tilt), opt_duration);
 };
 exportSymbol('WebGLEarth.prototype.flyToFitBounds',
              weapi.exports.App.prototype.flyToFitBounds);

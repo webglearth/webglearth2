@@ -57,7 +57,8 @@ exportSymbolL('WebGLEarth.prototype.panInsideBounds', function(bnds, opt_opts) {
     bnds = [bnds[0][0], bnds[1][0], bnds[0][1], bnds[1][1]];
   opt_opts = opt_opts || {};
   this.flyToFitBounds(bnds[0], bnds[1], bnds[2], bnds[3],
-                      opt_opts['heading'], opt_opts['tilt']);
+                      opt_opts['heading'], opt_opts['tilt'],
+                      opt_opts['duration']);
 });
 
 
@@ -96,9 +97,11 @@ exportSymbolL('WebGLEarth.prototype.fitBounds', function(bnds, opt_opts) {
 });
 
 
-exportSymbolL('WebGLEarth.prototype.panTo', function(center) {
+exportSymbolL('WebGLEarth.prototype.panTo', function(center, opt_opts) {
   if (!goog.isArray(center)) center = [center['lat'], center['lng']];
-  this.flyTo(center[0], center[1], undefined, undefined, 0, 0);
+  opt_opts = opt_opts || {};
+  this.flyTo(center[0], center[1], undefined, undefined, 0, 0,
+             undefined, opt_opts['duration']);
 });
 
 

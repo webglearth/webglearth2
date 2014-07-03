@@ -38,9 +38,9 @@ weapi.CameraAnimator = function(camera) {
 
 
 /**
- * @define {number} Animation duration in milliseconds.
+ * @define {number} Animation duration in seconds.
  */
-weapi.CameraAnimator.CAMERA_ANIMATION_DURATION = 3000;
+weapi.CameraAnimator.CAMERA_ANIMATION_DURATION = 3;
 
 
 /**
@@ -61,11 +61,13 @@ weapi.CameraAnimator.CAMERA_ANIMATION_MAX_ASCENT = 0.2;
  * @param {boolean=} opt_targetPosition If true, the camera is position in
  *                                      such a way, that the camera target is
  *                                      [latitude, longitude] (default false).
+ * @param {number=} opt_duration Duration of the animation in seconds.
  */
 weapi.CameraAnimator.prototype.flyTo = function(latitude, longitude,
                                                 opt_altitude,
                                                 opt_heading, opt_tilt,
-                                                opt_targetPosition) {
+                                                opt_targetPosition,
+                                                opt_duration) {
   var cam = this.camera_;
 
   if (opt_targetPosition) {
@@ -120,6 +122,9 @@ weapi.CameraAnimator.prototype.flyTo = function(latitude, longitude,
 
   this.animation_ = new goog.fx.AnimationSerialQueue();
 
+  var duration =
+      1000 * (opt_duration || weapi.CameraAnimator.CAMERA_ANIMATION_DURATION);
+
   if (opt_altitude) {
     var distance = weapi.utils.calculateDistance(srcPos[0], srcPos[1],
                                                  latitude, longitude);
@@ -140,12 +145,10 @@ weapi.CameraAnimator.prototype.flyTo = function(latitude, longitude,
     top[4] = (start_[4] + end_[4]) / 2;
 
     var ascentAnim = new goog.fx.Animation(start_, top,
-        weapi.CameraAnimator.CAMERA_ANIMATION_DURATION / 2,
-        supereasing_f);
+                                           duration / 2, supereasing_f);
 
     var descentAnim = new goog.fx.Animation(top, end_,
-        weapi.CameraAnimator.CAMERA_ANIMATION_DURATION / 2,
-        supereasing_l);
+                                            duration / 2, supereasing_l);
 
     goog.events.listen(ascentAnim, animationAlteringEvents,
                        this.onEverythingAnimate_, false, this);
@@ -157,9 +160,7 @@ weapi.CameraAnimator.prototype.flyTo = function(latitude, longitude,
     this.animation_.add(descentAnim);
   } else {
     //single animation when altitude is not changing
-    var anim = new goog.fx.Animation(start_, end_,
-        weapi.CameraAnimator.CAMERA_ANIMATION_DURATION,
-        supereasing);
+    var anim = new goog.fx.Animation(start_, end_, duration, supereasing);
 
     goog.events.listen(anim, animationAlteringEvents,
                        this.onEverythingAnimate_, false, this);
