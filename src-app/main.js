@@ -11,6 +11,7 @@ goog.require('goog.dom');
 goog.require('goog.dom.ViewportSizeMonitor');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
+goog.require('goog.userAgent');
 
 goog.require('klokantech.Nominatim');
 goog.require('weapi.exports.App');
@@ -62,8 +63,8 @@ weapp.App = function() {
   }, false, this);
   this.resize_(this.vsm_.getSize());
 
-  var geocoderElement = goog.dom.getElement('geocoder');
-  geocoderElement.focus();
+  var geocoderElement = /** @type {!Element} */
+                        (goog.dom.getElement('geocoder'));
   var ac = new klokantech.Nominatim(geocoderElement);
 
   goog.events.listen(ac, goog.ui.ac.AutoComplete.EventType.UPDATE, function(e) {
@@ -190,6 +191,21 @@ weapp.App = function() {
   goog.events.listen(window, goog.events.EventType.HASHCHANGE, parseHash);
 
   parseHash();
+
+  if (goog.userAgent.MOBILE || goog.userAgent.ANDROID ||
+      goog.userAgent.IPHONE || goog.userAgent.IPAD) {
+    var hideAddressBar = function() {
+      if (document.documentElement.scrollHeight <
+          window.outerHeight / window.devicePixelRatio)
+        document.documentElement.style.height =
+            (window.outerHeight / window.devicePixelRatio) + 'px';
+      setTimeout(window.scrollTo(1, 1), 0);
+    };
+    goog.events.listen(window, 'orientationchange', hideAddressBar);
+    hideAddressBar();
+  } else {
+    geocoderElement.focus();
+  }
 };
 
 
