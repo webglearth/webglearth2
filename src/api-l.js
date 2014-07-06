@@ -221,7 +221,7 @@ exportSymbolL('WebGLEarth.Marker.prototype.setLatLng', function(pos) {
 exportSymbolL('WE.polygon', function(points, opts) {
   // our design is not prepared for polygons not assigned to any app -> hack
   return {
-    'addTo': function(app) {
+    'addTo': /** @suppress {accessControls} */function(app) {
       //WARNING: addTo returns something different than WE.polygon !
       var poly = new weapi.exports.Polygon(app);
       var points_ = [];

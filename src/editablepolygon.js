@@ -62,7 +62,7 @@ weapi.EditablePolygon = function(app, markermanager) {
   this.midDraggers_ = {};
 
   /**
-   * @type {?number}
+   * @type {goog.events.ListenableKey|null|number}
    * @private
    */
   this.clickListenKey_ = null;

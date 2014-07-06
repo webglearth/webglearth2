@@ -10,7 +10,7 @@ goog.provide('weapi.CustomMap');
 
 
 /**
- * @param {Object.<string, Object>} opts .
+ * @param {Object.<string, string|number|Object>} opts .
  * @extends {Cesium.TileMapServiceImageryProvider}
  * @constructor
  */

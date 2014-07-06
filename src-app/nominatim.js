@@ -78,7 +78,8 @@ klokantech.Nominatim = function(input, opt_url, opt_payload) {
   /**
    * A remote matcher that parses rich results returned via JSONP from a server.
    * @type {!klokantech.NominatimMatcher}
-   * @private
+   * @protected
+   * @suppress {underscore}
    */
   this.matcher_ = new klokantech.NominatimMatcher(opt_url, opt_payload);
 

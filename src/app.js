@@ -409,7 +409,7 @@ weapi.App.prototype.setOverlayMap = function(map) {
  * Register event listener.
  * @param {string} type Event type.
  * @param {function(Event)} listener Function to call back.
- * @return {number?} listenKey.
+ * @return {goog.events.ListenableKey|null|number} listenKey.
  */
 weapi.App.prototype.on = function(type, listener) {
   /**

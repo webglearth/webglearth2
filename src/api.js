@@ -432,8 +432,7 @@ exportSymbol('WebGLEarth.prototype.getBestAvailablePixelColor',
 /* Maps */
 
 
-
-/** @constructor */
+/** @enum {string} */
 weapi.exports.Maps = weapi.maps.MapType;
 exportSymbol('WebGLEarth.Maps', weapi.exports.Maps);
 

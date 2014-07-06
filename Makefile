@@ -1,4 +1,4 @@
-PLOVR=../plovr-eba786b34df9.jar
+PLOVR=../plovr-81ed862.jar
 
 .PHONY: cesium
 
