@@ -191,7 +191,7 @@ exportSymbolL('WebGLEarth.Map.prototype.addTo', function(app) {
   this.layer.imageryProvider.proxy = app.mapProxyObject;
   var layers = app.scene.imageryLayers;
   layers.add(this.layer);
-
+  app.listenCORSErrors(this.layer.imageryProvider['errorEvent']);
   this.app = app;
   app.sceneChanged = true;
 

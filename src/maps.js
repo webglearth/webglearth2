@@ -153,7 +153,7 @@ weapi.maps.initMap = function(app, type, opt_opts) {
   }
 
   weapi.maps.mapMap.set(key, map);
-
+  if (app) app.listenCORSErrors(map.layer.imageryProvider['errorEvent']);
   return map;
 };
 

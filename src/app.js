@@ -41,8 +41,11 @@ weapi.App = function(divid, opt_options) {
 
   var webGLSupported = weapi.App.detectWebGLSupport();
 
+  this.isFileProtocol = window.location.protocol == 'file:';
+
   if (weapi.UA && weapi.UA.length > 0) {
     var trackerVar = '__WE_ga'; //global variable
+    var proto = this.isFileProtocol ? 'http:' : '';
     (function(i, s, o, g, r) {
       i['GoogleAnalyticsObject'] = r;
       i[r] = i[r] || function() {(i[r]['q'] = i[r]['q'] || []).push(arguments)};
@@ -52,7 +55,7 @@ weapi.App = function(divid, opt_options) {
       a.src = g;
       m.parentNode.insertBefore(a, m);
     })(window, document, 'script',
-       '//www.google-analytics.com/analytics.js', trackerVar);
+       proto + '//www.google-analytics.com/analytics.js', trackerVar);
     window[trackerVar]('create', weapi.UA, {'name': 'we0'});
     window[trackerVar]('we0.send', 'event', weapi.VERSION.toString(),
                        window.location.host, window.location.href,
@@ -74,6 +77,7 @@ weapi.App = function(divid, opt_options) {
                            'content:\'WebGL Earth \\2022\\20\';' +
                            'font-weight:bold;}');
 
+  this.CORSErrorReported = false;
   weapi.maps.initStatics(this);
 
   container.style.position = 'relative';
@@ -319,6 +323,36 @@ weapi.App.detectWebGLSupport = function(opt_canvas, opt_contextOpts) {
     return null; // supported but disabled
   }
   return null; //not supported
+};
+
+
+/**
+ * @param {Object} eventObj
+ */
+weapi.App.prototype.listenCORSErrors = function(eventObj) {
+  if (!this.CORSErrorReported) {
+    eventObj['addEventListener'](function(e) {
+      if (!this.CORSErrorReported) {
+        //window['console']['log'](e);
+        //if (e['timesRetried'] > 1) { // not an isolated network error
+        if (this.isFileProtocol &&
+            e['provider']['_url'].indexOf('http') !== 0) {
+          alert('Tiles for WebGL must be accessed over http protocol.');
+        } else {
+          var msg = 'An error occured while accessing the tiles. Cross-domain' +
+              ' access restrictions are applied on map tiles for WebGL. ' +
+              'Either use CORS on remote domain (http://enable-cors.org/) or ' +
+              'place your application on the same domain as tiles (hosting ' +
+              'app and tiles on the same domain or running a tile proxy).';
+          if (window['console'] && window['console']['error']) {
+            window['console']['error'](msg);
+          }
+        }
+        this.CORSErrorReported = true; // report only once
+        //}
+      }
+    }, this);
+  }
 };
 
 
