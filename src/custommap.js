@@ -15,6 +15,15 @@ goog.provide('weapi.CustomMap');
  * @constructor
  */
 weapi.CustomMap = function(opts) {
+  this.setOptions(opts);
+};
+goog.inherits(weapi.CustomMap, Cesium.TileMapServiceImageryProvider);
+
+
+/**
+ * @param {Object.<string, string|number|Object>} opts .
+ */
+weapi.CustomMap.prototype.setOptions = function(opts) {
   this['_url'] = /** @type {string} */(opts['url']);
 
   this['_minimumLevel'] = /** @type {number} */(opts['minimumLevel'] || 0);
@@ -46,9 +55,8 @@ weapi.CustomMap = function(opts) {
   this['_errorEvent'] = new Cesium.Event();
   this['_tilingScheme'] = new Cesium.WebMercatorTilingScheme();
   this['_rectangle'] = rectangle || this['_tilingScheme']['rectangle'];
-  this['_ready'] = true;
+  this['_ready'] = goog.isDefAndNotNull(this['_url']);
 };
-goog.inherits(weapi.CustomMap, Cesium.TileMapServiceImageryProvider);
 
 
 /**

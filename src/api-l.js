@@ -133,7 +133,7 @@ exportSymbolL('WE.tileLayer', function(url, opt_opts) {
 
 
 exportSymbolL('WE.tileLayerJSON', function(data, opt_app) {
-  var load = function(data, opt_app) {
+  var load = function(data, opt_app, opt_map) {
     var url = data['tiles'][0];
     var attribution = data['attribution'];
     var minzoom = data['minzoom'];
@@ -141,13 +141,25 @@ exportSymbolL('WE.tileLayerJSON', function(data, opt_app) {
     var bnds = data['bounds'];
     var center = data['center'];
 
-    var map = weapi.maps.initMap(null, weapi.maps.MapType.CUSTOM, {
+    var opts = {
       'url': url,
       'minimumLevel': minzoom || 0,
       'maximumLevel': maxzoom || 18,
       'copyright': (attribution || '').replace(/<(?:.|\n)*?>/gm, ''),
       'bounds': bnds ? [bnds[1], bnds[3], bnds[0], bnds[2]] : undefined
-    });
+    };
+    var map;
+
+    if (opt_map) {
+      var prov = /** @type {!weapi.CustomMap} */(opt_map.layer.imageryProvider);
+      prov.setOptions(opts);
+      map = opt_map;
+      if (data['opacity'] && map.getOpacity() == 1)
+        map.setOpacity(parseFloat(data['opacity']));
+      if (bnds) map.setBoundingBox(bnds[1], bnds[3], bnds[0], bnds[2]);
+    } else {
+      map = weapi.maps.initMap(null, weapi.maps.MapType.CUSTOM, opts);
+    }
 
     if (opt_app) {
       map['addTo'](opt_app);
@@ -160,14 +172,18 @@ exportSymbolL('WE.tileLayerJSON', function(data, opt_app) {
     }
     return map;
   };
+  var map;
   if (goog.isString(data)) {
+    map = weapi.maps.initMap(null, weapi.maps.MapType.CUSTOM, {});
     var jsonp = new goog.net.Jsonp(data);
     jsonp.send(undefined, function(data) {
-      load(data, opt_app);
+      load(data, opt_app, map);
     });
   } else {
-    return load(data, opt_app);
+    map = load(data, opt_app, undefined);
   }
+
+  return map;
 });
 
 
