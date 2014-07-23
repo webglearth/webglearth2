@@ -73,9 +73,8 @@ weapi.App = function(divid, opt_options) {
     return;
   }
 
-  goog.style.installStyles('.cesium-credit-textContainer:before{' +
-                           'content:\'WebGL Earth \\2022\\20\';' +
-                           'font-weight:bold;}');
+  goog.style.installStyles('.cesium-credit-textContainer:before{content:' +
+                           '\'WebGL Earth \\2022\\20 Cesium \\2022\\20\';}');
 
   this.CORSErrorReported = false;
   weapi.maps.initStatics(this);
