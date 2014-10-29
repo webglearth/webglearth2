@@ -341,6 +341,31 @@ exportSymbol('WebGLEarth.prototype.getBounds',
              weapi.exports.App.prototype.getBounds);
 
 
+////////////////////////////////////////////////////////////////////////////////
+/* Interaction limits */
+
+
+/**
+ * @param {number} alt
+ */
+weapi.exports.App.prototype.setMinAltitude = function(alt) {
+  var sscc = this.scene.screenSpaceCameraController;
+  sscc.minimumZoomDistance = alt || 0;
+};
+exportSymbol('WebGLEarth.prototype.setMinAltitude',
+             weapi.exports.App.prototype.setMinAltitude);
+
+
+/**
+ * @param {number} alt
+ */
+weapi.exports.App.prototype.setMaxAltitude = function(alt) {
+  var sscc = this.scene.screenSpaceCameraController;
+  sscc.maximumZoomDistance = alt || Infinity;
+};
+exportSymbol('WebGLEarth.prototype.setMaxAltitude',
+             weapi.exports.App.prototype.setMaxAltitude);
+
 
 ////////////////////////////////////////////////////////////////////////////////
 /* Various */

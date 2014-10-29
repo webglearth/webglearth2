@@ -1396,6 +1396,16 @@ Cesium.ScreenSpaceCameraController.prototype.enableTilt;
  */
 Cesium.ScreenSpaceCameraController.prototype.enableZoom;
 
+/**
+ * @type {number}
+ */
+Cesium.ScreenSpaceCameraController.prototype.minimumZoomDistance;
+
+/**
+ * @type {number}
+ */
+Cesium.ScreenSpaceCameraController.prototype.maximumZoomDistance;
+
 
 
 /**

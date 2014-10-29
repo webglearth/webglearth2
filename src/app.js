@@ -267,6 +267,9 @@ weapi.App = function(divid, opt_options) {
   if (options['zooming'] === false || options['scrollWheelZoom'] === false)
     sscc.enableZoom = false;
 
+  sscc.minimumZoomDistance = options['minAltitude'] || 20;
+  sscc.maximumZoomDistance = options['maxAltitude'] || Infinity;
+
   sscc['tiltEventTypes'].push({
     'eventType': Cesium['CameraEventType']['LEFT_DRAG'],
     'modifier': Cesium['KeyboardEventModifier']['SHIFT']
