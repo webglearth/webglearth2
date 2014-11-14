@@ -86,3 +86,42 @@ weapi.utils.getXYForLatLng = function(app, lat, lng, opt_alt) {
 
   return [x * app.canvas.width, y * app.canvas.height, visibility];
 };
+
+
+/**
+ * TODO: Use goog.style.installStyles after updating the closure-library.
+ * @param {string} stylesString The style string to install.
+ * @param {Node=} opt_node Node whose parent document should have the
+ *     styles installed.
+ * @return {Element|StyleSheet} The style element created.
+ */
+weapi.utils.installStyles = function(stylesString, opt_node) {
+  var dh = goog.dom.getDomHelper(opt_node);
+  var styleSheet = null;
+
+  // IE < 11 requires createStyleSheet. Note that doc.createStyleSheet will be
+  // undefined as of IE 11.
+  var doc = dh.getDocument();
+  if (goog.userAgent.IE && doc.createStyleSheet) {
+    styleSheet = doc.createStyleSheet();
+    goog.style.setStyles(styleSheet, stylesString);
+  } else {
+    var head = dh.getElementsByTagNameAndClass('head')[0];
+
+    // In opera documents are not guaranteed to have a head element, thus we
+    // have to make sure one exists before using it.
+    if (!head) {
+      var body = dh.getElementsByTagNameAndClass('body')[0];
+      head = dh.createDom('head');
+      body.parentNode.insertBefore(head, body);
+    }
+    styleSheet = dh.createDom('style');
+    // NOTE(user): Setting styles after the style element has been appended
+    // to the head results in a nasty Webkit bug in certain scenarios. Please
+    // refer to https://bugs.webkit.org/show_bug.cgi?id=26307 for additional
+    // details.
+    goog.style.setStyles(styleSheet, stylesString);
+    dh.appendChild(head, styleSheet);
+  }
+  return styleSheet;
+};

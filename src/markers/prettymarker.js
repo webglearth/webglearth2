@@ -12,6 +12,7 @@ goog.require('goog.style');
 
 goog.require('weapi.markers.AbstractMarker');
 goog.require('weapi.markers.Popup');
+goog.require('weapi.utils');
 
 
 
@@ -91,7 +92,7 @@ weapi.markers.PrettyMarker.prototype.showPopup = function(opt_visible) {
 };
 
 
-goog.style.installStyles(
+weapi.utils.installStyles(
     '.we-pm-icon{position:absolute;z-index:64;background-image:url(data:image' +
     '/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAApCAYAAADAk4LOAAAFtklEQVR42p3W' +
     'a0xTZxgH8CYkS5aQLGFxcXNZNNu4FIFCK9eCWOQm3lDizLYP+zTnxLk5wQpICxRaLuWi3FpQ' +

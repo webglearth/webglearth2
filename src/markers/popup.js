@@ -10,6 +10,8 @@ goog.provide('weapi.markers.Popup');
 goog.require('goog.dom');
 goog.require('goog.style');
 
+goog.require('weapi.utils');
+
 
 
 /**
@@ -92,7 +94,7 @@ weapi.markers.Popup.prototype.show = function(opt_visible) {
 };
 
 
-goog.style.installStyles(
+weapi.utils.installStyles(
     '.we-pp-content p{margin:18px 0;text-align:justify;}' +
     '.we-pp-wrapper{padding:1px;text-align:left;border-radius:12px;}' +
     '.we-pp{z-index:100;-webkit-transition:opacity 0.2s linear;' +

@@ -14,6 +14,7 @@ goog.require('weapi.NoRepeatTextureAtlas');
 goog.require('weapi.maps');
 goog.require('weapi.markers.MarkerManager');
 goog.require('weapi.markers.PrettyMarker');
+goog.require('weapi.utils');
 
 
 /**
@@ -73,8 +74,8 @@ weapi.App = function(divid, opt_options) {
     return;
   }
 
-  goog.style.installStyles('.cesium-credit-textContainer:before{content:' +
-                           '\'WebGL Earth \\2022\\20 Cesium \\2022\\20\';}');
+  weapi.utils.installStyles('.cesium-credit-textContainer:before{content:' +
+                            '\'WebGL Earth \\2022\\20 Cesium \\2022\\20\';}');
 
   this.CORSErrorReported = false;
   weapi.maps.initStatics(this);

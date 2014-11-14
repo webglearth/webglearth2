@@ -11,6 +11,7 @@ goog.require('goog.dom');
 goog.require('goog.style');
 
 goog.require('weapi.markers.AbstractMarker');
+goog.require('weapi.utils');
 
 
 
@@ -74,12 +75,12 @@ weapi.markers.PolyDragger = function(lat, lon, app, fixedId,
 goog.inherits(weapi.markers.PolyDragger, weapi.markers.AbstractMarker);
 
 
-goog.style.installStyles(
+weapi.utils.installStyles(
     '.we-polydragger-a{position:absolute;width:8px;height:8px;z-index:100;' +
     'margin-left:-4px;margin-top:-4px;background-color:#36f;' +
     'cursor:pointer;border:1px solid blue;}'
 );
-goog.style.installStyles(
+weapi.utils.installStyles(
     '.we-polydragger-b{position:absolute;width:6px;height:6px;z-index:99;' +
     'margin-left:-3px;margin-top:-3px;background-color:rgba(180,220,250,0.9);' +
     'cursor:pointer;border:1px solid blue;}'
