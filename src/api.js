@@ -370,6 +370,17 @@ exportSymbol('WebGLEarth.prototype.setMaxAltitude',
 ////////////////////////////////////////////////////////////////////////////////
 /* Various */
 
+
+/**
+ * @return {!Cesium.Scene}
+ */
+weapi.exports.App.prototype.getCesiumScene = function() {
+  return this.scene;
+};
+exportSymbol('WebGLEarth.prototype.getCesiumScene',
+             weapi.exports.App.prototype.getCesiumScene);
+
+
 exportSymbol('WebGLEarth.prototype.handleResize',
              weapi.exports.App.prototype.handleResize);
 
