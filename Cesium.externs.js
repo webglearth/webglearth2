@@ -1239,6 +1239,23 @@ Cesium.Context.prototype.uniformState;
 
 /**
  * @constructor
+ * @param {Object.<string, *>} options
+ */
+Cesium.TerrainProvider = function(options) {};
+
+
+
+/**
+ * @constructor
+ * @param {Object.<string, *>} options
+ * @extends {Cesium.TerrainProvider}
+ */
+Cesium.CesiumTerrainProvider = function(options) {};
+
+
+
+/**
+ * @constructor
  * @param {Object.<string, Object>} canvas
  */
 Cesium.Scene = function(canvas) {};
@@ -1323,6 +1340,12 @@ Cesium.Scene.prototype.skyBox;
  * @type {Cesium.SkyAtmosphere}
  */
 Cesium.Scene.prototype.skyAtmosphere;
+
+
+/**
+ * @type {Cesium.TerrainProvider}
+ */
+Cesium.Scene.prototype.terrainProvider;
 
 
 

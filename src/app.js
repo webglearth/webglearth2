@@ -43,10 +43,10 @@ weapi.App = function(divid, opt_options) {
   var webGLSupported = weapi.App.detectWebGLSupport();
 
   this.isFileProtocol = window.location.protocol == 'file:';
+  this.resourceProtocol = this.isFileProtocol ? 'http:' : '';
 
   if (weapi.UA && weapi.UA.length > 0) {
     var trackerVar = '__WE_ga'; //global variable
-    var proto = this.isFileProtocol ? 'http:' : '';
     (function(i, s, o, g, r) {
       i['GoogleAnalyticsObject'] = r;
       i[r] = i[r] || function() {(i[r]['q'] = i[r]['q'] || []).push(arguments)};
@@ -56,7 +56,8 @@ weapi.App = function(divid, opt_options) {
       a.src = g;
       m.parentNode.insertBefore(a, m);
     })(window, document, 'script',
-       proto + '//www.google-analytics.com/analytics.js', trackerVar);
+       this.resourceProtocol + '//www.google-analytics.com/analytics.js',
+       trackerVar);
     window[trackerVar]('create', weapi.UA, {'name': 'we0'});
     window[trackerVar]('we0.send', 'event', weapi.VERSION.toString(),
                        window.location.host, window.location.href,
@@ -165,6 +166,13 @@ weapi.App = function(divid, opt_options) {
       'key': 'AsLurrtJotbxkJmnsefUYbatUuBkeBTzTL930TvcOekeG8SaQPY9Z5LDKtiuzAOu'
     });
     this.scene.imageryLayers.addImageryProvider(bing);
+  }
+  if (options['terrain']) {
+    var terrainProvider = new Cesium.CesiumTerrainProvider({
+      'url': this.resourceProtocol +
+          '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
+    });
+    this.scene.terrainProvider = terrainProvider;
   }
 
   /**
