@@ -161,7 +161,7 @@ weapi.App = function(divid, opt_options) {
   if (options['empty'] !== true) {
     // default layer -- Bing Maps
     var bing = new Cesium.BingMapsImageryProvider({
-      'url' : 'http://dev.virtualearth.net',
+      'url' : this.resourceProtocol + '//dev.virtualearth.net',
       'mapStyle' : Cesium.BingMapsStyle.AERIAL_WITH_LABELS,
       'key': 'AsLurrtJotbxkJmnsefUYbatUuBkeBTzTL930TvcOekeG8SaQPY9Z5LDKtiuzAOu'
     });

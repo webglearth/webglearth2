@@ -60,27 +60,29 @@ weapi.maps.initMap = function(app, type, opt_opts) {
     }
   }
 
+  var protocol = ('https:' == document.location.protocol ? 'https:' : 'http:');
+
   var tileProvider;
 
   switch (type) {
     case weapi.maps.MapType.MAPQUEST:
       if (!mapopts) {
         mapopts = {};
-        mapopts['url'] = 'http://otile1.mqcdn.com/tiles/1.0.0/osm/';
+        mapopts['url'] = protocol + '//otile1.mqcdn.com/tiles/1.0.0/osm/';
       }
       tileProvider = new Cesium.OpenStreetMapImageryProvider(mapopts);
       break;
     case weapi.maps.MapType.OSM:
       if (!mapopts) {
         mapopts = {};
-        mapopts['url'] = 'http://tile.openstreetmap.org';
+        mapopts['url'] = protocol + '//tile.openstreetmap.org';
       }
       tileProvider = new Cesium.OpenStreetMapImageryProvider(mapopts);
       break;
     case weapi.maps.MapType.BING:
       if (aropts) {
         mapopts = {};
-        mapopts['url'] = 'http://dev.virtualearth.net';
+        mapopts['url'] = protocol + '//dev.virtualearth.net';
 
         if (aropts[0] == 'Aerial')
           mapopts['mapStyle'] = Cesium.BingMapsStyle.AERIAL;

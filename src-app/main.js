@@ -39,11 +39,11 @@ weapp.App = function() {
     'panning': true,
     'tilting': true,
     'zooming': true,
-    'proxyHost': 'http://srtm.webglearth.com/cgi-bin/corsproxy.fcgi?url='
+    'proxyHost': '//srtm.webglearth.com/cgi-bin/corsproxy.fcgi?url='
   });
 
   if (window.location.hash.length < 4) {
-    new goog.net.Jsonp('http://freegeoip.net/json/').send(
+    new goog.net.Jsonp('//freegeoip.net/json/').send(
         undefined, goog.bind(function(data) {
           if (data) {
             var lat = data['latitude'], lng = data['longitude'];
