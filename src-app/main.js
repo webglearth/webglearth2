@@ -33,7 +33,7 @@ weapp.App = function() {
   this.app_ = new weapi.exports.App('webglearthdiv', {
     'atmosphere': true,
     'sky': false,
-    //'terrain': true,
+    'terrain': document.location.search.indexOf('terrain') > 0,
     'position': [0, 0],
     'altitude': weapp.App.DEFAULT_ALT,
     'panning': true,
