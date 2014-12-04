@@ -60,7 +60,8 @@ weapi.maps.initMap = function(app, type, opt_opts) {
     }
   }
 
-  var protocol = ('https:' == document.location.protocol ? 'https:' : 'http:');
+  var secure = 'https:' == document.location.protocol;
+  var protocol = (secure ? 'https:' : 'http:');
 
   var tileProvider;
 
@@ -68,14 +69,15 @@ weapi.maps.initMap = function(app, type, opt_opts) {
     case weapi.maps.MapType.MAPQUEST:
       if (!mapopts) {
         mapopts = {};
-        mapopts['url'] = protocol + '//otile1.mqcdn.com/tiles/1.0.0/osm/';
+        mapopts['url'] = protocol + '//otile1' + (secure ? '-s' : '') +
+                         '.mqcdn.com/tiles/1.0.0/osm/';
       }
       tileProvider = new Cesium.OpenStreetMapImageryProvider(mapopts);
       break;
     case weapi.maps.MapType.OSM:
       if (!mapopts) {
         mapopts = {};
-        mapopts['url'] = protocol + '//tile.openstreetmap.org';
+        mapopts['url'] = protocol + '//a.tile.openstreetmap.org';
       }
       tileProvider = new Cesium.OpenStreetMapImageryProvider(mapopts);
       break;
