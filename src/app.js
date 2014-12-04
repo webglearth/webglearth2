@@ -167,7 +167,8 @@ weapi.App = function(divid, opt_options) {
     });
     this.scene.imageryLayers.addImageryProvider(bing);
   }
-  if (options['terrain']) {
+  this.withTerrain = options['terrain'] == true;
+  if (this.withTerrain) {
     var terrainProvider = new Cesium.CesiumTerrainProvider({
       'url': this.resourceProtocol +
           '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
@@ -202,7 +203,9 @@ weapi.App = function(divid, opt_options) {
     if (!this.forcedPause) {
       this.scene.initializeFrame(); // to update camera from animators and sscc
 
-      var renderNeeded = this.sceneChanged;
+      // we need to use continous rendering with terrain --
+      // we can't tell when the terrain data are finished loading and processing
+      var renderNeeded = this.withTerrain || this.sceneChanged;
       this.sceneChanged = false;
       if (!renderNeeded) {
         // extended sceneChanged detection
