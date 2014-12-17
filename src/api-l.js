@@ -199,6 +199,17 @@ exportSymbolL('WebGLEarth.Map.prototype.addTo', function(app) {
 });
 
 
+exportSymbolL('WebGLEarth.Map.prototype.removeFrom', function(app) {
+  app = this.app;
+  var layers = app.scene.imageryLayers;
+  layers.remove(this.layer);
+  app.sceneChanged = true;
+  this.app = null;
+
+  return this;
+});
+
+
 exportSymbolL('WE.marker', function(pos) {
   if (!goog.isArray(pos)) pos = [pos['lat'], pos['lng']];
   var mark = new weapi.markers.PrettyMarker(goog.math.toRadians(pos[0]),
@@ -208,7 +219,14 @@ exportSymbolL('WE.marker', function(pos) {
 
 
 exportSymbolL('WebGLEarth.Marker.prototype.addTo', function(app) {
-  app.markerManager.addMarker(null, this);
+  app.markerManager.addMarker(goog.getUid(this).toString(), this);
+  app.sceneChanged = true;
+  return this;
+});
+
+
+exportSymbolL('WebGLEarth.Marker.prototype.removeFrom', function(app) {
+  app.markerManager.removeMarker(goog.getUid(this).toString());
   app.sceneChanged = true;
   return this;
 });
