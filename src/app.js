@@ -66,7 +66,7 @@ weapi.App = function(divid, opt_options) {
 
   if (!webGLSupported) {
     var ifr = goog.dom.createDom('iframe', {
-      'src': 'http://www.webglearth.com/webgl-error.html'
+      'src': this.resourceProtocol + '//www.webglearth.com/webgl-error.html'
     });
     ifr.style.width = '100%';
     ifr.style.height = '100%';

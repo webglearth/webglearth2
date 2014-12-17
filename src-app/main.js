@@ -23,7 +23,7 @@ goog.require('weapi.exports.App');
  */
 weapp.App = function() {
   if (!weapi.App.detectWebGLSupport()) {
-    window.location = 'http://www.webglearth.com/webgl-error.html';
+    window.location = '//www.webglearth.com/webgl-error.html';
   }
 
   /**
