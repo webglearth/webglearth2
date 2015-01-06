@@ -1,0 +1,34 @@
+{
+  "name": "webglearth",
+  "version": "2.1.0",
+  "description": "[![WebGL Earth](https://cloud.githubusercontent.com/assets/59284/3467435/90001280-0290-11e4-9d6f-04fa4479cea0.png)](http://www.webglearth.com/)",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webglearth/webglearth2.git"
+  },
+  "keywords": [
+    "WebGL",
+    "Earth",
+    "Globe",
+    "Map",
+    "Tiles",
+    "Leaflet",
+    "LeafletJS",
+    "Google",
+    "Maps",
+    "Bing",
+    "Open",
+    "Street",
+    "Map"
+  ],
+  "author": "",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/webglearth/webglearth2/issues"
+  },
+  "homepage": "https://github.com/webglearth/webglearth2"
+}
