@@ -30,5 +30,8 @@
   "bugs": {
     "url": "https://github.com/webglearth/webglearth2/issues"
   },
-  "homepage": "https://github.com/webglearth/webglearth2"
+  "homepage": "https://github.com/webglearth/webglearth2",
+  "dependencies": {
+    "cesiumjs": "^1.4.0"
+  }
 }
