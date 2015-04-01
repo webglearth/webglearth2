@@ -120,12 +120,9 @@ weapi.maps.initMap = function(app, type, opt_opts) {
             mapopts['parameters'][el] = q.get(el);
           });
         }
-        if (mapopts['parameters']['bbox']) {
-          if (aropts[4] == 'EPSG:900913' ||
-              aropts[4] == 'EPSG:3857') {
-            //reproject the bounds
-            
-          }
+        if (aropts[4] == 'EPSG:900913' ||
+            aropts[4] == 'EPSG:3857') {
+          mapopts['tilingScheme'] = new Cesium.WebMercatorTilingScheme();
         }
         // ignore minzoom aropts[8];
         mapopts['maximumLevel'] = aropts[9];
