@@ -6,7 +6,7 @@
   <meta name="robots" content="index, all" />
   <title>WebGL Earth API - Hello World</title>
 
-  <script src="../Cesium/Build/Cesium/Cesium.js"></script>
+  <script src="../cesium/Build/Cesium/Cesium.js"></script>
   <script src="http://localhost:9810/compile?id=api-debug"></script>
 
   <script>
@@ -24,23 +24,23 @@
         zooming: true,
         proxyHost: 'http://srtm.webglearth.com/cgi-bin/corsproxy.fcgi?url='
       });
-      
+
       app.showMiniGlobe('../deploy/world512.jpg', 128);
-      
+
       // Get your own key from: https://www.bingmapsportal.com/
       var bingKey = 'AsLurrtJotbxkJmnsefUYbatUuBkeBTzTL930TvcOekeG8SaQPY9Z5LDKtiuzAOu';
-    
+
       mapB = app.initMap(WebGLEarth.Maps.BING, ['AerialWithLabels', bingKey]);
       mapM = app.initMap(WebGLEarth.Maps.MAPQUEST);
       app.setBaseMap(mapM);
 
       mapBo = app.initMap(WebGLEarth.Maps.BING, ['AerialWithLabels', bingKey]);
       mapMo = app.initMap(WebGLEarth.Maps.MAPQUEST);
-      
+
       customTMS = app.initMap(WebGLEarth.Maps.CUSTOM, ['TMS','http://webglearth.googlecode.com/svn/resources/tms/{z}/{x}/{y}.jpg',1,5,256,true]);
 
-      wms = app.initMap(WebGLEarth.Maps.WMS, ['BlueMarble', 'http://demo.mapserver.org/cgi-bin/wms?', 
-                                             '1.1.1', 'bluemarble,continents,country_bounds,cities', 'EPSG:3857', 'image/png', '', 
+      wms = app.initMap(WebGLEarth.Maps.WMS, ['BlueMarble', 'http://demo.mapserver.org/cgi-bin/wms?',
+                                             '1.1.1', 'bluemarble,continents,country_bounds,cities', 'EPSG:3857', 'image/png', '',
                                              '', 1, 15]);
 
       //make the overlays transparent
@@ -50,8 +50,8 @@
       setInterval(function() {
         document.getElementById('infodiv').innerHTML = app.getHeading() + ', ' + app.getTilt();
       }, 100);
-      
-            
+
+
       //Print coordinates of the mouse
       var printCoords = function(e) {
         document.getElementById('coordsbox').innerHTML =
@@ -73,7 +73,7 @@
       var londonM = app.initMarker(51.507222, -0.1275);
       var denverM = app.initMarker(39.739167, -104.984722);
       var cairoM = app.initMarker(30.058056, 31.228889);
-      
+
       londonM.bindPopup('<h2>London</h2>This marker is already opened.', 250).openPopup();
       denverM.bindPopup('<h2>Denver</h2>You can\'t see this marker without rotating the Earth.');
 
@@ -84,7 +84,7 @@
         londonM.closePopup();
       };
       cairoM.on('click', closeLondon);
-      
+
       document.getElementById("addmarkers").disabled = true;
     }
     var colorQueryMarker;
@@ -95,13 +95,13 @@
       var lat = parseFloat(document.getElementById('colorlat').value, 10);
       var lng = parseFloat(document.getElementById('colorlng').value, 10);
       var colorbox = document.getElementById('colorbox');
-      
+
       if (!colorQueryMarker) {
         colorQueryMarker = app.initMarker(lat, lng);
       } else {
         colorQueryMarker.setPosition(lat, lng);
       }
-      
+
       if (intervalTimer) clearInterval(intervalTimer);
       intervalTimer = setInterval(function() {
         var res = app.getBestAvailablePixelColor(lat, lng);
@@ -113,7 +113,7 @@
       }, 500);
     }
   </script>
-  
+
  </head>
  <body onload="javascript:startWE()">
    <div id="webglearthdiv" style="width:600px;height:400px;"></div>

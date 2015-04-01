@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
   <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
 
-  <script src="../Cesium/Build/Cesium/Cesium.js"></script>
+  <script src="../cesium/Build/Cesium/Cesium.js"></script>
   <script src="http://localhost:9810/compile?id=api-debug"></script>
 
   <script>
@@ -82,15 +82,15 @@
 
       document.getElementById("addmarkers").disabled = true;
     }
-    
+
     function addSomeMarkers_(API, suffix) {
       m[suffix].setView([51.505, 0], 5);
       var marker = API.marker([51.5, -0.09]).addTo(m[suffix]);
       marker.bindPopup("<b>Hello world!</b><br>I am a popup.<br /><span style='font-size:10px;color:#999'>Tip: Another popup is hidden in Cairo..</span>", {maxWidth: 150, closeButton: true}).openPopup();
-      
+
       var marker2 = API.marker([30.058056, 31.228889]).addTo(m[suffix]);
       marker2.bindPopup("<b>Cairo</b><br>Yay, you found me!<br />Here, enjoy another polygon..", {maxWidth: 120, closeButton: false});
-      
+
       var polygonA = API.polygon([[50, 1], [51, 0.5], [50.5, 2.5]]).addTo(m[suffix]);
       var polygonB = API.polygon([[50, 3], [51, 2.5], [50.5, 4.5]], {
         color: '#ff0',
@@ -115,7 +115,7 @@
       /*var londonM = app.initMarker(51.507222, -0.1275);
       var denverM = app.initMarker(39.739167, -104.984722);
       var cairoM = app.initMarker(30.058056, 31.228889);
-      
+
       londonM.bindPopup('<h2>London</h2>This marker is already opened.', 250).openPopup();
       denverM.bindPopup('<h2>Denver</h2>You can\'t see this marker without rotating the Earth.');
 
