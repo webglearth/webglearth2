@@ -577,6 +577,7 @@ weapi.exports.Marker.prototype.on = function(type, listener) {
       e.target = marker;
       e['latitude'] = goog.math.toDegrees(marker.lat);
       e['longitude'] = goog.math.toDegrees(marker.lon);
+      e['originalEvent'] = e.getBrowserEvent();
 
       listener(e);
     };

@@ -486,7 +486,7 @@ weapi.App.prototype.on = function(type, listener) {
         e['latitude'] = lat;
         e['longitude'] = lng;
         e['altitude'] = carto.height;
-        e['originalEvent'] = e;
+        e['originalEvent'] = e.getBrowserEvent();
       }
 
       listener(e);
