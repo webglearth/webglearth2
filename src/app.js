@@ -269,7 +269,9 @@ weapi.App = function(divid, opt_options) {
 
   var sscc = this.scene.screenSpaceCameraController;
 
-  this.scene.camera.constrainedAxis = Cesium.Cartesian3.UNIT_Z;
+  if (options['unconstrainedRotation'] !== true) {
+    this.scene.camera.constrainedAxis = Cesium.Cartesian3.UNIT_Z;
+  }
 
   //sscc.enableLook = false;
   if (options['panning'] === false || options['dragging'] === false)
