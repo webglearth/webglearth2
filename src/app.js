@@ -118,7 +118,7 @@ weapi.App = function(divid, opt_options) {
   this.lastViewMatrix = new Cesium.Matrix4();
 
   /** @type {?string} */
-  var proxyHost = opt_options['proxyHost'] || null;
+  var proxyHost = options['proxyHost'] || null;
 
   /* type {{getURL: function(string) : string}} */
   this.mapProxyObject = {
