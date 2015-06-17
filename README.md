@@ -50,14 +50,14 @@ The project API is available from Google CDN and can be linked and called direct
 
 Embedding of a globe in your own web is then extremely easy.
 
-### From custom server or even offline 
+### From custom server or even offline
 
 Because the project is 100% open-source, the complete code can be hosted also on your own website or distributed with applications. Ready to use API releases are at: https://github.com/webglearth/webglearth2/releases
 
 With custom rendered map tiles (made with http://www.maptiler.com/) the project can be used on intranets, in restricted environments or even offline. The API should be accessed via HTTP protocol (possibly via localhost).
 
 
-## Development and building 
+## Development and building
 
 * Clone the code from GitHub, including the submodules (cesium).
 * Use `make cesium` to build the required component.
@@ -83,3 +83,10 @@ CESIUM_BASE_URL = '.';
 {content of cesium/Build/Cesium/Cesium.js}
 {content of deploy/api_nocesium.js}
 ```
+
+## Supported by
+
+- Klokan Technologies GmbH
+- Analytical Graphics, Inc.
+- Tween Globe Ltd
+- Miizee.com
