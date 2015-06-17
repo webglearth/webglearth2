@@ -477,18 +477,33 @@ weapi.App.prototype.on = function(type, listener) {
       e['latitude'] = null;
       e['longitude'] = null;
 
-      var cartesian = app.camera.camera.
-          pickEllipsoid(new Cesium.Cartesian2(e.offsetX, e.offsetY));
-      if (goog.isDefAndNotNull(cartesian)) {
-        var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
+      var offsetX = e.offsetX, offsetY = e.offsetY;
+      if (!goog.isDefAndNotNull(offsetX) || !goog.isDefAndNotNull(offsetY)) {
+        var origE = e.getBrowserEvent();
+        var pageX = origE.pageX, pageY = origE.pageY,
+            touches = origE['touches'];
+        if (touches && touches[0] && (!pageX || !pageY)) {
+          pageX = touches[0].pageX;
+          pageY = touches[0].pageY;
+        }
+        var canvasOffset = goog.style.getPageOffset(app.canvas);
+        offsetX = pageX - canvasOffset.x;
+        offsetY = pageY - canvasOffset.y;
+      }
+      if (goog.isDefAndNotNull(offsetX) && goog.isDefAndNotNull(offsetY)) {
+        var cartesian = app.camera.camera.
+            pickEllipsoid(new Cesium.Cartesian2(offsetX, offsetY));
+        if (goog.isDefAndNotNull(cartesian)) {
+          var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(cartesian);
 
-        var lat = goog.math.toDegrees(carto.latitude),
-            lng = goog.math.toDegrees(carto.longitude);
-        e['latlng'] = {'lat': lat, 'lng': lng};
-        e['latitude'] = lat;
-        e['longitude'] = lng;
-        e['altitude'] = carto.height;
-        e['originalEvent'] = e.getBrowserEvent();
+          var lat = goog.math.toDegrees(carto.latitude),
+              lng = goog.math.toDegrees(carto.longitude);
+          e['latlng'] = {'lat': lat, 'lng': lng};
+          e['latitude'] = lat;
+          e['longitude'] = lng;
+          e['altitude'] = carto.height;
+          e['originalEvent'] = e.getBrowserEvent();
+        }
       }
 
       listener(e);
