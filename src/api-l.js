@@ -210,10 +210,11 @@ exportSymbolL('WebGLEarth.Map.prototype.removeFrom', function(app) {
 });
 
 
-exportSymbolL('WE.marker', function(pos) {
+exportSymbolL('WE.marker', function(pos, opt_iconUrl, opt_width, opt_height) {
   if (!goog.isArray(pos)) pos = [pos['lat'], pos['lng']];
   var mark = new weapi.markers.PrettyMarker(goog.math.toRadians(pos[0]),
-                                            goog.math.toRadians(pos[1]));
+                                            goog.math.toRadians(pos[1]),
+                                            opt_iconUrl, opt_width, opt_height);
   return mark;
 });
 
