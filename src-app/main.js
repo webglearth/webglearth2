@@ -66,7 +66,8 @@ weapp.App = function() {
 
   var geocoderElement = /** @type {!Element} */
                         (goog.dom.getElement('geocoder'));
-  var ac = new klokantech.Nominatim(geocoderElement);
+  var ac = new klokantech.Nominatim(geocoderElement,
+      'http://nominatim.klokantech.com/');
 
   goog.events.listen(ac, goog.ui.ac.AutoComplete.EventType.UPDATE, function(e) {
     var ext = e.row['bounds'] || e.row['viewport'];
