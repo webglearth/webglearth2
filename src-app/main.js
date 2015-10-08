@@ -90,7 +90,7 @@ weapp.App = function() {
   var initedMaps = {}; //cache
   var maptypeElement = /** @type {!HTMLSelectElement} */
                        (goog.dom.getElement('maptype'));
-  goog.events.listen(maptypeElement, goog.events.EventType.CHANGE, function(e) {
+  var updateLayer = goog.bind(function() {
     var key = maptypeElement.options[maptypeElement.selectedIndex].value;
     switch (key) {
       case 'bing_aerial':
@@ -129,7 +129,9 @@ weapp.App = function() {
       default:
         break;
     }
-  }, false, this);
+  }, this);
+  goog.events.listen(maptypeElement, goog.events.EventType.CHANGE, updateLayer);
+  updateLayer();
 
   /* HASH UPDATING & PARSING */
 
@@ -215,7 +217,7 @@ weapp.App = function() {
  * @define {string} bing key.
  */
 weapp.App.BING_KEY =
-    'AsLurrtJotbxkJmnsefUYbatUuBkeBTzTL930TvcOekeG8SaQPY9Z5LDKtiuzAOu';
+    'AuCVBGPx1VQORSzUMGplLr3JTilLi3lUA3WnqT5SbKcUP5H2s9mh9XsHfy_VKmdG';
 
 
 /**

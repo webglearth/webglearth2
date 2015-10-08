@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="robots" content="index, all" />
   <title>WebGL Earth API - Demo</title>
-  
+
   <script src="api.js"></script>
 
   <script>
@@ -22,30 +22,30 @@
         zooming: true,
         proxyHost: 'http://srtm.webglearth.com/cgi-bin/corsproxy.fcgi?url='
       });
-      
+
       app.showMiniGlobe('../deploy/world512.jpg', 128);
-      
+
       // Get your own key from: https://www.bingmapsportal.com/
-      var bingKey = 'AsLurrtJotbxkJmnsefUYbatUuBkeBTzTL930TvcOekeG8SaQPY9Z5LDKtiuzAOu';
-    
+      var bingKey = 'AuCVBGPx1VQORSzUMGplLr3JTilLi3lUA3WnqT5SbKcUP5H2s9mh9XsHfy_VKmdG';
+
       mapB = app.initMap(WebGLEarth.Maps.BING, ['AerialWithLabels', bingKey]);
       mapM = app.initMap(WebGLEarth.Maps.MAPQUEST);
       app.setBaseMap(mapM);
 
       mapBo = app.initMap(WebGLEarth.Maps.BING, ['AerialWithLabels', bingKey]);
       mapMo = app.initMap(WebGLEarth.Maps.MAPQUEST);
-      
+
       customTMS = app.initMap(WebGLEarth.Maps.CUSTOM, ['TMS','http://webglearth.googlecode.com/svn/resources/tms/{z}/{x}/{y}.jpg',1,5,256,true]);
 
       //make the overlays transparent
       mapBo.setOpacity(0.5);
       mapMo.setOpacity(0.5);
-      
+
       setInterval(function() {
         document.getElementById('infodiv').innerHTML = app.getHeading() + ', ' + app.getTilt();
       }, 100);
-      
-            
+
+
       //Print coordinates of the mouse
       var printCoords = function(e) {
         document.getElementById('coordsbox').innerHTML =
@@ -62,12 +62,12 @@
       };
       listenKey = app.on('click', alertCoords);
     }
-    
+
     function addSomeMarkers() {
       var londonM = app.initMarker(51.507222, -0.1275);
       var denverM = app.initMarker(39.739167, -104.984722);
       var cairoM = app.initMarker(30.058056, 31.228889);
-      
+
       londonM.bindPopup('<h2>London</h2>This marker is already opened.', 250).openPopup();
       denverM.bindPopup('<h2>Denver</h2>You can\'t see this marker without rotating the Earth.');
 
@@ -78,11 +78,11 @@
         londonM.closePopup();
       };
       cairoM.on('click', closeLondon);
-      
+
       document.getElementById("addmarkers").disabled = true;
     }
   </script>
-  
+
  </head>
  <body onload="javascript:startWE()">
    <div id="webglearthdiv" style="width:600px;height:400px;"></div>
