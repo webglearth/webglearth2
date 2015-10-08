@@ -159,13 +159,15 @@ weapi.App = function(divid, opt_options) {
   this.scene.globe = this.globe;
 
   if (options['empty'] !== true) {
-    // default layer -- Bing Maps
-    var bing = new Cesium.BingMapsImageryProvider({
-      'url' : this.resourceProtocol + '//dev.virtualearth.net',
-      'mapStyle' : Cesium.BingMapsStyle.AERIAL_WITH_LABELS,
-      'key': 'AsLurrtJotbxkJmnsefUYbatUuBkeBTzTL930TvcOekeG8SaQPY9Z5LDKtiuzAOu'
+    // default layer -- Map Quest
+    var secure = 'https:' == document.location.protocol;
+    var protocol = (secure ? 'https:' : 'http:');
+
+    var mq = new Cesium.OpenStreetMapImageryProvider({
+      'url': protocol + '//otile1' + (secure ? '-s' : '') +
+          '.mqcdn.com/tiles/1.0.0/sat/'
     });
-    this.scene.imageryLayers.addImageryProvider(bing);
+    this.scene.imageryLayers.addImageryProvider(mq);
   }
   this.withTerrain = options['terrain'] == true;
   if (this.withTerrain) {
