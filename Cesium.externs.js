@@ -35,15 +35,15 @@ Cesium.Billboard.prototype.show;
 
 
 /**
- * @type {number}
+ * @type {boolean}
  */
-Cesium.Billboard.prototype.scale;
+Cesium.Billboard.prototype.sizeInMeters;
 
 
 /**
  * @type {number}
  */
-Cesium.Billboard.prototype.imageIndex;
+Cesium.Billboard.prototype.scale;
 
 
 /**
@@ -94,12 +94,6 @@ Cesium.BillboardCollection.prototype.add = function(opt_opts) {};
  * @param {Cesium.Billboard} what .
  */
 Cesium.BillboardCollection.prototype.remove = function(what) {};
-
-
-/**
- * @type {boolean} .
- */
-Cesium.BillboardCollection.prototype.sizeReal;
 
 
 /**
@@ -335,17 +329,16 @@ Cesium.CameraEventAggregator.prototype.destroy = function() {};
 
 
 /**
- * @param {Cesium.Cartographic} carto
+ * @param {Object} props
  */
-Cesium.Camera.prototype.setPositionCartographic = function(carto) {};
+Cesium.Camera.prototype.setView = function(props) {};
 
 
 /**
- * @param {Cesium.Cartesian3} eye .
- * @param {Cesium.Cartesian3} target .
- * @param {Cesium.Cartesian3} up .
+ * @param {Cesium.Cartesian3} target
+ * @param {Cesium.Cartesian3} offset
  */
-Cesium.Camera.prototype.lookAt = function(eye, target, up) {};
+Cesium.Camera.prototype.lookAt = function(target, offset) {};
 
 
 /**
@@ -455,6 +448,18 @@ Cesium.Cartesian3.prototype.y;
  * @type {number}
  */
 Cesium.Cartesian3.prototype.z;
+
+
+/**
+ * @param {number} longitude
+ * @param {number} latitude
+ * @param {number=} opt_height
+ * @param {Cesium.Ellipsoid=} opt_ellipsoid
+ * @param {Cesium.Cartesian3=} opt_result
+ * @return {Cesium.Cartesian3}
+ */
+Cesium.Cartesian3.fromRadians = function(longitude, latitude, opt_height,
+                                         opt_ellipsoid, opt_result) {};
 
 
 /**
@@ -799,7 +804,7 @@ Cesium.ImageryLayerCollection.prototype.length;
 
 
 /**
- * @param {number} index 
+ * @param {number} index
  * @return {Cesium.ImageryLayer} layer
  */
 Cesium.ImageryLayerCollection.prototype.get = function(index) {};
@@ -807,7 +812,7 @@ Cesium.ImageryLayerCollection.prototype.get = function(index) {};
 
 /**
  * @param {Cesium.ImageryLayer} layer
- * @param {number=} opt_index 
+ * @param {number=} opt_index
  */
 Cesium.ImageryLayerCollection.prototype.add = function(layer, opt_index) {};
 
@@ -901,7 +906,7 @@ Cesium.ImageryProvider.prototype.credit;
  * @param {number} x The tile X coordinate.
  * @param {number} y The tile Y coordinate.
  * @param {number} level The tile level.
- * @return {Object|undefined} 
+ * @return {Object|undefined}
  */
 Cesium.ImageryProvider.prototype.requestImage = function(x, y, level) {};
 
@@ -1090,10 +1095,10 @@ Cesium.Matrix4.fromTranslation = function(translation, opt_result) {};
 /**
  * @param {Cesium.Matrix4} left .
  * @param {Cesium.Matrix4} right .
- * @param {Cesium.Matrix4=} opt_result .
+ * @param {Cesium.Matrix4} result .
  * @return {Cesium.Matrix4} .
  */
-Cesium.Matrix4.multiply = function(left, right, opt_result) {};
+Cesium.Matrix4.multiply = function(left, right, result) {};
 
 
 /**
@@ -1112,19 +1117,19 @@ Cesium.Matrix4.prototype.clone = function(matrix) {};
 /**
  * @param {Cesium.Matrix4} matrix .
  * @param {Cesium.Cartesian3} point .
- * @param {Cesium.Cartesian3=} opt_result .
+ * @param {Cesium.Cartesian3} result .
  * @return {Cesium.Cartesian3} .
  */
-Cesium.Matrix4.multiplyByPoint = function(matrix, point, opt_result) {};
+Cesium.Matrix4.multiplyByPoint = function(matrix, point, result) {};
 
 
 /**
  * @param {Cesium.Matrix4} matrix .
  * @param {Cesium.Cartesian4} point .
- * @param {Cesium.Cartesian4=} opt_result .
+ * @param {Cesium.Cartesian4} result .
  * @return {Cesium.Cartesian4} .
  */
-Cesium.Matrix4.multiplyByVector = function(matrix, point, opt_result) {};
+Cesium.Matrix4.multiplyByVector = function(matrix, point, result) {};
 
 
 /**
@@ -1180,6 +1185,12 @@ Cesium.PerspectiveFrustrum.prototype.aspectRatio;
  * @type {number}
  */
 Cesium.PerspectiveFrustrum.prototype.far;
+
+
+/**
+ * @type {number}
+ */
+Cesium.PerspectiveFrustrum.prototype.fov;
 
 
 /**

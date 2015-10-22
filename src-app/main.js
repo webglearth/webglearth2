@@ -223,7 +223,7 @@ weapp.App.BING_KEY =
 /**
  * @define {number} default altitude in meters.
  */
-weapp.App.DEFAULT_ALT = 7000000;
+weapp.App.DEFAULT_ALT = 17000000;
 
 
 /**

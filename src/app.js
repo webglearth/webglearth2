@@ -10,7 +10,6 @@ goog.provide('weapi.App');
 goog.require('goog.dom');
 
 goog.require('weapi.Camera');
-goog.require('weapi.NoRepeatTextureAtlas');
 goog.require('weapi.maps');
 goog.require('weapi.markers.MarkerManager');
 goog.require('weapi.markers.PrettyMarker');
@@ -189,16 +188,9 @@ weapi.App = function(divid, opt_options) {
   this.composites = [];
 
   /**
-   * @type {!weapi.NoRepeatTextureAtlas}
-   */
-  this.polyIconAtlas = new weapi.NoRepeatTextureAtlas(this);
-
-  /**
    * @type {!Cesium.BillboardCollection}
    */
   this.polyIconCollection = new Cesium.BillboardCollection();
-  this.polyIconCollection.textureAtlas = this.polyIconAtlas.atlas;
-  this.polyIconCollection.sizeReal = true;
   primitives.add(this.polyIconCollection);
 
   var tick = goog.bind(function() {
@@ -308,12 +300,17 @@ weapi.App = function(divid, opt_options) {
 
   // + HACK for sceneChange detection after loading tiles:
   var that = this;
-  var orig2 = Cesium['Tile'].prototype['processStateMachine'];
-  Cesium['Tile'].prototype['processStateMachine'] = function(c, tp, ic) {
+  var orig2 = Cesium['GlobeSurfaceTile']['processStateMachine'];
+  Cesium['GlobeSurfaceTile']['processStateMachine'] =
+      function(t, c, cl, tp, ic) {
     /*if (this['isRenderable']) */that.sceneChanged = true;
 
-    orig2.call(this, c, tp, ic);
+    orig2(t, c, cl, tp, ic);
   };
+
+  setTimeout(function() {
+    that.sceneChanged = true;
+  }, 1);
 };
 
 

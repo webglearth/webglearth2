@@ -181,15 +181,11 @@ weapi.EditablePolygon.prototype.setStrokeColor = function(hexColor, opt_a) {
 
 /**
  * @param {string} src URL of the image to use.
- * @param {number} height Desired height of the image in pixels
- *                        when observed from the reference distance.
- * @param {number=} opt_minHeight Minimal height of the image in pixels (TODO).
- * @param {?number=} opt_maxHeight Maximal height of the image in pixels (TODO).
+ * @param {number} width Desired width of the image in meters.
+ * @param {number} height Desired height of the image in meters.
  */
-weapi.EditablePolygon.prototype.setIcon = function(src, height,
-                                                   opt_minHeight,
-                                                   opt_maxHeight) {
-  this.icon_.setImage(src, height, opt_minHeight, opt_maxHeight);
+weapi.EditablePolygon.prototype.setIcon = function(src, width, height) {
+  this.icon_.setImage(src, width, height);
   this.repositionIcon_();
   this.app.sceneChanged = true;
 };

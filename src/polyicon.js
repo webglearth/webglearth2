@@ -47,18 +47,6 @@ weapi.PolyIcon = function(lat, lng, app) {
    * @type {string}
    */
   this.src = '';
-
-  /**
-   * @type {number}
-   * @private
-   */
-  this.minHeight_ = 0;
-
-  /**
-   * @type {?number}
-   * @private
-   */
-  this.maxHeight_ = null;
 };
 
 
@@ -113,46 +101,29 @@ weapi.PolyIcon.prototype.destroy = function() {
 
 /**
  * @param {string} src URL of the image to use.
- * @param {number} height Desired height of the image in pixels
- *                        when observed from the reference distance.
- * @param {number=} opt_minHeight Minimal height of the image in pixels (TODO).
- * @param {?number=} opt_maxHeight Maximal height of the image in pixels (TODO).
+ * @param {number} width Desired width of the image in meters.
+ * @param {number} height Desired height of the image in meters.
  */
-weapi.PolyIcon.prototype.setImage = function(src, height,
-                                             opt_minHeight,
-                                             opt_maxHeight) {
+weapi.PolyIcon.prototype.setImage = function(src, width, height) {
   if (src.length > 0) {
     if (!this.billboard) {
       this.billboard = this.app.polyIconCollection.add();
       this.setLatLng(this.lat_, this.lng_);
     }
-    this.app.polyIconAtlas.getImageIndex(src, goog.bind(function(index) {
-      this.billboard.imageIndex = index;
-      var coords = this.app.polyIconAtlas.atlas.textureCoordinates[index];
-      var texture = this.app.polyIconAtlas.atlas.texture;
-      var h = coords.height * texture.height;
-      var canvasHeight = this.app.canvas.clientHeight;
-
-      // shader does: f(x) = img_h * x / d;
-      // we need: g(x) = x * (ref_d / d) * (canvas_h / ref_h);
-      // result: h(x) = (f(x) / img_h) * ref_d * (canvas_h / ref_h) = g(x);
-      this.billboard.scale = (height / h) *
-          weapi.PolyIcon.REFERENCE_DISTANCE *
-          (canvasHeight / weapi.PolyIcon.REFERENCE_CANVAS_HEIGHT);
-
-      this.setLatLng(this.lat_, this.lng_);
-      this.app.sceneChanged = true;
-    }, this));
+    this.billboard.image = src;
+    this.billboard.width = width;
+    this.billboard.height = height;
+    this.billboard.sizeInMeters = true;
     this.billboard.verticalOrigin = Cesium.VerticalOrigin.BOTTOM;
+
+    this.setLatLng(this.lat_, this.lng_);
+    this.app.sceneChanged = true;
   } else {
     if (this.billboard) {
       this.app.polyIconCollection.remove(this.billboard);
       this.billboard = null;
     }
   }
-
-  this.minHeight_ = opt_minHeight || 0;
-  this.maxHeight_ = opt_maxHeight || null;
 };
 
 

@@ -6,24 +6,24 @@
   <meta name="robots" content="index, all" />
   <title>WebGL Earth API - Polygon Example</title>
 
-  <script src="../Cesium/Build/Cesium/Cesium.js"></script>
+  <script src="../cesium/Build/Cesium/Cesium.js"></script>
   <script src="http://localhost:9810/compile?id=api-debug"></script>
 
-  <script>    
+  <script>
     var app, poly;
     function startWE() {
-    
+
       var options = {
         altitude: 360,
         position: [47.192, 8.523],
-        map: WebGLEarth.Maps.OSM,
         proxyHost: 'http://srtm.webglearth.com/cgi-bin/corsproxy.fcgi?url='
       };
 
       app = new WebGLEarth('webglearthdiv', options);
+      app.setBaseMap(app.initMap(WebGLEarth.Maps.MAPQUEST));
       app.showMiniGlobe('../deploy/world512.jpg', 128);
       app.setTilt(45);
-      
+
       var defaultPoly = new WebGLEarth.Polygon(app);
       defaultPoly.setFillColor('#00ffff', 0.3);
       defaultPoly.addPoint(47.1966945, 8.52359601);
@@ -37,7 +37,7 @@
       defaultPoly.disableClickToAdd();
       defaultPoly.showDraggers(false);
       defaultPoly.onClick(reopenPoly);
-      
+
       var defaultPoly2 = new WebGLEarth.Polygon(app);
       defaultPoly2.setFillColor('#00ff00', 0.3);
       defaultPoly2.addPoint(47.1965465487, 8.5211790565);
@@ -47,7 +47,7 @@
       defaultPoly2.disableClickToAdd();
       defaultPoly2.showDraggers(false);
       defaultPoly2.onClick(reopenPoly);
-      
+
       // let the corner point animate in circle
       //   not very useful way of demonstrating the movePoint() method
       setInterval(function() {
@@ -69,7 +69,7 @@
       poly.showDraggers(true);
       poly.setOnChange(onchange);
     }
-    
+
     function startPoly() {
       if (poly) {
         closePoly();
@@ -97,7 +97,7 @@
       poly.destroy();
       poly = null;
     }
-    
+
     var borderHex = '#000000', borderAlpha = 1; //remember the color so we can visualize invalid polygons
     function onchange() {
       if (poly) {
@@ -127,18 +127,14 @@
         poly.setStrokeColor(hex, opt_a);
       }
     }
-    
+
     function randomIcon() {
       if (poly) {
-        var icons = [1, 2, 3, 4, 5, 6];//1, 10, 14, 15, 17, 20, 23, 25, 26, 31, 34, 36, 40, 42, 43, 45, 47, 48, 49, 50, 52, 53, 54];
-        var random = icons[Math.floor(Math.random() * icons.length)];
-        
-        // (src, reference height in pixels, minimal height in pixels, maximal height in pixels)
-        poly.setIcon('icons/' + random + '.png', 50, 30, 250);
+        poly.setIcon('../deploy/world512.jpg', 50, 30);
       }
     }
   </script>
-  
+
  </head>
  <body onload="javascript:startWE()">
    <div id="webglearthdiv" style="width:600px;height:400px;"></div>
@@ -155,7 +151,7 @@
    <input type="button" value="Yellow border" onclick="javascript:setBorder('#ffff00');"/>
    <input type="button" value="Black border" onclick="javascript:setBorder('#000000', 0.8);"/>
    <br />
-   Change fill color: 
+   Change fill color:
    <select onchange="javascript:if(poly)poly.setFillColor(this.value, 0.7);">
      <option value="#7bfffb">#7bfffb</option>
      <option value="#f8ff7d">#f8ff7d</option>
@@ -164,7 +160,7 @@
      <option value="#ee84fc">#ee84fc</option>
      <option value="#bab3b8">#bab3b8</option>
    </select>
-   Change border color: 
+   Change border color:
    <select onchange="javascript:setBorder(this.value);">
      <option value="#7ad3ff">#7ad3ff</option>
      <option value="#ffdb74">#ffdb74</option>
@@ -174,7 +170,7 @@
      <option value="#7b7679">#7b7679</option>
    </select>
    <br />
-   <input type="button" value="Assign random icon" onclick="javascript:randomIcon();"/>
+   <input type="button" value="Assign icon" onclick="javascript:randomIcon();"/>
    <input type="button" value="Remove icon" onclick="javascript:if(poly)poly.setIcon('');"/>
    <br />
    <input type="button" value="Force pause rendering" onclick="javascript:app.pauseRendering();"/>

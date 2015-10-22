@@ -1,2 +1,5 @@
 /deploy/api.js
+/deploy/index.js
+/deploy/api_nocesium.js
+/deploy/index_nocesium.js
 /plovr-*.*

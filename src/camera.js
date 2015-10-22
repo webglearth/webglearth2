@@ -52,9 +52,13 @@ weapi.Camera.prototype.setPos = function(latitude, longitude, altitude) {
     longitude = goog.isDefAndNotNull(longitude) ? longitude : oldPos[1];
     altitude = altitude > 0 ? altitude : oldPos[2];
   }
-  var carto = new Cesium.Cartographic(longitude, latitude, altitude);
-
-  this.camera.setPositionCartographic(carto);
+  var pos = Cesium.Cartesian3.fromRadians(longitude, latitude, altitude);
+  this.camera.setView({
+    'position': pos,
+    'heading': 0,
+    'pitch': -Math.PI / 2,
+    'roll': 0
+  });
 };
 
 
@@ -139,9 +143,13 @@ weapi.Camera.prototype.setHeadingAndTilt = function(heading, tilt) {
  */
 weapi.Camera.prototype.setPosHeadingAndTilt = function(lat, lng, alt,
                                                        heading, tilt) {
-  var carto = new Cesium.Cartographic(lng, lat, alt);
-
-  this.camera.setPositionCartographic(carto);
+  var pos = Cesium.Cartesian3.fromRadians(lng, lat, alt);
+  this.camera.setView({
+    'position': pos,
+    'heading': 0,
+    'pitch': -Math.PI / 2,
+    'roll': 0
+  });
   this.camera.twistLeft(heading);
   this.camera.lookUp(tilt);
 };

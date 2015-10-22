@@ -276,7 +276,7 @@ weapi.MiniGlobe.prototype.draw = function() {
   var frustum = this.app_.camera.camera.frustum;
 
   var mvm = Cesium.Matrix4.fromTranslation(new Cesium.Cartesian3(
-      0, 0, -1.2 / Math.tan(frustum.fovy / 2)));
+      0, 0, -1.3 / Math.tan(frustum.fovy / 2)));
   rotate100(mvm, pos[0]);
   rotate010(mvm, -pos[1]);
 
