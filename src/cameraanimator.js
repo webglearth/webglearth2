@@ -11,6 +11,7 @@ goog.require('goog.events');
 goog.require('goog.fx.Animation');
 goog.require('goog.fx.Animation.EventType');
 goog.require('goog.fx.AnimationSerialQueue');
+goog.require('goog.fx.Transition.EventType');
 goog.require('goog.math');
 
 goog.require('weapi.utils');
@@ -115,9 +116,9 @@ weapi.CameraAnimator.prototype.flyTo = function(latitude, longitude,
     return (supereasing(0.5 + t / 2) - halfVal) / (1 - halfVal);
   };
 
-  var animationAlteringEvents = [goog.fx.Animation.EventType.BEGIN,
+  var animationAlteringEvents = [goog.fx.Transition.EventType.BEGIN,
                                  goog.fx.Animation.EventType.ANIMATE,
-                                 goog.fx.Animation.EventType.END,
+                                 goog.fx.Transition.EventType.END,
                                  goog.fx.Transition.EventType.FINISH];
 
   this.animation_ = new goog.fx.AnimationSerialQueue();
@@ -169,7 +170,7 @@ weapi.CameraAnimator.prototype.flyTo = function(latitude, longitude,
   }
 
 
-  goog.events.listen(this.animation_, goog.fx.Animation.EventType.END,
+  goog.events.listen(this.animation_, goog.fx.Transition.EventType.END,
                      this.onEnd_, false, this);
 
   this.animation_.play();

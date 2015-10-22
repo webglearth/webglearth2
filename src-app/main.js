@@ -13,7 +13,7 @@ goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.userAgent');
 
-goog.require('klokantech.Nominatim');
+goog.require('kt.Nominatim');
 goog.require('weapi.exports.App');
 
 
@@ -66,7 +66,7 @@ weapp.App = function() {
 
   var geocoderElement = /** @type {!Element} */
                         (goog.dom.getElement('geocoder'));
-  var ac = new klokantech.Nominatim(geocoderElement,
+  var ac = new kt.Nominatim(geocoderElement,
       'http://nominatim.klokantech.com/');
 
   goog.events.listen(ac, goog.ui.ac.AutoComplete.EventType.UPDATE, function(e) {

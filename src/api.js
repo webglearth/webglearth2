@@ -697,6 +697,7 @@ exportSymbol('WebGLEarth.Polygon.prototype.getCentroid',
 
 /**
  * @param {!function(!weapi.exports.Polygon)} callback
+ * @suppress {accessControls}
  */
 weapi.exports.Polygon.prototype.onClick = function(callback) {
   goog.events.listen(this.app.canvas, goog.events.EventType.CLICK, function(e) {
