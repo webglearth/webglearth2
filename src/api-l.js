@@ -48,7 +48,7 @@ exportSymbolL('WebGLEarth.prototype.zoomIn', function(opt_delta) {
 
 
 exportSymbolL('WebGLEarth.prototype.zoomOut', function(opt_delta) {
-  this.setZoom(this.getZoom() + (goog.isNumber(opt_delta) ? opt_delta : 1));
+  this.setZoom(this.getZoom() - (goog.isNumber(opt_delta) ? opt_delta : 1));
 });
 
 
