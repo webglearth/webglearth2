@@ -20,7 +20,6 @@ goog.require('weapi.Map');
  * @enum {string}
  */
 weapi.maps.MapType = {
-  'MAPQUEST': 'mapquest',
   'OSM': 'osm',
   'BING': 'bing',
   'WMS': 'wms',
@@ -66,14 +65,6 @@ weapi.maps.initMap = function(app, type, opt_opts) {
   var tileProvider;
 
   switch (type) {
-    case weapi.maps.MapType.MAPQUEST:
-      if (!mapopts) {
-        mapopts = {};
-        mapopts['url'] = protocol + '//otile1' + (secure ? '-s' : '') +
-                         '.mqcdn.com/tiles/1.0.0/osm/';
-      }
-      tileProvider = new Cesium.OpenStreetMapImageryProvider(mapopts);
-      break;
     case weapi.maps.MapType.OSM:
       if (!mapopts) {
         mapopts = {};

@@ -29,15 +29,15 @@
       });
       m[suffix] = map;
 
-      API.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
-        subdomains: '1234',
-        attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">',
+      API.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        subdomains: 'abc',
+        attribution: '© <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
         maxZoom: 18
       }).addTo(map);
 
-      var overlay = API.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg', {
-        subdomains: '1234',
-        attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">',
+      var overlay = API.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        subdomains: 'abc',
+        attribution: '© <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
         maxZoom: 18,
         opacity: 0.5
       }).addTo(map);

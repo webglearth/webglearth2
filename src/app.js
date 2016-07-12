@@ -158,13 +158,12 @@ weapi.App = function(divid, opt_options) {
   this.scene.globe = this.globe;
 
   if (options['empty'] !== true) {
-    // default layer -- Map Quest
+    // default layer -- OSM
     var secure = 'https:' == document.location.protocol;
     var protocol = (secure ? 'https:' : 'http:');
 
     var mq = new Cesium.OpenStreetMapImageryProvider({
-      'url': protocol + '//otile1' + (secure ? '-s' : '') +
-          '.mqcdn.com/tiles/1.0.0/sat/'
+      'url': protocol + '//a.tile.openstreetmap.org/'
     });
     this.scene.imageryLayers.addImageryProvider(mq);
   }

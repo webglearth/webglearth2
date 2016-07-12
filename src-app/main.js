@@ -114,12 +114,6 @@ weapp.App = function() {
         }
         this.app_.setBaseMap(initedMaps[key]);
         break;
-      case 'mapquest':
-        if (!goog.isDefAndNotNull(initedMaps[key])) {
-          initedMaps[key] = this.app_.initMap(weapi.maps.MapType.MAPQUEST);
-        }
-        this.app_.setBaseMap(initedMaps[key]);
-        break;
       case 'osm':
         if (!goog.isDefAndNotNull(initedMaps[key])) {
           initedMaps[key] = this.app_.initMap(weapi.maps.MapType.OSM);

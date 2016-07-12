@@ -11,7 +11,7 @@
 
   <script>
     var app;
-    var mapB, mapM;
+    var mapB, mapO;
     var customTMS, wms;
     function startWE() {
       app = new WebGLEarth('webglearthdiv', {
@@ -31,11 +31,11 @@
       var bingKey = 'AuCVBGPx1VQORSzUMGplLr3JTilLi3lUA3WnqT5SbKcUP5H2s9mh9XsHfy_VKmdG';
 
       mapB = app.initMap(WebGLEarth.Maps.BING, ['AerialWithLabels', bingKey]);
-      mapM = app.initMap(WebGLEarth.Maps.MAPQUEST);
-      app.setBaseMap(mapM);
+      mapO = app.initMap(WebGLEarth.Maps.OSM);
+      app.setBaseMap(mapO);
 
       mapBo = app.initMap(WebGLEarth.Maps.BING, ['AerialWithLabels', bingKey]);
-      mapMo = app.initMap(WebGLEarth.Maps.MAPQUEST);
+      mapOo = app.initMap(WebGLEarth.Maps.OSM);
 
       customTMS = app.initMap(WebGLEarth.Maps.CUSTOM, ['TMS','http://webglearth.googlecode.com/svn/resources/tms/{z}/{x}/{y}.jpg',1,5,256,true]);
 
@@ -45,7 +45,7 @@
 
       //make the overlays transparent
       mapBo.setOpacity(0.5);
-      mapMo.setOpacity(0.5);
+      mapOo.setOpacity(0.5);
 
       setInterval(function() {
         document.getElementById('infodiv').innerHTML = app.getHeading() + ', ' + app.getTilt();
@@ -135,11 +135,11 @@
    <input type="button" value="Download as PNG" onclick="javascript:app.saveScreenshot('screenshot.png')"/>
    <input type="button" value="Display screenshot below" onclick="javascript:app.getScreenshot(function(url) {document.getElementById('screenshot').src = url;});"/>
    <br />
-   <input type="button" value="Switch to MapQuest" onclick="javascript:app.setBaseMap(mapM)"/>
+   <input type="button" value="Switch to OSM" onclick="javascript:app.setBaseMap(mapO)"/>
    <input type="button" value="Switch to Bing" onclick="javascript:app.setBaseMap(mapB)"/>
    <input type="button" value="Switch to Custom TMS" onclick="javascript:app.setBaseMap(customTMS)"/>
    <input type="button" value="Switch to WMS" onclick="javascript:app.setBaseMap(wms)"/>
-   <input type="button" value="Switch Overlay to MapQuest" onclick="javascript:app.setOverlayMap(mapMo)"/>
+   <input type="button" value="Switch Overlay to OSM" onclick="javascript:app.setOverlayMap(mapOo)"/>
    <input type="button" value="Switch Overlay to Bing" onclick="javascript:app.setOverlayMap(mapBo)"/>
    <input type="button" value="Disable overlay" onclick="javascript:app.setOverlayMap(null)"/>
    <br />
