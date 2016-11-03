@@ -93,24 +93,17 @@ weapp.App = function() {
   var updateLayer = goog.bind(function() {
     var key = maptypeElement.options[maptypeElement.selectedIndex].value;
     switch (key) {
-      case 'bing_aerial':
+      default:
         if (!goog.isDefAndNotNull(initedMaps[key])) {
-          initedMaps[key] = this.app_.initMap(weapi.maps.MapType.BING,
-              ['Aerial', weapp.App.BING_KEY]);
-        }
-        this.app_.setBaseMap(initedMaps[key]);
-        break;
-      case 'bing_roads':
-        if (!goog.isDefAndNotNull(initedMaps[key])) {
-          initedMaps[key] = this.app_.initMap(weapi.maps.MapType.BING,
-              ['Road', weapp.App.BING_KEY]);
-        }
-        this.app_.setBaseMap(initedMaps[key]);
-        break;
-      case 'bing_aerialwl':
-        if (!goog.isDefAndNotNull(initedMaps[key])) {
-          initedMaps[key] = this.app_.initMap(weapi.maps.MapType.BING,
-              ['AerialWithLabels', weapp.App.BING_KEY]);
+          initedMaps[key] = this.app_.initMap(weapi.maps.MapType.CUSTOM, {
+            'url': 'https://klokantech-{sub}.tilehosting.com/styles/' + key +
+                '/rendered/{z}/{x}/{y}.png?key=lxivyUbIZRSgmvCtXWrj',
+            'maximumLevel': 20,
+            'subdomains': ['0', '1', '2', '3'],
+            'copyright':
+                '<a href="http://www.openstreetmap.org/about/" ' +
+                'target="_blank">&copy; OpenStreetMap contributors</a>'
+          });
         }
         this.app_.setBaseMap(initedMaps[key]);
         break;
@@ -119,8 +112,6 @@ weapp.App = function() {
           initedMaps[key] = this.app_.initMap(weapi.maps.MapType.OSM);
         }
         this.app_.setBaseMap(initedMaps[key]);
-        break;
-      default:
         break;
     }
   }, this);
@@ -205,13 +196,6 @@ weapp.App = function() {
     geocoderElement.focus();
   }
 };
-
-
-/**
- * @define {string} bing key.
- */
-weapp.App.BING_KEY =
-    'AuCVBGPx1VQORSzUMGplLr3JTilLi3lUA3WnqT5SbKcUP5H2s9mh9XsHfy_VKmdG';
 
 
 /**
