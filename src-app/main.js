@@ -100,9 +100,7 @@ weapp.App = function() {
                 '/rendered/{z}/{x}/{y}.png?key=lxivyUbIZRSgmvCtXWrj',
             'maximumLevel': 20,
             'subdomains': ['0', '1', '2', '3'],
-            'copyright':
-                '<a href="http://www.openstreetmap.org/about/" ' +
-                'target="_blank">&copy; OpenStreetMap contributors</a>'
+            'copyright': '© OpenStreetMap contributors'
           });
         }
         this.app_.setBaseMap(initedMaps[key]);
