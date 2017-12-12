@@ -11,9 +11,10 @@ goog.require('goog.dom');
 goog.require('goog.dom.ViewportSizeMonitor');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
+goog.require('goog.net.Jsonp');
 goog.require('goog.userAgent');
 
-goog.require('kt.Nominatim');
+goog.require('kt.OsmNamesAutocomplete');
 goog.require('weapi.exports.App');
 
 
@@ -33,7 +34,7 @@ weapp.App = function() {
   this.app_ = new weapi.exports.App('webglearthdiv', {
     'atmosphere': true,
     'sky': false,
-    'terrain': document.location.search.indexOf('terrain') > 0,
+    'terrain': true,
     'position': [0, 0],
     'altitude': weapp.App.DEFAULT_ALT,
     'panning': true,
@@ -66,41 +67,45 @@ weapp.App = function() {
 
   var geocoderElement = /** @type {!Element} */
                         (goog.dom.getElement('geocoder'));
-  var ac = new kt.Nominatim(geocoderElement,
-      'http://nominatim.klokantech.com/');
 
-  goog.events.listen(ac, goog.ui.ac.AutoComplete.EventType.UPDATE, function(e) {
-    var ext = e.row['bounds'] || e.row['viewport'];
-    this.app_.flyToFitBounds(ext[1], ext[3], ext[0], ext[2]);
-  }, false, this);
+  var autocomplete = new kt.OsmNamesAutocomplete(geocoderElement,
+    'https://geocoder.tilehosting.com/', 'oeGRMGLUngqm8fMN45zj');
 
-  var geocoder_search = goog.bind(function(event) {
-    goog.events.Event.preventDefault(event);
-    ac.search(geocoderElement.value, 1, goog.bind(function(tok, results) {
-      var ext = results[0]['bounds'] || results[0]['viewport'];
-      this.app_.flyToFitBounds(ext[1], ext[3], ext[0], ext[2]);
-    }, this));
-  }, this);
-  var form = goog.dom.getAncestorByTagNameAndClass(geocoderElement,
-                                                   goog.dom.TagName.FORM);
-  goog.events.listen(form, 'submit', geocoder_search);
-  goog.events.listen(geocoderElement,
-                     ['webkitspeechchange', 'speechchange'], geocoder_search);
+  autocomplete.registerCallback(function(item) {
+    console.log(item['boundingbox']);
+    this.app_.flyToFitBounds(
+      item['boundingbox'][1],
+      item['boundingbox'][3],
+      item['boundingbox'][0],
+      item['boundingbox'][2]
+    );
+  }.bind(this));
 
   var initedMaps = {}; //cache
   var maptypeElement = /** @type {!HTMLSelectElement} */
                        (goog.dom.getElement('maptype'));
   var updateLayer = goog.bind(function() {
+    var thkey = 'kSwrAdFeuIo6rD2Bm9dc';
     var key = maptypeElement.options[maptypeElement.selectedIndex].value;
     switch (key) {
       default:
         if (!goog.isDefAndNotNull(initedMaps[key])) {
           initedMaps[key] = this.app_.initMap(weapi.maps.MapType.CUSTOM, {
-            'url': 'https://klokantech-{sub}.tilehosting.com/styles/' + key +
-                '/rendered/{z}/{x}/{y}.png?key=lxivyUbIZRSgmvCtXWrj',
-            'maximumLevel': 20,
-            'subdomains': ['0', '1', '2', '3'],
-            'copyright': '© OpenStreetMap contributors'
+            'url': 'https://maps.tilehosting.com/styles/' + key +
+                '/{z}/{x}/{y}.png?key=' + thkey,
+            'maximumLevel': 18,
+            'copyright': '© OpenMapTiles © OpenStreetMap contributors'
+          });
+        }
+        this.app_.setBaseMap(initedMaps[key]);
+        break;
+      case 'hybrid':
+        if (!goog.isDefAndNotNull(initedMaps[key])) {
+          initedMaps[key] = this.app_.initMap(weapi.maps.MapType.CUSTOM, {
+            'url': 'https://maps.tilehosting.com/styles/hybrid' +
+                '/{z}/{x}/{y}.jpg?key=' + thkey,
+            'maximumLevel': 16,
+            'copyright': '© OpenMapTiles © OpenStreetMap contributors'
           });
         }
         this.app_.setBaseMap(initedMaps[key]);

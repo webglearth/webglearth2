@@ -23,6 +23,17 @@ img {border:none;}
 #geocoder {position:absolute;top:40px;height:24px;right:0;width:204px;z-index:1;padding:2px 4px;border:none;}
 .ac-renderer {position:absolute;right:0;width:204px;z-index:1;font-size:12px;background:#fff;border:0 solid #000;border-width:1px 0;overflow:hidden;white-space:nowrap;}
 .ac-row {border-bottom:1px solid #666;width:100%;overflow:hidden;text-overflow:ellipsis;padding:1px 0 1px 2px;cursor:pointer;}
+.ac-row .suffix {
+  font-size:.9em;
+  color:#aaa;
+  padding:.1em 0 .1em 5px;
+}
+.ac-row .type {
+  font-size:.8em;
+  color:#888;
+  display:block;
+  width:100%;
+}
 .ac-row:hover {background:#ccc;}
 #maptype {position:absolute;top:67px;height:24px;right:0;width:204px;z-index:1;border:none;}
 

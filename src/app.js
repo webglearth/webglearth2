@@ -171,7 +171,7 @@ weapi.App = function(divid, opt_options) {
   if (this.withTerrain) {
     var terrainProvider = new Cesium.CesiumTerrainProvider({
       'url': this.resourceProtocol +
-          '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
+          'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
     });
     this.scene.terrainProvider = terrainProvider;
   }
