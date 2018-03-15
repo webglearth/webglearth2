@@ -94,7 +94,8 @@ weapp.App = function() {
             'url': 'https://maps.tilehosting.com/styles/' + key +
                 '/{z}/{x}/{y}.png?key=' + thkey,
             'maximumLevel': 18,
-            'copyright': '© OpenMapTiles © OpenStreetMap contributors'
+            'copyright': '© OpenMapTiles © OpenStreetMap contributors',
+            'copyrightLink': 'https://openmaptiles.org/'
           });
         }
         this.app_.setBaseMap(initedMaps[key]);
@@ -105,7 +106,8 @@ weapp.App = function() {
             'url': 'https://maps.tilehosting.com/styles/hybrid' +
                 '/{z}/{x}/{y}.jpg?key=' + thkey,
             'maximumLevel': 16,
-            'copyright': '© OpenMapTiles © OpenStreetMap contributors'
+            'copyright': '© OpenMapTiles Satellite © OpenMapTiles © OpenStreetMap contributors',
+            'copyrightLink': 'https://openmaptiles.com/satellite/'
           });
         }
         this.app_.setBaseMap(initedMaps[key]);

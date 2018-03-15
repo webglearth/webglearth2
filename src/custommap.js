@@ -44,7 +44,8 @@ weapi.CustomMap.prototype.setOptions = function(opts) {
 
   this.subdomains = /** @type {Array.<string>} */(opts['subdomains'] || []);
 
-  this['_credit'] = new Cesium.Credit((opts['copyright'] || '').toString());
+  this['_credit'] = new Cesium.Credit((opts['copyright'] || '').toString(),
+      undefined, opts['copyrightLink'] ? opts['copyrightLink'].toString() : undefined);
 
   this['_proxy'] = opts['proxy'] || undefined;
 

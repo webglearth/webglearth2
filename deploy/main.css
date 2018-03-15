@@ -60,3 +60,5 @@ img {border:none;}
 .jsapi, .github {background:none;}
 
 .plovr-error-report {position:absolute;z-index:10;}
+
+.cesium-credit-textContainer a {color:#fff !important;}
