@@ -42,7 +42,7 @@ img {border:none;}
 
 #klokan {position:absolute;bottom:62px;right:0;width:231px;z-index:1;height:58px;}
 #klokan:before {content:"\e600";font-size:225px;line-height:58px;}
-#webglearthdiv {position:absolute !important;top:0;right:0;bottom:0;left:0;background:#000 url(stars.jpg);background-size:cover;touch-events:none;}
+#webglearthdiv {position:absolute !important;top:0;right:0;bottom:0;left:0;background:#000 url(stars.jpg);background-size:cover;touch-action:none;}
 
 #share {position:absolute;bottom:75px;left:0;padding:0;list-style:none;margin:0;}
 #share li {float:left;line-height:32px;margin-right:2px;}
