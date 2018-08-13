@@ -20,27 +20,43 @@ goog.require('weapi.utils');
  * @inheritDoc
  * @param {number} lat .
  * @param {number} lon .
- * @param {string=} opt_iconUrl URL of the icon to use instead of the default.
+ * @param {string|{icon}=} opt_iconUrlOrObject URL of the icon or an options object to use instead of the default.
  * @param {number=} opt_width Width of the icon.
  * @param {number=} opt_height Height of the icon.
  * @extends {weapi.markers.AbstractMarker}
  * @constructor
  */
 weapi.markers.PrettyMarker = function(lat, lon,
-                                      opt_iconUrl, opt_width, opt_height) {
+                                      opt_iconUrlOrObject, opt_width, opt_height) {
 
   var marker = goog.dom.createDom('div', {'class': 'we-pm-icon'});
 
-  if (goog.isString(opt_iconUrl))
-    marker.style.backgroundImage = 'url(' + opt_iconUrl + ')';
+  if (goog.isString(opt_iconUrlOrObject)) {
+    marker.style.backgroundImage = 'url(' + opt_iconUrlOrObject + ')';
+  }
 
-  this.width_ = opt_width || 25;
-  this.height_ = opt_height || 41;
+  var width, marginLeft, marginTop;
+  if (!goog.isObject(opt_iconUrlOrObject)) {
+    width = opt_width || 25;
+    this.height_ = opt_height || 41;
+    marginLeft = -width / 2;
+    marginTop = -this.height_;
+  } else {
+    var icon = opt_iconUrlOrObject['icon'];
+    var iconOpts = icon && icon['options'];
+    if (iconOpts && iconOpts['iconUrl']) {
+      marker.style.backgroundImage = 'url(' + iconOpts['iconUrl'] + ')';
+    }
+    width = iconOpts && iconOpts['iconSize'] ? iconOpts['iconSize'][0] : 25;
+    this.height_ = iconOpts && iconOpts['iconSize'] ? iconOpts['iconSize'][1] : 41;
+    marginLeft = iconOpts && iconOpts['iconAnchor'] ? iconOpts['iconAnchor'][0] - width : -width / 2;
+    marginTop = iconOpts && iconOpts['iconAnchor'] ? iconOpts['iconAnchor'][1] - this.height_ : -this.height_;
+  }
 
-  marker.style.width = this.width_.toFixed(0) + 'px';
+  marker.style.width = width.toFixed(0) + 'px';
   marker.style.height = this.height_.toFixed(0) + 'px';
-  marker.style.marginLeft = (-this.width_ / 2).toFixed(0) + 'px';
-  marker.style.marginTop = (-this.height_).toFixed(0) + 'px';
+  marker.style.marginLeft = marginLeft.toFixed(0) + 'px';
+  marker.style.marginTop = marginTop.toFixed(0) + 'px';
 
   //wrapper for marker and popup
   var elwrap = goog.dom.createDom('div', {style: 'position:absolute;'},
