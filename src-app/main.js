@@ -27,6 +27,8 @@ weapp.App = function() {
     window.location = '//www.webglearth.com/webgl-error.html';
   }
 
+  var thkey = 'kSwrAdFeuIo6rD2Bm9dc';
+
   /**
    * @type {!weapi.exports.App}
    * @private
@@ -34,7 +36,7 @@ weapp.App = function() {
   this.app_ = new weapi.exports.App('webglearthdiv', {
     'atmosphere': true,
     'sky': false,
-    'terrain': true,
+    'terrain': 'https://maps.tilehosting.com/data/terrain-quantized-mesh/layer.json?key=' + thkey + '&',
     'position': [0, 0],
     'altitude': weapp.App.DEFAULT_ALT,
     'panning': true,
@@ -44,7 +46,7 @@ weapp.App = function() {
   });
 
   if (window.location.hash.length < 4) {
-    new goog.net.Jsonp('//freegeoip.net/json/').send(
+    new goog.net.Jsonp('https://freegeoip.klokantech.com/json/').send(
         undefined, goog.bind(function(data) {
           if (data) {
             var lat = data['latitude'], lng = data['longitude'];
@@ -85,7 +87,6 @@ weapp.App = function() {
   var maptypeElement = /** @type {!HTMLSelectElement} */
                        (goog.dom.getElement('maptype'));
   var updateLayer = goog.bind(function() {
-    var thkey = 'kSwrAdFeuIo6rD2Bm9dc';
     var key = maptypeElement.options[maptypeElement.selectedIndex].value;
     switch (key) {
       default:

@@ -167,10 +167,15 @@ weapi.App = function(divid, opt_options) {
     });
     this.scene.imageryLayers.addImageryProvider(mq);
   }
-  this.withTerrain = options['terrain'] == true;
+  this.withTerrain = !!options['terrain'];
   if (this.withTerrain) {
+    var url = options['terrain'];
+    if (url === true) {
+      // for compatibility
+      url = 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles';
+    }
     var terrainProvider = new Cesium.CesiumTerrainProvider({
-      'url': 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles'
+      'url': url
     });
     this.scene.terrainProvider = terrainProvider;
   }
