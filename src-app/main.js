@@ -37,6 +37,7 @@ weapp.App = function() {
     'atmosphere': true,
     'sky': false,
     'terrain': 'https://maps.tilehosting.com/data/terrain-quantized-mesh/layer.json?key=' + thkey + '&',
+    'terrainCredit': '', // suppress the html credit
     'position': [0, 0],
     'altitude': weapp.App.DEFAULT_ALT,
     'panning': true,
@@ -95,8 +96,8 @@ weapp.App = function() {
             'url': 'https://maps.tilehosting.com/styles/' + key +
                 '/{z}/{x}/{y}.png?key=' + thkey,
             'maximumLevel': 18,
-            'copyright': '© OpenMapTiles © OpenStreetMap contributors',
-            'copyrightLink': 'https://openmaptiles.org/'
+            'copyright': '© MapTiler © OpenStreetMap contributors',
+            'copyrightLink': 'https://www.maptiler.com/license/maps/'
           });
         }
         this.app_.setBaseMap(initedMaps[key]);
@@ -107,8 +108,8 @@ weapp.App = function() {
             'url': 'https://maps.tilehosting.com/styles/hybrid' +
                 '/{z}/{x}/{y}.jpg?key=' + thkey,
             'maximumLevel': 16,
-            'copyright': '© OpenMapTiles Satellite © OpenMapTiles © OpenStreetMap contributors',
-            'copyrightLink': 'https://openmaptiles.com/satellite/'
+            'copyright': '© MapTiler © OpenStreetMap contributors',
+            'copyrightLink': 'https://www.maptiler.com/license/maps/'
           });
         }
         this.app_.setBaseMap(initedMaps[key]);

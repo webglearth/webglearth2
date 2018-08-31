@@ -175,7 +175,8 @@ weapi.App = function(divid, opt_options) {
       url = 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles';
     }
     var terrainProvider = new Cesium.CesiumTerrainProvider({
-      'url': url
+      'url': url,
+      'credit': options['terrainCredit']
     });
     this.scene.terrainProvider = terrainProvider;
   }
