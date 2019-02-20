@@ -36,7 +36,7 @@ weapp.App = function() {
   this.app_ = new weapi.exports.App('webglearthdiv', {
     'atmosphere': true,
     'sky': false,
-    'terrain': 'https://maps.tilehosting.com/data/terrain-quantized-mesh/layer.json?key=' + thkey + '&',
+    'terrain': 'https://api.maptiler.com/tiles/terrain-quantized-mesh/layer.json?key=' + thkey + '&',
     'terrainCredit': '', // suppress the html credit
     'position': [0, 0],
     'altitude': weapp.App.DEFAULT_ALT,
@@ -93,11 +93,12 @@ weapp.App = function() {
       default:
         if (!goog.isDefAndNotNull(initedMaps[key])) {
           initedMaps[key] = this.app_.initMap(weapi.maps.MapType.CUSTOM, {
-            'url': 'https://maps.tilehosting.com/styles/' + key +
+            'url': 'https://api.maptiler.com/maps/' + key +
                 '/{z}/{x}/{y}.png?key=' + thkey,
+            'tileSize': 512,
             'maximumLevel': 18,
             'copyright': '© MapTiler © OpenStreetMap contributors',
-            'copyrightLink': 'https://www.maptiler.com/license/maps/'
+            'copyrightLink': 'https://www.maptiler.com/copyright/'
           });
         }
         this.app_.setBaseMap(initedMaps[key]);
@@ -105,11 +106,12 @@ weapp.App = function() {
       case 'hybrid':
         if (!goog.isDefAndNotNull(initedMaps[key])) {
           initedMaps[key] = this.app_.initMap(weapi.maps.MapType.CUSTOM, {
-            'url': 'https://maps.tilehosting.com/styles/hybrid' +
+            'url': 'https://api.maptiler.com/maps/hybrid' +
                 '/{z}/{x}/{y}.jpg?key=' + thkey,
+            'tileSize': 512,
             'maximumLevel': 16,
             'copyright': '© MapTiler © OpenStreetMap contributors',
-            'copyrightLink': 'https://www.maptiler.com/license/maps/'
+            'copyrightLink': 'https://www.maptiler.com/copyright/'
           });
         }
         this.app_.setBaseMap(initedMaps[key]);
