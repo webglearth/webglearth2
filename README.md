@@ -1,4 +1,10 @@
-[![WebGL Earth](https://cloud.githubusercontent.com/assets/59284/3467435/90001280-0290-11e4-9d6f-04fa4479cea0.png)](http://www.webglearth.com/)
+### GRANDFATHERED
+
+This project is no longer maintained. Contact us if you want to become a maintainer of this project.
+
+We recommend using [Cesium](https://github.com/AnalyticalGraphicsInc/cesium) instead.
+
+---
 
 # WebGL Earth 2.0
 
@@ -7,10 +13,6 @@ Open-source virtual planet web application running in any web browser with suppo
 There is an extremely easy to use JavaScript API - fully mimicking LeafletJS.
 
 See: http://examples.webglearth.org/ for demos.
-
-## Contracted development and support
-
-Contact: info@klokantech.com
 
 ## Usage
 
