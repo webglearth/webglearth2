@@ -2,7 +2,7 @@
 
 This project is no longer maintained. Contact us if you want to become a maintainer of this project.
 
-We recommend using [Cesium](https://github.com/AnalyticalGraphicsInc/cesium) instead.
+We recommend using [Cesium](https://github.com/AnalyticalGraphicsInc/cesium) instead ([code sample](https://cloud.maptiler.com/maps/hybrid/cesium)).
 
 ---
 
