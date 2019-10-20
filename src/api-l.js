@@ -102,8 +102,7 @@ exportSymbolL('WebGLEarth.prototype.fitBounds', function(bnds, opt_opts) {
 exportSymbolL('WebGLEarth.prototype.panTo', function(center, opt_opts) {
   if (!goog.isArray(center)) center = [center['lat'], center['lng']];
   opt_opts = opt_opts || {};
-  this.flyTo(center[0], center[1], undefined, undefined, 0, 0,
-             undefined, opt_opts['duration']);
+  this.flyTo(center[0], center[1], undefined, undefined, 0, 0, opt_opts['duration']);
 });
 
 
